@@ -1,9 +1,43 @@
 class BudgetsController < ApplicationController
+  before_action :set_budget, only: %i[ show edit update ]
+
   def index
     @budgets = Budget.all
   end
 
   def show
-    @budget = Budget.find(params[:id])
   end
+
+  def new
+    @budget = Budget.new
+  end
+
+  def create
+    @budget = Budget.new(budget_params)
+    if @budget.save
+      redirect_to budgets_path
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @budget.update(budget_params)
+      redirect_to budgets_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  private
+    def set_budget
+      @budget = Budget.find(params[:id])
+    end
+
+    def budget_params
+      params.expect(budget: [ :name ])
+    end
 end
