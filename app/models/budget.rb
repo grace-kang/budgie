@@ -2,4 +2,5 @@
 
 class Budget < ApplicationRecord
   validates :name, presence: true
+  validates :total, presence: true
 end

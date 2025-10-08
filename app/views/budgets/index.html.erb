@@ -6,6 +6,7 @@
   <% @budgets.each do |budget| %>
     <div>
       <%= link_to budget.name, budget %>
+      <span><%= budget.total %></span>
     </div>
   <% end %>
 </div>

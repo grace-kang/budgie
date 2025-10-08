@@ -44,6 +44,6 @@ class BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.expect(budget: [:name])
+    params.expect(budget: [:name, :total])
   end
 end
