@@ -17,3 +17,6 @@ AllCops:
     - 'storage/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
+
+Style/Documentation:
+  Enabled: false
