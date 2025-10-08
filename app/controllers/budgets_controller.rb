@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 class BudgetsController < ApplicationController
-  before_action :set_budget, only: %i[ show edit update destroy ]
+  before_action :set_budget, only: %i[show edit update destroy]
 
   def index
     @budgets = Budget.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @budget = Budget.new
   end
+
+  def edit; end
 
   def create
     @budget = Budget.new(budget_params)
@@ -19,9 +22,6 @@ class BudgetsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
   end
 
   def update
@@ -38,11 +38,12 @@ class BudgetsController < ApplicationController
   end
 
   private
-    def set_budget
-      @budget = Budget.find(params[:id])
-    end
 
-    def budget_params
-      params.expect(budget: [ :name ])
-    end
+  def set_budget
+    @budget = Budget.find(params[:id])
+  end
+
+  def budget_params
+    params.expect(budget: [:name])
+  end
 end
