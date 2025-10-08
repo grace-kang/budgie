@@ -7,7 +7,10 @@ class BudgetsController < ApplicationController
     @budgets = Budget.all
   end
 
-  def show; end
+  def show
+    @transaction = Transaction.new
+    @transactions = Transaction.where(budget_id: @budget.id)
+  end
 
   def new
     @budget = Budget.new
@@ -44,6 +47,6 @@ class BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.expect(budget: [:name, :total])
+    params.expect(budget: %i[name total])
   end
 end
