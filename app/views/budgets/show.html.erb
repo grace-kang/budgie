@@ -3,3 +3,13 @@
 <%= link_to "Back", budgets_path %>
 <%= link_to "Edit", edit_budget_path(@budget) %>
 <%= button_to "Delete", @budget, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+
+<%= render "transactions/form", transacation: @transaction %>
+
+<% @transactions.each do |transaction| %>
+  <div>
+    <span><%= transaction.description %></span>
+    <span><%= transaction.amount %></span>
+    <span><%= transaction.date %></span>
+  </div>
+<% end %>

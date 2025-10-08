@@ -3,5 +3,7 @@
 Rails.application.routes.draw do
   root 'budgets#index'
 
-  resources :budgets
+  resources :budgets do
+    resources :transactions, only: [:create]
+  end
 end
