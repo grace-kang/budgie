@@ -1,0 +1,19 @@
+# .rubocop.yml
+# Clean, modern Ruby + Rails defaults.
+
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.3
+  Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'db/queue_schema.rb'
+    - 'db/migrate/**/*'
+    - 'node_modules/**/*'
+    - 'storage/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
