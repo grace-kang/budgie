@@ -1,15 +1,17 @@
+<div class="form">
 <%= form_with model: @budget do |form| %>
-  <div>
+  <div class="form-input">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <div>
+  <div class="form-input">
     <%= form.label :total %>
     <%= form.number_field :total %>
   </div>
 
-  <div>
+  <div class="form-submit">
     <%= form.submit %>
   </div>
 <% end %>
+</div>

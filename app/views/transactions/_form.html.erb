@@ -1,24 +1,24 @@
+<div class="form">
 <%= form_with model: [@budget, @transaction] do |form| %>
-  <div>
+  <div class="form-input">
     <%= form.label :description %>
     <%= form.text_field :description %>
   </div>
 
-  <div>
+  <div class="form-input">
     <%= form.label :amount %>
     <%= form.number_field :amount %>
   </div>
 
-  <div>
+  <div class="form-input">
     <%= form.label :date %>
     <%= form.date_field :date %>
   </div>
 
-  <div>
-    <%= form.hidden_field :budget_id, value: @budget.id %>
-  </div>
+  <%= form.hidden_field :budget_id, value: @budget.id %>
 
   <div>
     <%= form.submit %>
   </div>
 <% end %>
+</div>
