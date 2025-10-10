@@ -2,20 +2,19 @@
 
 <div class="header">
   <%= link_to new_budget_path do %>
-<div class="new-budget">
-    <span>+ New Budget</span>
-</div>
+    <div class="new-budget">
+      <span>+ New Budget</span>
+    </div>
   <% end %>
 </div>
 
 <div class="budgets">
   <% @budgets.each do |budget| %>
-      <%= link_to budget do %>
+    <%= link_to budget do %>
       <div class="budget">
         <span><%= budget.name %></span>
         <span><%= budget.total %></span>
       </div>
-      <% end %>
+    <% end %>
   <% end %>
 </div>
-

@@ -1,24 +1,24 @@
 <div class="form">
-<%= form_with model: [@budget, @transaction] do |form| %>
-  <div class="form-input">
-    <%= form.label :description %>
-    <%= form.text_field :description %>
-  </div>
+  <%= form_with model: [@budget, @transaction] do |form| %>
+    <div class="form-input">
+      <%= form.label :description %>
+      <%= form.text_field :description %>
+    </div>
 
-  <div class="form-input">
-    <%= form.label :amount %>
-    <%= form.number_field :amount %>
-  </div>
+    <div class="form-input">
+      <%= form.label :amount %>
+      <%= form.number_field :amount %>
+    </div>
 
-  <div class="form-input">
-    <%= form.label :date %>
-    <%= form.date_field :date %>
-  </div>
+    <div class="form-input">
+      <%= form.label :date %>
+      <%= form.date_field :date %>
+    </div>
 
-  <%= form.hidden_field :budget_id, value: @budget.id %>
+    <%= form.hidden_field :budget_id, value: @budget.id %>
 
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
 </div>

@@ -6,3 +6,4 @@ tmp/*
 .env.*
 
 /storage
+/node_modules

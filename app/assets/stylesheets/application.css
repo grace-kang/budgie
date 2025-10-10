@@ -27,9 +27,7 @@ textarea {
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input[type="date"] {
@@ -40,9 +38,7 @@ input[type="date"] {
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus,
