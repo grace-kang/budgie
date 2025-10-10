@@ -1,10 +1,17 @@
 <h1><%= @budget.name %></h1>
 
-<%= link_to "Back", budgets_path %>
-<%= link_to "Edit", edit_budget_path(@budget) %>
-<%= button_to "Delete", @budget, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+<%= link_to 'Back', budgets_path %>
+<%= link_to 'Edit', edit_budget_path(@budget) %>
+<%=
+  button_to 'Delete',
+            @budget,
+            method: :delete,
+            data: {
+              turbo_confirm: 'Are you sure?',
+            }
+%>
 
-<%= render "transactions/form", transacation: @transaction %>
+<%= render 'transactions/form', transacation: @transaction %>
 
 <% @transactions.each do |transaction| %>
   <div>
