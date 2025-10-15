@@ -5,6 +5,7 @@ class BudgetsController < ApplicationController
 
   def index
     @budgets = Budget.all
+    @transactions = Transaction.all
   end
 
   def show
