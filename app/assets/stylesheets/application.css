@@ -16,6 +16,15 @@ a {
   color: inherit;
 }
 
+button {
+  border: none;
+  color: inherit;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
 input[type="text"],
 input[type="number"],
 textarea {
