@@ -11,9 +11,18 @@
 <div class="budgets">
   <% @budgets.each do |budget| %>
     <%= link_to budget do %>
-      <div class="budget">
+      <% remaining = budget.total - budget.transactions.sum(:amount) %>
+      <%
+        bg_class =
+          if remaining < 0
+            'budget-over'
+          else
+            remaining < 50 ? 'budget-warn' : 'budget-ok'
+          end
+      %>
+      <div class="budget <%= bg_class %>">
         <span><%= budget.name %></span>
-        <span><%= budget.total %></span>
+        <span><%= remaining %> / <%= budget.total %> </span>
       </div>
     <% end %>
   <% end %>

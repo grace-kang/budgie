@@ -84,9 +84,9 @@ input[type="submit"]:hover {
   --color-primary-hover: #1d4ed8;
   --color-primary-muted: #93c5fd;
 
-  --color-success: #16a34a; /* positive / income */
-  --color-error: #dc2626; /* negative / expense */
-  --color-warning: #f59e0b; /* alerts */
+  --color-success: rgba(22, 163, 74, 0.2); /* positive / income */
+  --color-error: rgba(220, 38, 38, 0.2); /* negative / expense */
+  --color-warning: rgba(245, 158, 11, 0.2); /* alerts */
 
   --radius: 0.5rem;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
