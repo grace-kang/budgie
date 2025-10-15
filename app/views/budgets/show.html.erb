@@ -21,12 +21,23 @@
   <% end %>
 </div>
 
+<h2>Transactions</h2>
+
 <%= render 'transactions/form', transacation: @transaction %>
 
-<% @transactions.each do |transaction| %>
-  <div>
-    <span><%= transaction.description %></span>
-    <span><%= transaction.amount %></span>
-    <span><%= transaction.date %></span>
+<% unless @transactions.empty? %>
+  <div class="transactions">
+    <div class="transactions-header transaction-row">
+      <span>Description</span>
+      <span>Amount</span>
+      <span>Date</span>
+    </div>
+    <% @transactions.each do |transaction| %>
+      <div class="transaction-row">
+        <span class="transaction-cell"><%= transaction.description %></span>
+        <span class="transaction-cell"><%= transaction.amount %></span>
+        <span class="transaction-cell"><%= transaction.date %></span>
+      </div>
+    <% end %>
   </div>
 <% end %>
