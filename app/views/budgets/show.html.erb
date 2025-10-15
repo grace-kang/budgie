@@ -1,15 +1,25 @@
 <h1><%= @budget.name %></h1>
 
-<%= link_to 'Back', budgets_path %>
-<%= link_to 'Edit', edit_budget_path(@budget) %>
-<%=
-  button_to 'Delete',
-            @budget,
-            method: :delete,
-            data: {
-              turbo_confirm: 'Are you sure?',
-            }
-%>
+<div class="header">
+  <%= link_to budgets_path do %>
+    <div class="header-button">
+      <span>Back</span>
+    </div>
+  <% end %>
+
+  <%= link_to edit_budget_path(@budget) do %>
+    <div class="header-button">
+      <span>Edit</span>
+    </div>
+  <% end %>
+  <%= button_to budget_path(@budget),
+                method: :delete,
+                data: { turbo_confirm: 'Are you sure?' } do %>
+    <div class="header-button">
+      <span>Delete</span>
+    </div>
+  <% end %>
+</div>
 
 <%= render 'transactions/form', transacation: @transaction %>
 

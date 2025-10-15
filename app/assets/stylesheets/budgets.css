@@ -34,7 +34,7 @@
   margin-bottom: 1rem;
 }
 
-.new-budget {
+.header-button {
   right: 1rem;
   color: var(--color-primary);
   border: 1px solid var(--color-border);
@@ -45,5 +45,6 @@
   &:hover {
     background: var(--color-bg-muted);
     color: var(--color-primary-hover);
+    cursor: pointer;
   }
 }
