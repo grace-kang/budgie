@@ -7,6 +7,6 @@ Rails
     root 'budgets#index'
 
     resources :budgets do
-      resources :transactions, only: [:create]
+      resources :transactions, only: %i[create destroy]
     end
   end
