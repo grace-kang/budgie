@@ -6,7 +6,6 @@
 
 body {
   font-family: --apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-  padding: 1rem;
   background: var(--color-bg);
   color: var(--color-text);
 }
@@ -110,4 +109,15 @@ input[type="submit"]:hover {
 
 .form-submit {
   padding: 0.5rem;
+}
+
+.app-header {
+  display: flex;
+  justify-content: center;
+  background: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.app-content {
+  padding: 1rem;
 }
