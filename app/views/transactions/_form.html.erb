@@ -12,7 +12,7 @@
 
     <div class="form-input">
       <%= form.label :date %>
-      <%= form.date_field :date, value: Date.current.strftime("%Y-%m-%d") %>
+      <%= form.date_field :date, value: Date.current.strftime('%Y-%m-%d') %>
     </div>
 
     <%= form.hidden_field :budget_id, value: @budget.id %>
