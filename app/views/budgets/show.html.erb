@@ -32,7 +32,7 @@
       <span>Amount</span>
       <span>Date</span>
     </div>
-    <% @transactions.each do |transaction| %>
+    <% @transactions.sort_by(&:date).reverse.each do |transaction| %>
       <div class="transaction-row">
         <span class="transaction-cell"><%= transaction.description %></span>
         <span class="transaction-cell"><%= transaction.amount %></span>
