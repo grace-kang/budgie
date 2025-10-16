@@ -1,4 +1,4 @@
-<h1><%= @budget.name %></h1>
+<h2><%= @budget.name %></h2>
 
 <div class="header">
   <%= link_to budgets_path do %>
@@ -20,8 +20,6 @@
     </div>
   <% end %>
 </div>
-
-<h2>Transactions</h2>
 
 <%= render 'transactions/form', transacation: @transaction %>
 
