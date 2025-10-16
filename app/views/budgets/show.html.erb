@@ -37,6 +37,9 @@
         <span class="transaction-cell"><%= transaction.description %></span>
         <span class="transaction-cell"><%= transaction.amount %></span>
         <span class="transaction-cell"><%= transaction.date %></span>
+        <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+          <span class="transaction-cell">Delete</span>
+        <% end %>
       </div>
     <% end %>
   </div>
