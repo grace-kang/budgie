@@ -10,7 +10,7 @@ class BudgetsController < ApplicationController
 
   def show
     @transaction = Transaction.new
-    @transactions = Transaction.where(budget_id: @budget.id)
+    @transactions = Transaction.where(budget_id: @budget.id) || []
   end
 
   def new
