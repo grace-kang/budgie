@@ -1,0 +1,53 @@
+name: budgie CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4.6"
+          bundler-cache: true
+
+      - name: Install Yarn 4
+        run: corepack enable && corepack prepare yarn@4.9.2 --activate
+
+      - name: Install JS dependencies
+        run: yarn install --immutable
+
+      - name: Run Rubocop
+        run: bundle exec rubocop --parallel
+
+      - name: Run prettier
+        run: npx prettier --check "**/*.{rb,erb,yml}"
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4.6"
+          bundler-cache: true
+
+      - name: Install system dependencies
+        run: sudo apt-get install -y libsqlite3-dev
+
+      - name: Set up database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run tests
+        run: bundle exec rails test
