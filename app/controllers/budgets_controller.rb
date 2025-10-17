@@ -37,8 +37,11 @@ class BudgetsController < ApplicationController
   end
 
   def destroy
-    @budget.destroy
-    redirect_to budgets_path
+    if @budget.destroy
+      redirect_to budgets_path
+    else
+      redirect_to budgets_path, status: :not_found
+    end
   end
 
   private
