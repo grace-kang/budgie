@@ -11,22 +11,22 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_10_08_185017) do
-  create_table 'budgets', force: :cascade do |t|
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'total'
+  create_table "budgets", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "total"
   end
 
-  create_table 'transactions', force: :cascade do |t|
-    t.string 'description'
-    t.integer 'amount'
-    t.date 'date'
-    t.integer 'budget_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['budget_id'], name: 'index_transactions_on_budget_id'
+  create_table "transactions", force: :cascade do |t|
+    t.string "description"
+    t.integer "amount"
+    t.date "date"
+    t.integer "budget_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["budget_id"], name: "index_transactions_on_budget_id"
   end
 
-  add_foreign_key 'transactions', 'budgets'
+  add_foreign_key "transactions", "budgets"
 end
