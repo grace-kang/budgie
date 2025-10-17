@@ -7,6 +7,7 @@ class TransactionsController < ApplicationController
     if @transaction.save
       redirect_to @budget
     else
+      @transactions = Transaction.where(budget_id: @budget.id)
       render 'budgets/show', status: :unprocessable_entity
     end
   end
@@ -14,8 +15,11 @@ class TransactionsController < ApplicationController
   def destroy
     @transaction = Transaction.find(params[:id])
     @budget = Budget.find(@transaction.budget_id)
-    @transaction.destroy
-    redirect_to @budget
+    if @transaction.destroy
+      redirect_to @budget
+    else
+      redirect_to @budget, status: :not_found
+    end
   end
 
   private
