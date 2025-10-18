@@ -26,12 +26,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "prettier@npm:2.2.1"
+"prettier-plugin-ruby@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "prettier-plugin-ruby@npm:0.3.1"
+  dependencies:
+    prettier: "npm:^1.16.4"
+  checksum: 10c0/974eeb005e8d720d811266530443233d6c6bb484f6657751ad373d6460b855d7f8e9630cd07bdede74ddc1639c8f65d52e2328586d093158d6ed16d54aa8ecc3
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^1.16.4":
+  version: 1.19.1
+  resolution: "prettier@npm:1.19.1"
   bin:
-    prettier: bin-prettier.js
-  checksum: 10c0/4041ff87d6cba9134a8e0eb74a9e7f50f7091de6b95f5a6fb1928795c7d0584ae46806e0d75588fbc912b2cda2439d28a14fb84416946384cf71d60f5a0a68a6
+    prettier: ./bin-prettier.js
+  checksum: 10c0/12efb4e486c1e1d006e9eadd3b6585fc6beb9481dc801080fc23d3e75ec599d88c6fea1b40aef167128069e8fe76b4205bb8306ad145575d1b051b8fa70cfaae
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "prettier@npm:3.6.2"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/488cb2f2b99ec13da1e50074912870217c11edaddedeadc649b1244c749d15ba94e846423d062e2c4c9ae683e2d65f754de28889ba06e697ac4f988d44f45812
   languageName: node
   linkType: hard
 
@@ -39,7 +57,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    prettier: "npm:^2.2.1"
+    prettier: "npm:^3.6.2"
     prettier-plugin-erb: "npm:^0.4.0"
+    prettier-plugin-ruby: "npm:^0.3.1"
   languageName: unknown
   linkType: soft
