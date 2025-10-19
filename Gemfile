@@ -66,3 +66,5 @@ end
 
 gem 'erb_lint'
 gem 'ruby-lsp', '~> 0.26.1', group: :development
+
+gem 'erb-formatter', '~> 0.7.3'
