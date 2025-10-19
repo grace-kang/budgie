@@ -30,12 +30,12 @@
       <span>Amount</span>
       <span>Date</span>
     </div>
-    <% @transactions.sort_by(&:date).reverse.each do |transaction| %>
+    <% @transactions.sort_by(&:date).reverse_each do |transaction| %>
       <div class="transaction-row">
         <span class="transaction-cell"><%= transaction.description %></span>
         <span class="transaction-cell"><%= transaction.amount %></span>
         <span class="transaction-cell"><%= transaction.date %></span>
-        <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } do %>
+        <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
           <span class="header-button">Delete</span>
         <% end %>
       </div>
