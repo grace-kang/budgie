@@ -5,7 +5,7 @@
  */
 
 body {
-  font-family: --apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  font-family: --apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
 }
@@ -24,8 +24,8 @@ button {
   cursor: pointer;
 }
 
-input[type="text"],
-input[type="number"],
+input[type='text'],
+input[type='number'],
 textarea {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -35,10 +35,12 @@ textarea {
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-input[type="date"] {
+input[type='date'] {
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
@@ -46,7 +48,9 @@ input[type="date"] {
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 input:focus,
@@ -56,7 +60,7 @@ textarea:focus {
   box-shadow: var(--shadow);
 }
 
-input[type="submit"] {
+input[type='submit'] {
   padding: 0.5rem 1rem;
   background: var(--color-primary);
   color: #fff;
@@ -67,7 +71,7 @@ input[type="submit"] {
   font-weight: 500;
 }
 
-input[type="submit"]:hover {
+input[type='submit']:hover {
   background: var(--color-primary-hover);
 }
 
