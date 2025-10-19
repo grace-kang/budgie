@@ -8,25 +8,29 @@
 
 <div class="budgets">
   <% @transaction_groups.each do |group| %>
-    <span><%= group[0] %></span>
-    <% @budgets.each do |budget| %>
-      <% transactions = group[1].select { |t| t.budget_id == budget.id } %>
-      <%= link_to budget do %>
-        <% remaining = budget.total - transactions.sum(&:amount) %>
-        <% bg_class =
-          if remaining.negative?
-            "budget-over"
-          else
-            remaining < 50 ? "budget-warn" : "budget-ok"
-          end %>
-        <div class="budget <%= bg_class %>">
-          <span><%= budget.name %></span>
-          <span><%= remaining %>
-            /
-            <%= budget.total %>
-          </span>
-        </div>
+    <div class="month">
+      <div class="month-header">
+        <h3><%= group[0].upcase %></h3>
+      </div>
+      <% @budgets.each do |budget| %>
+        <% transactions = group[1].select { |t| t.budget_id == budget.id } %>
+        <%= link_to budget do %>
+          <% remaining = budget.total - transactions.sum(&:amount) %>
+          <% bg_class =
+            if remaining.negative?
+              "budget-over"
+            else
+              remaining < 50 ? "budget-warn" : "budget-ok"
+            end %>
+          <div class="budget <%= bg_class %>">
+            <span><%= budget.name %></span>
+            <span><%= remaining %>
+              /
+              <%= budget.total %>
+            </span>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
   <% end %>
 </div>
