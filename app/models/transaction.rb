@@ -6,4 +6,8 @@ class Transaction < ApplicationRecord
   validates :description, presence: true
   validates :amount, presence: true
   validates :date, presence: true
+
+  def month
+    date.strftime('%B %Y')
+  end
 end

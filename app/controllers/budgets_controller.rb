@@ -5,7 +5,7 @@ class BudgetsController < ApplicationController
 
   def index
     @budgets = Budget.all
-    @transactions = Transaction.all
+    @transaction_groups = Transaction.all.group_by(&:month)
   end
 
   def show
