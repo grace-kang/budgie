@@ -64,5 +64,5 @@ group :test do
   gem 'selenium-webdriver'
 end
 
-gem 'ruby-lsp', '~> 0.26.1', group: :development
 gem 'erb_lint'
+gem 'ruby-lsp', '~> 0.26.1', group: :development
