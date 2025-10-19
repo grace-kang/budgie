@@ -65,3 +65,4 @@ group :test do
 end
 
 gem 'ruby-lsp', '~> 0.26.1', group: :development
+gem 'erb_lint'
