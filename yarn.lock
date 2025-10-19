@@ -5,24 +5,12 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"prettier-html-templates@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "prettier-html-templates@npm:0.1.0"
+"@prettier/plugin-ruby@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "@prettier/plugin-ruby@npm:4.0.4"
   peerDependencies:
-    prettier: ^2.0.0
-  checksum: 10c0/de6fe3d027040f0276d6d440f786ec8d06e42deeb5e2d2818bf1393236e402531709045c397aa28944f7d9eef2c9ab5fa02e7797d207c14ddd81cd860c35faff
-  languageName: node
-  linkType: hard
-
-"prettier-plugin-erb@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "prettier-plugin-erb@npm:0.4.0"
-  dependencies:
-    prettier-html-templates: "npm:^0.1.0"
-  peerDependencies:
-    "@prettier/plugin-ruby": ^1.0.0
-    prettier: ">=2.0.0 <2.3"
-  checksum: 10c0/3dd26bb5af5d38ecc36dae12866ee0f6e0a61baf64bd6c339a86c1400a0c516844aa0c70deeab1d6adddd69ad32a733a6209a208e7059bf1a8be8753df5d5748
+    prettier: ^3.0.0
+  checksum: 10c0/7567d7f87fe807f7a90fb4eba7a91d25a1843e19de09289412ba0420e25fadea9840085b495c54212249bb418fcd146d53b105c0e4e57990c5235326bd7c6b01
   languageName: node
   linkType: hard
 
@@ -57,8 +45,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@prettier/plugin-ruby": "npm:^4.0.4"
     prettier: "npm:^3.6.2"
-    prettier-plugin-erb: "npm:^0.4.0"
     prettier-plugin-ruby: "npm:^0.3.1"
   languageName: unknown
   linkType: soft
