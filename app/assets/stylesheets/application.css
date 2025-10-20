@@ -97,12 +97,15 @@ input[type='submit']:hover {
 .form {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 0.5rem;
 }
 
 .form-input {
   padding: 0 1rem 0 0;
+}
+
+.hidden-submit {
+  display: none;
 }
 
 .app-header {

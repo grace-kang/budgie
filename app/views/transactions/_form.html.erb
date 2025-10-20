@@ -1,5 +1,4 @@
 <%= form_with model: [budget, transaction] do |form| %>
-
   <div class="transaction-row">
     <div class="form-input">
       <%= form.text_field :description, autofocus: true %>
@@ -24,6 +23,5 @@
         <% end %>
       </div>
     <% end %>
-
   </div>
 <% end %>
