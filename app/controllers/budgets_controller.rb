@@ -14,10 +14,6 @@ class BudgetsController < ApplicationController
     @transactions = Transaction.where(budget_id: @budget.id) || []
   end
 
-  def new
-    @budget = Budget.new
-  end
-
   def edit; end
 
   def create
@@ -25,7 +21,10 @@ class BudgetsController < ApplicationController
     if @budget.save
       redirect_to budgets_path
     else
-      render :new, status: :unprocessable_entity
+      @budgets = Budget.all
+      @budget = Budget.new
+      @transaction_groups = Transaction.all.group_by(&:month)
+      render :index, status: :unprocessable_entity
     end
   end
 

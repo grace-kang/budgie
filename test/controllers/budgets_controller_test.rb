@@ -8,11 +8,6 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get new' do
-    get new_budget_url
-    assert_response :success
-  end
-
   test 'should create budget' do
     assert_difference('Budget.count') do
       post budgets_url, params: { budget: { name: 'New Budget', total: 500 } }
