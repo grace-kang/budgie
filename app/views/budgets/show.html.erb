@@ -21,24 +21,21 @@
   <% end %>
 </div>
 
-<%= render 'transactions/form', budget: @budget, transaction: @transaction %>
-
-<% unless @transactions.empty? %>
-  <div class="transactions">
-    <div class="transactions-header transaction-row">
-      <span>Description</span>
-      <span>Amount</span>
-      <span>Date</span>
-    </div>
-    <% @transactions.sort_by(&:date).reverse_each do |transaction| %>
-      <div class="transaction-row">
-        <span class="transaction-cell"><%= transaction.description %></span>
-        <span class="transaction-cell"><%= transaction.amount %></span>
-        <span class="transaction-cell"><%= transaction.date %></span>
-        <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
-          <span class="header-button">Delete</span>
-        <% end %>
-      </div>
-    <% end %>
+<div class="transactions">
+  <div class="transactions-header transaction-row">
+    <span>Description</span>
+    <span>Amount</span>
+    <span>Date</span>
   </div>
-<% end %>
+  <%= render 'transactions/form', budget: @budget, transaction: @transaction %>
+  <% @transactions.sort_by(&:date).reverse_each do |transaction| %>
+    <div class="transaction-row">
+      <span class="transaction-cell"><%= transaction.description %></span>
+      <span class="transaction-cell"><%= transaction.amount %></span>
+      <span class="transaction-cell"><%= transaction.date %></span>
+      <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
+        <span class="header-button">Delete</span>
+      <% end %>
+    </div>
+  <% end %>
+</div>
