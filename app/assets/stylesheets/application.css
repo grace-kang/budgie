@@ -31,7 +31,6 @@ textarea {
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  background: var(--color-bg-muted);
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
@@ -44,7 +43,6 @@ input[type='date'] {
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  background: var(--color-bg-muted);
   color: var(--color-text);
   font-size: 1rem;
   box-sizing: border-box;
@@ -98,22 +96,13 @@ input[type='submit']:hover {
 
 .form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
-
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 1rem;
 }
 
 .form-input {
-  padding: 0.5rem;
-}
-
-.form-submit {
-  padding: 0.5rem;
+  padding: 0 1rem 0 0;
 }
 
 .app-header {
