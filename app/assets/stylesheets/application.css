@@ -87,9 +87,10 @@ input[type='submit']:hover {
   --color-primary-hover: #1d4ed8;
   --color-primary-muted: #93c5fd;
 
-  --color-success: rgba(22, 163, 74, 0.2); /* positive / income */
-  --color-error: rgba(220, 38, 38, 0.2); /* negative / expense */
-  --color-warning: rgba(245, 158, 11, 0.2); /* alerts */
+  --color-success: rgba(22, 163, 74, 0.2);
+  --color-error: rgba(220, 38, 38, 0.2);
+  --color-warning: rgba(245, 158, 11, 0.2);
+  --color-error-text: rgb(220, 38, 38);
 
   --radius: 0.5rem;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -124,4 +125,12 @@ input[type='submit']:hover {
 
 .app-content {
   padding: 1rem;
+}
+
+.form-errors {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-error-text);
+  padding: 1rem 0;
+  font-size: 0.875rem;
 }

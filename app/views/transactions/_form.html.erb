@@ -20,5 +20,13 @@
     <div class="form-submit">
       <%= form.submit %>
     </div>
+
+    <% if transaction.errors.any? %>
+      <div class="form-errors">
+        <% transaction.errors.full_messages.each do |message| %>
+          <span><%= message %></span>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
