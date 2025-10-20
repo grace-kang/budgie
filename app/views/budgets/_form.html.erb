@@ -13,5 +13,13 @@
     <div class="form-submit">
       <%= form.submit %>
     </div>
+
+    <% if budget.errors.any? %>
+      <div class="form-errors">
+        <% budget.errors.full_messages.each do |message| %>
+          <span><%= message %></span>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 </div>
