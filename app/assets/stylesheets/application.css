@@ -104,6 +104,11 @@ input[type='submit']:hover {
   padding: 0 1rem 0 0;
 }
 
+.form-submit {
+  display: flex;
+  align-items: center;
+}
+
 .hidden-submit {
   display: none;
 }

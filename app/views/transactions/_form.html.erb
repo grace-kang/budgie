@@ -14,7 +14,9 @@
 
     <%= form.hidden_field :budget_id, value: budget.id %>
 
-    <%= form.submit 'Create' %>
+    <div class="form-submit">
+      <%= form.submit 'Create' %>
+    </div>
 
     <% if transaction.errors.any? %>
       <div class="form-errors">
