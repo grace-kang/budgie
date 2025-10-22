@@ -1,5 +1,7 @@
 .budgets {
   display: flex;
+  flex-direction: row-reverse;
+  overflow: auto;
   gap: 1rem;
 }
 
