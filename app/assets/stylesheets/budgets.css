@@ -100,3 +100,11 @@
 .month-header {
   padding: 0 1rem;
 }
+
+.budget-name-input {
+  width: 70%;
+}
+
+.budget-total-input {
+  width: 30%;
+}
