@@ -1,13 +1,31 @@
-# budgie
+# 🪶 Budgie
 
-## Summary
+A budgeting app that doesn’t make you feel bad about your life choices.
 
-Budgie is a no frills, fast, and reliable budgeting app with everything you need to stay on top of your spending.
+Budgie keeps things clean, minimal, and judgment-free.  
+Track your money, set goals, and pretend you’re totally in control of your finances — all in one tidy little app.
 
-## Development
+## ✨ Features
+- Create budgets without crying.
+- Track spending with fewer clicks (and fewer regrets).
+- A UI so minimal it might actually calm your anxiety.
+- No ads. No upsells. No “premium” tier. Just your data.
 
-Run the server:
+## 🛠 Tech
+Rails • SQLLite
 
+## 🚀 Setup
 ```bash
-bin/rails server
+# Install Ruby gems
+bundle install
+
+# Install JS dependencies
+yarn install  # or npm install if that’s what the project uses
+
+# Set up database
+bin/rails db:setup
+# (This runs db:create, db:schema:load, and db:seed in one go)
+
+# Start the dev server
+bin/dev
 ```
