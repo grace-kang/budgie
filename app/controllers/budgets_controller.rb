@@ -4,9 +4,8 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[show edit update destroy]
 
   def index
-    @budgets = Budget.all
+    @months = Month.all
     @budget = Budget.new
-    @transaction_groups = Transaction.all.group_by(&:month)
   end
 
   def show
