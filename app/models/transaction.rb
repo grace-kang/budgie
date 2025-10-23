@@ -5,9 +5,18 @@ class Transaction < ApplicationRecord
 
   validates :description, presence: true
   validates :amount, presence: true
-  validates :date, presence: true
+  validate :date_within_budget_month
 
   def month
     date.strftime('%B %Y')
+  end
+
+  private
+
+  def date_within_budget_month
+    start_date = Date.new(budget.month.year, budget.month.month, 1)
+    return if date.between?(start_date, start_date.end_of_month)
+
+    errors.add(:date, "must be within the budget's month")
   end
 end

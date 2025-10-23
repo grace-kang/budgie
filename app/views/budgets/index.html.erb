@@ -1,13 +1,12 @@
 <div class="budgets">
-  <% @transaction_groups.each do |group| %>
+  <% @months.each do |month| %>
     <div class="month">
       <div class="month-header">
-        <h3><%= group[0].upcase %></h3>
+        <h3><%= Date.new(month.year, month.month).strftime('%B %Y').upcase %></h3>
       </div>
-      <% @budgets.each do |budget| %>
-        <% transactions = group[1].select { |t| t.budget_id == budget.id } %>
+      <% month.budgets.each do |budget| %>
         <%= link_to budget do %>
-          <% remaining = budget.total - transactions.sum(&:amount) %>
+          <% remaining = budget.total - budget.transactions.sum(&:amount) %>
           <% bg_class =
                if remaining.negative?
                  'budget-over'
