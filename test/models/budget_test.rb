@@ -14,12 +14,20 @@ class BudgetTest < ActiveSupport::TestCase
   end
 
   test 'has many transactions' do
-    budget = Budget.create(name: 'Monthly Budget', total: 1000)
-    transaction1 = budget.transactions.create(amount: 100, description: 'Groceries', date: Time.zone.today)
-    transaction2 = budget.transactions.create(amount: 200, description: 'Rent', date: Time.zone.today)
+    month = Month.create(month: 1, year: 2024)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000)
+    transaction1 = budget.transactions.create(amount: 100, description: 'Groceries', date: Date.new(2024, 1, 5))
+    transaction2 = budget.transactions.create(amount: 200, description: 'Rent', date: Date.new(2024, 1, 1))
 
     assert_equal 2, budget.transactions.count
     assert_includes budget.transactions, transaction1
     assert_includes budget.transactions, transaction2
+  end
+
+  test 'belongs to month' do
+    month = Month.create(month: 1, year: 2024)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000)
+
+    assert_equal month, budget.month
   end
 end

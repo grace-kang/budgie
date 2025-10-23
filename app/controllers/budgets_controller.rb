@@ -20,9 +20,8 @@ class BudgetsController < ApplicationController
     if @budget.save
       redirect_to budgets_path
     else
-      @budgets = Budget.all
+      @months = Month.all
       @budget = Budget.new
-      @transaction_groups = Transaction.all.group_by(&:month)
       render :index, status: :unprocessable_entity
     end
   end
@@ -50,6 +49,6 @@ class BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.expect(budget: %i[name total])
+    params.expect(budget: %i[name total month_id])
   end
 end
