@@ -1,4 +1,14 @@
 <div class="budgets">
+  <div class="create-month">
+    <%= form_with model: [@month] do |form| %>
+      <div class="new-month-form">
+        <% next_month = Date.new(@months.first.year, @months.first.month, 1).next_month %>
+        <%= form.hidden_field :month, value: next_month.month %>
+        <%= form.hidden_field :year, value: next_month.year %>
+        <%= form.submit '+' %>
+      </div>
+    <% end %>
+  </div>
   <% @months.each do |month| %>
     <div class="month">
       <div class="month-header">
