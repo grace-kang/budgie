@@ -9,6 +9,6 @@
     "lint": "bundle exec erb_lint --lint-all --autocorrect",
     "rubocop": "bundle exec rubocop -A .",
     "format": "bundle exec erb-format app/views/**/*.html.erb --write",
-    "fixit": "yarn format && yarn lint && yarn rubocop"
+    "fixit": "yarn format && yarn lint && yarn rubocop && prettier --write ."
   }
 }
