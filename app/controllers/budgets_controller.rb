@@ -3,11 +3,6 @@
 class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[show edit update destroy]
 
-  def index
-    @months = Month.all
-    @budget = Budget.new
-  end
-
   def show
     @transaction = Transaction.new
     @transactions = Transaction.where(budget_id: @budget.id) || []
@@ -16,19 +11,20 @@ class BudgetsController < ApplicationController
   def edit; end
 
   def create
-    @budget = Budget.new(budget_params)
+    @month = Month.find(params[:month_id])
+    @budget = @month.budgets.build(budget_params)
     if @budget.save
-      redirect_to budgets_path
+      redirect_to months_path
     else
       @months = Month.all
       @budget = Budget.new
-      render :index, status: :unprocessable_entity
+      redirect_to months_path, status: :unprocessable_entity
     end
   end
 
   def update
     if @budget.update(budget_params)
-      redirect_to budgets_path
+      redirect_to months_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -36,9 +32,9 @@ class BudgetsController < ApplicationController
 
   def destroy
     if @budget.destroy
-      redirect_to budgets_path
+      redirect_to months_path
     else
-      redirect_to budgets_path, status: :not_found
+      redirect_to months_path, status: :not_found
     end
   end
 
@@ -49,6 +45,6 @@ class BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.expect(budget: %i[name total month_id])
+    params.expect(budget: %i[name total])
   end
 end

@@ -1,7 +1,7 @@
 <h2><%= @budget.name %></h2>
 
 <div class="header">
-  <%= link_to budgets_path do %>
+  <%= link_to months_path do %>
     <div class="header-button">
       <span>Back</span>
     </div>
@@ -27,13 +27,16 @@
     <span>Amount</span>
     <span>Date</span>
   </div>
-  <%= render 'transactions/form', budget: @budget, transaction: @transaction %>
+  <%= render 'transactions/form',
+             month: @budget.month,
+             budget: @budget,
+             transaction: @transaction %>
   <% @transactions.sort_by(&:date).reverse_each do |transaction| %>
     <div class="transaction-row">
       <span class="transaction-cell"><%= transaction.description %></span>
       <span class="transaction-cell"><%= transaction.amount %></span>
       <span class="transaction-cell"><%= transaction.date %></span>
-      <%= link_to budget_transaction_path(@budget, transaction), data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
+      <%= link_to transaction, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
         <span class="header-button">Delete</span>
       <% end %>
     </div>

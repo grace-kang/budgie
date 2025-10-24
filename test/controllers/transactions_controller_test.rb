@@ -57,15 +57,14 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
       budget_id: budget.id
     )
     assert_difference('Transaction.count', -1) do
-      delete budget_transaction_path(budget, transaction)
+      delete transaction_path(transaction)
     end
     assert_redirected_to budget_path(budget)
   end
 
   test 'fails to delete a non-existent transaction' do
-    budget = test_budget
     assert_no_difference('Transaction.count') do
-      delete budget_transaction_path(budget, id: -1)
+      delete transaction_path(id: -1)
     end
     assert_response :not_found
   end
