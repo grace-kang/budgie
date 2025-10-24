@@ -6,15 +6,18 @@ Budgie keeps things clean, minimal, and judgment-free.
 Track your money, set goals, and pretend you’re totally in control of your finances — all in one tidy little app.
 
 ## ✨ Features
+
 - Create budgets without crying.
 - Track spending with fewer clicks (and fewer regrets).
 - A UI so minimal it might actually calm your anxiety.
 - No ads. No upsells. No “premium” tier. Just your data.
 
 ## 🛠 Tech
+
 Rails • SQLLite
 
 ## 🚀 Setup
+
 ```bash
 # Install Ruby gems
 bundle install
