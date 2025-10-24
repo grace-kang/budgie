@@ -6,8 +6,8 @@ Rails
   .draw do
     root 'months#index'
 
-    resources :months, shallow: true do
-      resources :budgets, shallow: true do
+    resources :months, shallow: true, only: %i[index] do
+      resources :budgets, shallow: true, only: %i[show edit create update destroy] do
         resources :transactions, only: %i[create destroy]
       end
     end
