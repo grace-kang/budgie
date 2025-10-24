@@ -1,9 +1,28 @@
 <div class="header">
-  <%= link_to budgets_path do %>
+  <%= link_to months_path do %>
     <div class="header-button">
       <span>Back</span>
     </div>
   <% end %>
 </div>
 
-<%= render 'form', budget: @budget %>
+<%= form_with model: [@budget] do |form| %>
+  <div class="form">
+    <div class="budget-name-input">
+      <%= form.text_field :name, placeholder: 'Name', autofocus: true %>
+    </div>
+    <div class="budget-total-input">
+      <%= form.number_field :total, placeholder: 'Limit' %>
+    </div>
+
+    <%= form.submit 'Update' %>
+
+    <% if @budget.errors.any? %>
+      <div class="form-errors">
+        <% @budget.errors.full_messages.each do |message| %>
+          <span><%= message %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

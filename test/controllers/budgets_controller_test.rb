@@ -3,24 +3,19 @@
 require 'test_helper'
 
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
-  test 'should get index' do
-    get budgets_url
-    assert_response :success
-  end
-
   test 'should create budget' do
     month = Month.create(month: 1, year: 2024)
     assert_difference('Budget.count') do
-      post budgets_url, params: { budget: { name: 'New Budget', total: 500, month_id: month.id } }
+      post month_budgets_url(month), params: { budget: { name: 'New Budget', total: 500 } }
     end
 
-    assert_redirected_to budgets_url
+    assert_redirected_to months_url
   end
 
   test 'fails to create budget with invalid data' do
     month = Month.create(month: 1, year: 2024)
     assert_no_difference('Budget.count') do
-      post budgets_url, params: { budget: { name: '', total: 500, month_id: month.id } }
+      post month_budgets_url(month), params: { budget: { name: '', total: 500 } }
     end
     assert_response :unprocessable_entity
   end
@@ -37,7 +32,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update budget' do
     patch budget_url(test_budget), params: { budget: { name: 'Updated Budget', total: 1500 } }
-    assert_redirected_to budgets_url
+    assert_redirected_to months_url
   end
 
   test 'fails to update budget with invalid data' do
@@ -52,7 +47,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
       delete budget_url(budget)
     end
 
-    assert_redirected_to budgets_url
+    assert_redirected_to months_url
   end
 
   test 'fails to destroy non-existent budget' do

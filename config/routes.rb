@@ -4,9 +4,11 @@ Rails
   .application
   .routes
   .draw do
-    root 'budgets#index'
+    root 'months#index'
 
-    resources :budgets do
-      resources :transactions, only: %i[create destroy]
+    resources :months, shallow: true do
+      resources :budgets, shallow: true do
+        resources :transactions, only: %i[create destroy]
+      end
     end
   end
