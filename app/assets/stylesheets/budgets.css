@@ -1,7 +1,13 @@
 .budgets {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 1rem;
+}
+
+.create-month {
+  align-self: center;
+  background: var(--color-surface);
 }
 
 .month {
