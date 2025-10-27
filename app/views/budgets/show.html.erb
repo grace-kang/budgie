@@ -37,7 +37,7 @@
       <span class="transaction-cell"><%= transaction.amount %></span>
       <span class="transaction-cell"><%= transaction.date %></span>
       <%= link_to transaction, data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' } do %>
-        <span class="header-button">Delete</span>
+        <%= inline_svg_tag 'icons/trash.svg', class: 'icon-button' %>
       <% end %>
     </div>
   <% end %>
