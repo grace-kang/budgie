@@ -35,7 +35,9 @@
             </span>
           </div>
           <div class="budget-actions" onclick="event.stopPropagation()">
-            <%= inline_svg_tag 'icons/edit.svg', class: 'icon-button' %>
+            <%= link_to edit_budget_path(budget) do %>
+              <%= inline_svg_tag 'icons/edit.svg', class: 'icon-button' %>
+            <% end %>
             <%= button_to budget_path(budget),
                           method: :delete,
                           data: { turbo_confirm: 'Are you sure?' } do %>
