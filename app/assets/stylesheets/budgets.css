@@ -25,6 +25,7 @@
 .budget {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
 
   color: var(--color-text);
@@ -35,6 +36,13 @@
 
   &:hover {
     opacity: 0.8;
+    .budget-actions {
+      display: flex;
+    }
+
+    .budget-total {
+      display: none;
+    }
   }
 }
 
@@ -50,11 +58,14 @@
   background: var(--color-success);
 }
 
-.header {
+.budget-actions {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 1rem;
+  display: none;
+}
+
+.budget-total {
+  display: block;
+  padding: 0.3rem;
 }
 
 .header-button {

@@ -15,22 +15,34 @@
         <h3><%= Date.new(month.year, month.month).strftime('%B %Y').upcase %></h3>
       </div>
       <% month.budgets.each do |budget| %>
-        <%= link_to budget do %>
-          <% remaining = budget.total - budget.transactions.sum(&:amount) %>
-          <% bg_class =
-               if remaining.negative?
-                 'budget-over'
-               else
-                 remaining < 50 ? 'budget-warn' : 'budget-ok'
-               end %>
-          <div class="budget <%= bg_class %>">
-            <span><%= budget.name %></span>
+        <% remaining = budget.total - budget.transactions.sum(&:amount) %>
+        <% bg_class =
+             if remaining.negative?
+               'budget-over'
+             else
+               remaining < 50 ? 'budget-warn' : 'budget-ok'
+             end %>
+        <div
+          class="budget <%= bg_class %>"
+          onclick='location.href=<%= budget_path(budget).to_json %>'>
+          <span><%= budget.name %></span>
+          <div class="budget-total">
             <span><%= remaining %>
               /
               <%= budget.total %>
             </span>
           </div>
-        <% end %>
+          <div class="budget-actions" onclick="event.stopPropagation()">
+            <%= link_to edit_budget_path(budget) do %>
+              <%= inline_svg_tag 'icons/edit.svg', class: 'icon-button' %>
+            <% end %>
+            <%= button_to budget_path(budget),
+                          method: :delete,
+                          data: { turbo_confirm: 'Are you sure?' } do %>
+              <%= inline_svg_tag 'icons/trash.svg', class: 'icon-button' %>
+            <% end %>
+          </div>
+        </div>
       <% end %>
       <%= render 'budgets/form', month: month, budget: @budget %>
     </div>
