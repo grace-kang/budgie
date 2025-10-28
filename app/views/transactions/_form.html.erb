@@ -15,7 +15,9 @@
     <%= form.hidden_field :budget_id, value: budget.id %>
 
     <div class="form-submit">
-      <%= inline_svg_tag 'icons/add.svg', class: 'icon-button' %>
+      <button type="submit">
+        <%= inline_svg_tag 'icons/add.svg', class: 'icon-button' %>
+      </button>
     </div>
 
     <% if transaction.errors.any? %>
