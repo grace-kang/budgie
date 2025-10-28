@@ -5,6 +5,6 @@ import React from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     RubyPlugin(),
-		React()
+    React()
   ],
 })
