@@ -132,10 +132,6 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    importmap-rails (2.2.2)
-      actionpack (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      railties (>= 6.0.0)
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
@@ -411,7 +407,6 @@ DEPENDENCIES
   debug
   erb-formatter (~> 0.7.3)
   erb_lint
-  importmap-rails
   inline_svg (~> 1.10)
   jbuilder
   kamal
