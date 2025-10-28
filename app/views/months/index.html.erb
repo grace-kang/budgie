@@ -12,9 +12,13 @@
     <% end %>
   </div>
   <% @months.each do |month| %>
+    <% used = month.transactions.sum(&:amount) %>
+    <% limit = month.budgets.sum(&:total) %>
     <div class="month">
       <div class="month-header">
         <h3><%= Date.new(month.year, month.month).strftime('%B %Y').upcase %></h3>
+        <span>$<%= used %>
+          / $<%= limit %></span>
       </div>
       <% month.budgets.each do |budget| %>
         <% sum = budget.transactions.sum(&:amount) %>

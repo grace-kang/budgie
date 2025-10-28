@@ -2,6 +2,7 @@
 
 class Month < ApplicationRecord
   has_many :budgets, dependent: :destroy
+  has_many :transactions, through: :budgets
 
   validates :month, presence: true
   validates :year, presence: true
