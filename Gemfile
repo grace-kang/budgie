@@ -70,3 +70,5 @@ gem 'ruby-lsp', '~> 0.26.1', group: :development
 gem 'erb-formatter', '~> 0.7.3'
 
 gem 'inline_svg', '~> 1.10'
+
+gem 'vite_rails', '~> 3.0'
