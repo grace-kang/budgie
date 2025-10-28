@@ -5,7 +5,9 @@
         <% next_month = Date.new(@months.first.year, @months.first.month, 1).next_month %>
         <%= form.hidden_field :month, value: next_month.month %>
         <%= form.hidden_field :year, value: next_month.year %>
-        <%= form.submit '+' %>
+        <button type="submit">
+          <%= inline_svg_tag 'icons/add.svg', class: 'icon-button' %>
+        </button>
       </div>
     <% end %>
   </div>
@@ -33,9 +35,7 @@
             </span>
           </div>
           <div class="budget-actions" onclick="event.stopPropagation()">
-            <%= link_to edit_budget_path(budget) do %>
-              <%= inline_svg_tag 'icons/edit.svg', class: 'icon-button' %>
-            <% end %>
+            <%= inline_svg_tag 'icons/edit.svg', class: 'icon-button' %>
             <%= button_to budget_path(budget),
                           method: :delete,
                           data: { turbo_confirm: 'Are you sure?' } do %>
