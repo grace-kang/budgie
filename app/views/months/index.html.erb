@@ -17,22 +17,21 @@
         <h3><%= Date.new(month.year, month.month).strftime('%B %Y').upcase %></h3>
       </div>
       <% month.budgets.each do |budget| %>
-        <% remaining = budget.total - budget.transactions.sum(&:amount) %>
+        <% sum = budget.transactions.sum(&:amount) %>
+        <% percent = sum.to_f / budget.total * 100 %>
         <% bg_class =
-             if remaining.negative?
+             if percent > 100
                'budget-over'
              else
-               remaining < 50 ? 'budget-warn' : 'budget-ok'
+               percent > 80 ? 'budget-warn' : 'budget-ok'
              end %>
         <div
           class="budget <%= bg_class %>"
           onclick='location.href=<%= budget_path(budget).to_json %>'>
           <span><%= budget.name %></span>
           <div class="budget-total">
-            <span><%= remaining %>
-              /
-              <%= budget.total %>
-            </span>
+            <span>$<%= sum %>
+              / $<%= budget.total %></span>
           </div>
           <div class="budget-actions" onclick="event.stopPropagation()">
             <%= link_to edit_budget_path(budget) do %>
