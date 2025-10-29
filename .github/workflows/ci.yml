@@ -22,7 +22,7 @@ jobs:
         run: corepack enable && corepack prepare yarn@4.9.2 --activate
 
       - name: Install JS dependencies
-        run: yarn install --immutable
+        run: yarn install
 
       - name: Run Rubocop
         run: bundle exec rubocop --parallel
