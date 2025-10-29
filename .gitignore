@@ -7,7 +7,7 @@ tmp/*
 
 /storage
 /node_modules
-/.yarn
+/.yarn/install-state.gz
 
 # Vite Ruby
 /public/vite*
