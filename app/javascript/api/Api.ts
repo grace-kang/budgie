@@ -6,6 +6,7 @@ export type Budget = {
   transactions: Transaction[];
 };
 export type Month = {
+  id: number;
   year: number;
   month: number;
   budgets: Budget[];
@@ -38,6 +39,23 @@ export const Api = {
       return (await res.json()) as Month;
     } catch (error) {
       console.error('Error creating month:', error);
+      throw error;
+    }
+  },
+  async createBudget(data: { name: string; total: number; month_id: number }): Promise<Budget> {
+    try {
+      const res = await fetch(`/months/${data.month_id}/budgets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': token,
+        },
+        body: JSON.stringify({ budget: data }),
+      });
+      if (!res.ok) throw new Error(`Failed to create budget: ${res.status} ${res.statusText}`);
+      return (await res.json()) as Budget;
+    } catch (error) {
+      console.error('Error creating budget:', error);
       throw error;
     }
   },

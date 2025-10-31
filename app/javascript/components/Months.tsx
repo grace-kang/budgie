@@ -4,6 +4,7 @@ import AddIcon from '/icons/add.svg';
 
 import Budget from './Budget';
 import { Month } from '../api/Api';
+import MonthBudgets from './MonthBudgets';
 
 type Props = {
   months: Month[];
@@ -11,7 +12,6 @@ type Props = {
   onNavigateBudget: (budgetId: number) => void;
   onEditBudget: (budgetId: number) => void;
   onDeleteBudget: (budgetId: number) => void;
-  renderBudgetForm?: (month: Month) => React.ReactNode;
 };
 
 export default function Months({
@@ -20,7 +20,6 @@ export default function Months({
   onNavigateBudget,
   onEditBudget,
   onDeleteBudget,
-  renderBudgetForm,
 }: Props) {
   if (!months || months.length === 0) return null;
 
@@ -45,44 +44,14 @@ export default function Months({
           </button>
         </form>
       </div>
-
-      {months.map((month) => {
-        const used = month.budgets?.reduce(
-          (s, b) => s + b.transactions.reduce((st, t) => st + t.amount, 0),
-          0,
-        );
-        const limit = month.budgets?.reduce((s, b) => s + b.total, 0);
-
-        return (
-          <div className="month" key={`${month.year}-${month.month}`}>
-            <div className="month-header">
-              <h3>
-                {new Date(month.year, month.month - 1)
-                  .toLocaleString(undefined, {
-                    month: 'long',
-                    year: 'numeric',
-                  })
-                  .toUpperCase()}
-              </h3>
-              <span>
-                ${used} / ${limit}
-              </span>
-            </div>
-
-            {month.budgets?.map((budget) => (
-              <Budget
-                key={budget.id}
-                budget={budget}
-                onNavigateBudget={onNavigateBudget}
-                onEditBudget={onEditBudget}
-                onDeleteBudget={onDeleteBudget}
-              />
-            ))}
-
-            {renderBudgetForm ? renderBudgetForm(month) : null}
-          </div>
-        );
-      })}
+      {months.map((month) =>
+        <MonthBudgets
+          month={month}
+          onNavigateBudget={onNavigateBudget}
+          onDeleteBudget={onDeleteBudget}
+          onEditBudget={onEditBudget}
+        />
+      )}
     </div>
   );
 }
