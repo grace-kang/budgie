@@ -2,9 +2,15 @@
 
 class MonthsController < ApplicationController
   def index
-    @months = Month.all.reverse_order
-    @month = Month.new
-    @budget = Budget.new
+    months = Month.includes(budgets: :transactions).all.reverse_order
+
+    render json: months.as_json(
+      include: {
+        budgets: {
+          include: :transactions
+        }
+      }
+    )
   end
 
   def create
