@@ -1,31 +1,14 @@
 import React, { useEffect } from 'react';
 import Months from './Months';
-
-export type Transaction = { amount: number };
-export type Budget = {
-  id: number;
-  name: string;
-  total: number;
-  transactions: Transaction[];
-};
-export type Month = {
-  year: number;
-  month: number; // 1..12
-  budgets: Budget[];
-};
+import { Api, Month } from '../api/Api';
 
 export default function App() {
   const [months, setMonths] = React.useState<Month[]>([]);
 
+  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
   useEffect(() => {
-    fetch('/months')
-      .then((response) => response.json())
-      .then((data: Month[]) => {
-        setMonths(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching months data:', error);
-      });
+    Api.getMonths().then((data) => setMonths(data));
   }, []);
 
   return (
@@ -33,16 +16,25 @@ export default function App() {
       <Months
         months={months}
         onCreateMonth={function (month: number, year: number): void {
-          throw new Error('Function not implemented.');
+          Api.createMonth(month, year).then((newMonth) =>
+            setMonths((prevMonths) => [newMonth, ...prevMonths]),
+          );
         }}
         onNavigateBudget={function (budgetId: number): void {
-          throw new Error('Function not implemented.');
+          window.location.href = `/budgets/${budgetId}`;
         }}
         onEditBudget={function (budgetId: number): void {
-          throw new Error('Function not implemented.');
+          window.location.href = `/budgets/${budgetId}/edit`;
         }}
         onDeleteBudget={function (budgetId: number): void {
-          throw new Error('Function not implemented.');
+          Api.deleteBudget(budgetId).then(() => {
+            setMonths((prevMonths) =>
+              prevMonths.map((month) => ({
+                ...month,
+                budgets: month.budgets.filter((b) => b.id !== budgetId),
+              })),
+            );
+          });
         }}
       />
     </div>
