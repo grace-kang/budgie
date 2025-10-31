@@ -29,7 +29,7 @@ class MonthsControllerTest < ActionDispatch::IntegrationTest
       assert_equal prev_budget.total, new_budget.total
     end
 
-    assert_redirected_to months_url
+    assert_response :created
   end
 
   test 'fails to create month with invalid data' do

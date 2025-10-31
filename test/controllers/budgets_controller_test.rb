@@ -9,7 +9,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
       post month_budgets_url(month), params: { budget: { name: 'New Budget', total: 500 } }
     end
 
-    assert_redirected_to months_url
+    assert_response :created
   end
 
   test 'fails to create budget with invalid data' do
@@ -32,7 +32,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update budget' do
     patch budget_url(test_budget), params: { budget: { name: 'Updated Budget', total: 1500 } }
-    assert_redirected_to months_url
+    assert_response :ok
   end
 
   test 'fails to update budget with invalid data' do
@@ -47,7 +47,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
       delete budget_url(budget)
     end
 
-    assert_redirected_to months_url
+    assert_response :ok
   end
 
   test 'fails to destroy non-existent budget' do
