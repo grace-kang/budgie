@@ -1,5 +1,4 @@
-import { Budget } from './App';
-
+import { Budget } from '../api/Api';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
 

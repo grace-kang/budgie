@@ -19,9 +19,9 @@ class MonthsController < ApplicationController
 
     if @month.save
       @month.create_budgets_from_previous(prev_month) if prev_month.present?
-      redirect_to months_path
+      render json: @month, status: :created
     else
-      redirect_to months_path, status: :unprocessable_entity
+      render json: @month.errors, status: :unprocessable_entity
     end
   end
 

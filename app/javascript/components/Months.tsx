@@ -1,9 +1,9 @@
 import React from 'react';
-import { Month } from './App';
 
 import AddIcon from '/icons/add.svg';
 
 import Budget from './Budget';
+import { Month } from '../api/Api';
 
 type Props = {
   months: Month[];

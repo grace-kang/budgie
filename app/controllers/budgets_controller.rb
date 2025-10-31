@@ -14,27 +14,25 @@ class BudgetsController < ApplicationController
     @month = Month.find(params[:month_id])
     @budget = @month.budgets.build(budget_params)
     if @budget.save
-      redirect_to months_path
+      render json: @budget, status: :created
     else
-      @months = Month.all
-      @budget = Budget.new
-      redirect_to months_path, status: :unprocessable_entity
+      render json: @budget.errors, status: :unprocessable_entity
     end
   end
 
   def update
     if @budget.update(budget_params)
-      redirect_to months_path
+      render json: @budget, status: :ok
     else
-      render :edit, status: :unprocessable_entity
+      render json: @budget.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
     if @budget.destroy
-      redirect_to months_path
+      render json: { message: 'Budget deleted successfully' }, status: :ok
     else
-      redirect_to months_path, status: :not_found
+      render json: { error: 'Failed to delete budget' }, status: :unprocessable_entity
     end
   end
 
