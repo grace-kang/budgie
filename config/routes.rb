@@ -4,7 +4,7 @@ Rails
   .application
   .routes
   .draw do
-    root 'months#index'
+    root 'spa#index'
 
     resources :months, shallow: true, only: %i[index create] do
       resources :budgets, shallow: true, only: %i[show edit create update destroy] do
