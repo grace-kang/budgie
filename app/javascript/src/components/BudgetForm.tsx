@@ -1,24 +1,28 @@
 import React, { useState } from 'react';
-import { useCreateBudget } from '../hooks/useBudgets';
+
+import CloseIcon from '/icons/close.svg';
 
 interface Props {
   monthId: number;
   initialBudget?: {
     name?: string;
     total?: number;
-    errors?: string[];
   };
+  onSubmit: (BudgetParams: any) => void;
+  onClose: () => void;
 }
 
-export default function BudgetForm({ monthId, initialBudget }: Props) {
+export default function BudgetForm({ monthId, initialBudget, onSubmit, onClose }: Props) {
   const [name, setName] = useState(initialBudget?.name ?? '');
   const [total, setTotal] = useState<number | ''>(initialBudget?.total ?? '');
-  const createBudget = useCreateBudget(monthId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !total) return;
-    createBudget.mutate({ name, total: Number(total) });
+    onSubmit({ name, total });
+    setName('');
+    setTotal('');
+    onClose();
   };
 
   return (
@@ -47,8 +51,10 @@ export default function BudgetForm({ monthId, initialBudget }: Props) {
         <input type="hidden" name="month_id" value={monthId} />
 
         <div className="hidden-submit">
-          <button type="submit">Create</button>
+          <button type="submit"></button>
         </div>
+
+        <img src={CloseIcon} className="icon-button" alt="Close" onClick={onClose} />
       </div>
     </form>
   );
