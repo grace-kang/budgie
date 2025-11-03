@@ -12,6 +12,7 @@
     "fixit": "yarn format && yarn lint && yarn rubocop && prettier --write ."
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.6",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
