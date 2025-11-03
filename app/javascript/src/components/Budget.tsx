@@ -1,10 +1,14 @@
-import { useDeleteBudget } from '../hooks/useBudgets';
+import { useState } from 'react';
+import { useDeleteBudget, useUpdateBudget } from '../hooks/useBudgets';
 import { Budget } from '../types';
+import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
 
 export default function Budgets({ budget }: { budget: Budget }) {
+  const [editing, setEditing] = useState(false);
   const deleteBudget = useDeleteBudget();
+  const updateBudget = useUpdateBudget(budget.id);
 
   const sum = budget.transactions?.reduce((s, t) => s + t.amount, 0);
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
@@ -13,7 +17,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
   const onBudgetClick = () => (window.location.href = `/budgets/${budget.id}`);
   const onEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.location.href = `/budgets/${budget.id}/edit`;
+    setEditing((e) => !e);
   };
   const onDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -21,30 +25,40 @@ export default function Budgets({ budget }: { budget: Budget }) {
   };
 
   return (
-    <div
-      key={budget.id}
-      className={`budget ${bgClass}`}
-      onClick={onBudgetClick}
-      role="button"
-      tabIndex={0}
-    >
-      <span>{budget.name}</span>
+    <>
+      <div
+        key={budget.id}
+        className={`budget ${bgClass} ${editing ? 'hide' : ''}`}
+        onClick={onBudgetClick}
+        role="button"
+        tabIndex={0}
+      >
+        <span>{budget.name}</span>
 
-      <div className="budget-total">
-        <span>
-          ${sum} / ${budget.total}
-        </span>
+        <div className="budget-total">
+          <span>
+            ${sum} / ${budget.total}
+          </span>
+        </div>
+
+        <div className="budget-actions" onClick={(e) => e.stopPropagation()}>
+          <button type="button" onClick={onEditClick} aria-label="Edit budget">
+            <img src={EditIcon} className="icon-button" alt="Edit" />
+          </button>
+
+          <button type="button" onClick={onDeleteClick} aria-label="Delete budget">
+            <img src={TrashIcon} className="icon-button" alt="Delete" />
+          </button>
+        </div>
       </div>
 
-      <div className="budget-actions" onClick={(e) => e.stopPropagation()}>
-        <button type="button" onClick={onEditClick} aria-label="Edit budget">
-          <img src={EditIcon} className="icon-button" alt="Edit" />
-        </button>
-
-        <button type="button" onClick={onDeleteClick} aria-label="Delete budget">
-          <img src={TrashIcon} className="icon-button" alt="Delete" />
-        </button>
+      <div className={editing ? 'show' : 'hide'}>
+        <BudgetForm
+          monthId={budget.id}
+          onSubmit={(params) => updateBudget.mutate(params)}
+          onClose={() => setEditing(false)}
+        />
       </div>
-    </div>
+    </>
   );
 }

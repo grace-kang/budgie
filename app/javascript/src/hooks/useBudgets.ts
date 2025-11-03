@@ -28,3 +28,17 @@ export function useDeleteBudget() {
     },
   });
 }
+
+export function useUpdateBudget(budgetId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; total: number }) =>
+      apiFetch<Budget>(`/budgets/${budgetId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ budget: data }),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['months'] });
+    },
+  });
+}

@@ -15,5 +15,4 @@ export type Month = {
 export type BudgetParams = {
   name: string;
   total: number;
-  month_id: number;
 };

@@ -33,7 +33,7 @@ export default function Months() {
         </form>
       </div>
       {months.map((month) => (
-        <MonthBudgets month={month} />
+        <MonthBudgets key={month.id} month={month} />
       ))}
     </div>
   );
