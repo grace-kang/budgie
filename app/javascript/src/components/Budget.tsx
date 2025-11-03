@@ -1,32 +1,23 @@
-import { Budget } from '../api/Api';
+import { useDeleteBudget } from '../hooks/useBudgets';
+import { Budget } from '../types';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
 
-export default function Budgets({
-  budget,
-  onNavigateBudget,
-  onEditBudget,
-  onDeleteBudget,
-}: {
-  budget: Budget;
-  onNavigateBudget: (budgetId: number) => void;
-  onEditBudget: (budgetId: number) => void;
-  onDeleteBudget: (budgetId: number) => void;
-}) {
+export default function Budgets({ budget }: { budget: Budget }) {
+  const deleteBudget = useDeleteBudget();
+
   const sum = budget.transactions?.reduce((s, t) => s + t.amount, 0);
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
-  const onBudgetClick = () => onNavigateBudget(budget.id);
+  const onBudgetClick = () => (window.location.href = `/budgets/${budget.id}`);
   const onEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onEditBudget(budget.id);
+    window.location.href = `/budgets/${budget.id}/edit`;
   };
   const onDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (confirm('Are you sure?')) {
-      onDeleteBudget(budget.id);
-    }
+    deleteBudget.mutate(budget.id);
   };
 
   return (
