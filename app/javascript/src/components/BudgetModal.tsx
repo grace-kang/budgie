@@ -12,12 +12,7 @@ export function BudgetModal({ budgetId, onClose }: { budgetId: number; onClose: 
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{budget?.name}</h2>
-        <p>Total: ${budget?.total}</p>
-
-        <h3>Transactions</h3>
         <Transactions budget={budget!} transactions={budget!.transactions} />
-
-        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );

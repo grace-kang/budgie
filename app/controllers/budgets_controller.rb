@@ -4,9 +4,9 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[update destroy]
 
   def show
-    budget = Budget.includes(:transactions).find(params[:id])
+    budget = Budget.includes(:month, :transactions).find(params[:id])
 
-    render json: budget.as_json(include: :transactions)
+    render json: budget.as_json(include: %i[month transactions]), status: :ok
   end
 
   def edit; end

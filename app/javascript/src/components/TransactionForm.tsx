@@ -24,8 +24,17 @@ export default function TransactionForm({
   const [amount, setAmount] = useState<string>(
     transaction.amount != null ? String(transaction.amount) : '',
   );
+  const defaultDate =
+    new Date().getMonth() + 1 == budget.month.month
+      ? new Date()
+      : new Date(budget.month.year, budget.month.month - 1, 1);
+  const monthStart = new Date(budget.month.year, budget.month.month - 1, 1)
+    .toISOString()
+    .slice(0, 10);
+  const monthEnd = new Date(budget.month.year, budget.month.month, 0).toISOString().slice(0, 10);
+
   const [date, setDate] = useState<string>(
-    transaction.date ?? new Date().toISOString().slice(0, 10),
+    transaction.date ?? defaultDate.toISOString().slice(0, 10),
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,6 +44,9 @@ export default function TransactionForm({
       amount: Number(amount || 0),
       date,
     });
+    setDescription('');
+    setAmount('');
+    setDate(defaultDate.toISOString().slice(0, 10));
   };
 
   return (
@@ -42,6 +54,7 @@ export default function TransactionForm({
       <div className="transaction-row">
         <div className="form-input">
           <input
+            type="text"
             name="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -59,7 +72,14 @@ export default function TransactionForm({
         </div>
 
         <div className="form-input">
-          <input name="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          <input
+            name="date"
+            type="date"
+            min={monthStart}
+            max={monthEnd}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
         </div>
 
         <input type="hidden" name="budget_id" value={String(budget.id)} />
