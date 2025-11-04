@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class BudgetsController < ApplicationController
-  before_action :set_budget, only: %i[show edit update destroy]
+  before_action :set_budget, only: %i[edit update destroy]
 
   def show
-    @transaction = Transaction.new
-    @transactions = Transaction.where(budget_id: @budget.id) || []
+    budget = Budget.includes(:transactions).find(params[:id])
+
+    render json: budget.as_json(include: :transactions)
   end
 
   def edit; end

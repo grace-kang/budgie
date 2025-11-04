@@ -1,4 +1,10 @@
-export type Transaction = { amount: number };
+export type Transaction = {
+  id: number;
+  amount: number;
+  description: string;
+  date: string;
+};
+
 export type Budget = {
   id: number;
   name: string;
@@ -15,4 +21,10 @@ export type Month = {
 export type BudgetParams = {
   name: string;
   total: number;
+};
+
+export type TransactionParams = {
+  description: string;
+  amount: number;
+  date: string;
 };
