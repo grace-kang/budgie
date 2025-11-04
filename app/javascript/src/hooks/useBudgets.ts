@@ -1,6 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../apiClient';
 import { Budget, Month } from '../types';
+
+export function getBudget(budgetId: number) {
+  return useQuery({
+    queryKey: ['budget', budgetId],
+    queryFn: () => apiFetch<Budget>(`/budgets/${budgetId}`),
+  });
+}
 
 export function useCreateBudget(monthId: number) {
   const queryClient = useQueryClient();

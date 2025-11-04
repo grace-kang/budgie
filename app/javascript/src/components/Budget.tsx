@@ -4,9 +4,12 @@ import { Budget } from '../types';
 import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
+import { BudgetModal } from './BudgetModal';
 
 export default function Budgets({ budget }: { budget: Budget }) {
   const [editing, setEditing] = useState(false);
+  const [selectedBudget, setSelectedBudget] = useState<number | null>(null);
+
   const deleteBudget = useDeleteBudget();
   const updateBudget = useUpdateBudget(budget.id);
 
@@ -14,7 +17,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
-  const onBudgetClick = () => (window.location.href = `/budgets/${budget.id}`);
+  const onBudgetClick = () => setSelectedBudget(budget.id);
   const onEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setEditing((e) => !e);
@@ -59,6 +62,10 @@ export default function Budgets({ budget }: { budget: Budget }) {
           onClose={() => setEditing(false)}
         />
       </div>
+
+      {selectedBudget && (
+        <BudgetModal budgetId={selectedBudget} onClose={() => setSelectedBudget(null)} />
+      )}
     </>
   );
 }
