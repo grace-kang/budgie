@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class BudgetsController < ApplicationController
-  before_action :set_budget, only: %i[edit update destroy]
+  before_action :set_budget, only: %i[update destroy]
 
   def show
     budget = Budget.includes(:transactions).find(params[:id])
@@ -12,12 +12,12 @@ class BudgetsController < ApplicationController
   def edit; end
 
   def create
-    @month = Month.find(params[:month_id])
-    @budget = @month.budgets.build(budget_params)
-    if @budget.save
-      render json: @budget, status: :created
+    month = Month.find(params[:month_id])
+    budget = month.budgets.build(budget_params)
+    if budget.save
+      render json: budget, status: :created
     else
-      render json: @budget.errors, status: :unprocessable_entity
+      render json: budget.errors, status: :unprocessable_entity
     end
   end
 

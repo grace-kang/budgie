@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 import AddIcon from '/icons/add.svg';
-import { Budget, TransactionParams } from "../types";
+import { Budget, TransactionParams } from '../types';
 
 type Props = {
   budget: Budget;
@@ -14,10 +14,19 @@ type Props = {
   onSubmit: (data: TransactionParams) => void;
 };
 
-export default function TransactionForm({ budget, transaction = {}, errors = [], onSubmit }: Props) {
-  const [description, setDescription] = useState<string>(transaction.description ?? "");
-  const [amount, setAmount] = useState<string>(transaction.amount != null ? String(transaction.amount) : "");
-  const [date, setDate] = useState<string>(transaction.date ?? new Date().toISOString().slice(0, 10));
+export default function TransactionForm({
+  budget,
+  transaction = {},
+  errors = [],
+  onSubmit,
+}: Props) {
+  const [description, setDescription] = useState<string>(transaction.description ?? '');
+  const [amount, setAmount] = useState<string>(
+    transaction.amount != null ? String(transaction.amount) : '',
+  );
+  const [date, setDate] = useState<string>(
+    transaction.date ?? new Date().toISOString().slice(0, 10),
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,12 +59,7 @@ export default function TransactionForm({ budget, transaction = {}, errors = [],
         </div>
 
         <div className="form-input">
-          <input
-            name="date"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <input name="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
 
         <input type="hidden" name="budget_id" value={String(budget.id)} />

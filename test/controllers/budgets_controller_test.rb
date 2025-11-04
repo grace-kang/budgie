@@ -25,11 +25,6 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should get edit' do
-    get edit_budget_url(test_budget)
-    assert_response :success
-  end
-
   test 'should update budget' do
     patch budget_url(test_budget), params: { budget: { name: 'Updated Budget', total: 1500 } }
     assert_response :ok

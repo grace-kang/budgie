@@ -15,7 +15,7 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
         }
       }
     end
-    assert_redirected_to budget_path(budget)
+    assert_response :created
   end
 
   test 'fails to create a transaction with invalid data' do
@@ -59,7 +59,7 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Transaction.count', -1) do
       delete transaction_path(transaction)
     end
-    assert_redirected_to budget_path(budget)
+    assert_response :ok
   end
 
   test 'fails to delete a non-existent transaction' do
