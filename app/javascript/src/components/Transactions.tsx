@@ -41,7 +41,7 @@ export default function Transactions({
         {sorted.map((transaction) => (
           <div className="transaction-row" key={transaction.id}>
             <span className="transaction-cell">{transaction.description}</span>
-            <span className="transaction-cell">{transaction.amount}</span>
+            <span className="transaction-cell">${transaction.amount}</span>
             <span className="transaction-cell">{transaction.date}</span>
             <button onClick={() => handleDelete(transaction.id)} aria-label="Delete transaction">
               <img className="icon-button" src={TrashIcon} alt=" Delete" />
