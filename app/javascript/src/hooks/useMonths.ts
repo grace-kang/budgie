@@ -22,3 +22,16 @@ export function useCreateMonth() {
     },
   });
 }
+
+export function useDeleteMonth(monthId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () =>
+      apiFetch<void>(`/months/${monthId}`, {
+        method: 'DELETE',
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['months'] });
+    },
+  });
+}

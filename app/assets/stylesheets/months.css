@@ -1,0 +1,50 @@
+.months {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.create-month {
+  align-self: center;
+  background: var(--color-surface);
+}
+
+.month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 24rem;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 4rem;
+
+  &:hover {
+    .month-total {
+      display: none;
+    }
+
+    .month-actions {
+      display: flex;
+    }
+  }
+}
+
+.month-total {
+  display: flex;
+}
+
+.month-actions {
+  display: none;
+}
