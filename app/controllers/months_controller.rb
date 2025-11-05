@@ -25,6 +25,15 @@ class MonthsController < ApplicationController
     end
   end
 
+  def destroy
+    @month = Month.find(params[:id])
+    if @month.destroy
+      render json: { message: 'Month deleted successfully' }, status: :ok
+    else
+      render json: { error: 'Failed to delete month' }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def month_params

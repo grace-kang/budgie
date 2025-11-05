@@ -38,4 +38,19 @@ class MonthsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_response :unprocessable_entity
   end
+
+  test 'should destroy month' do
+    month = Month.create(month: 3, year: 2024)
+    assert_difference('Month.count', -1) do
+      delete month_url(month)
+    end
+    assert_response :ok
+  end
+
+  test 'fails to destroy non-existent month' do
+    assert_no_difference('Month.count') do
+      delete month_url(id: 'non-existent-id')
+    end
+    assert_response :not_found
+  end
 end
