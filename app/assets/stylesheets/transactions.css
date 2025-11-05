@@ -1,0 +1,28 @@
+.transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.5fr;
+}
+
+.transactions-header {
+  font-weight: 600;
+}
+
+.transaction-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.5rem 0;
+}

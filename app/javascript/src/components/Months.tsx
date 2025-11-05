@@ -24,7 +24,7 @@ export default function Months() {
   };
 
   return (
-    <div className="budgets">
+    <div className="months">
       <div className="create-month">
         <form className="new-month-form" onSubmit={(e) => e.preventDefault()}>
           <button type="button" onClick={handleCreate} aria-label="Add month">
