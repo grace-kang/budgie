@@ -69,9 +69,8 @@ gem 'vite_rails', '~> 3.0'
 
 gem 'pg'
 
-gem "omniauth", "~> 2.1"
-gem "omniauth-rails_csrf_protection", "~> 1.0"
-gem "omniauth-google-oauth2", "~> 1.2"
+gem 'omniauth', '~> 2.1'
+gem 'omniauth-google-oauth2', '~> 1.2'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'
 
-gem 'dotenv-rails', groups: [:development, :test]
-
+gem 'dotenv-rails', groups: %i[development test]

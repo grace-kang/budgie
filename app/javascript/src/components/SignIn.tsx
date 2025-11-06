@@ -4,7 +4,9 @@ export default function SignIn() {
       <input
         type="hidden"
         name="authenticity_token"
-        value={(document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''}
+        value={
+          (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''
+        }
       />
       <button type="submit">Sign in with Google</button>
     </form>
