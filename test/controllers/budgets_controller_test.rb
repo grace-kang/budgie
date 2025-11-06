@@ -6,7 +6,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
   test 'should create budget' do
     month = Month.create(month: 1, year: 2024)
     assert_difference('Budget.count') do
-      post month_budgets_url(month), params: { budget: { name: 'New Budget', total: 500 } }
+      post month_budgets_url(month), headers: auth_headers, params: { budget: { name: 'New Budget', total: 500 } }
     end
 
     assert_response :created
@@ -15,23 +15,23 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
   test 'fails to create budget with invalid data' do
     month = Month.create(month: 1, year: 2024)
     assert_no_difference('Budget.count') do
-      post month_budgets_url(month), params: { budget: { name: '', total: 500 } }
+      post month_budgets_url(month), headers: auth_headers, params: { budget: { name: '', total: 500 } }
     end
     assert_response :unprocessable_entity
   end
 
   test 'should show budget' do
-    get budget_url(test_budget)
+    get budget_url(test_budget), headers: auth_headers
     assert_response :success
   end
 
   test 'should update budget' do
-    patch budget_url(test_budget), params: { budget: { name: 'Updated Budget', total: 1500 } }
+    patch budget_url(test_budget), headers: auth_headers, params: { budget: { name: 'Updated Budget', total: 1500 } }
     assert_response :ok
   end
 
   test 'fails to update budget with invalid data' do
-    patch budget_url(test_budget), params: { budget: { name: '', total: 1500 } }
+    patch budget_url(test_budget), headers: auth_headers, params: { budget: { name: '', total: 1500 } }
     assert_response :unprocessable_entity
   end
 
@@ -39,7 +39,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
     budget = test_budget
 
     assert_difference('Budget.count', -1) do
-      delete budget_url(budget)
+      delete budget_url(budget), headers: auth_headers
     end
 
     assert_response :ok
@@ -47,7 +47,7 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
 
   test 'fails to destroy non-existent budget' do
     assert_no_difference('Budget.count') do
-      delete budget_url(id: -1)
+      delete budget_url(id: -1), headers: auth_headers
     end
     assert_response :not_found
   end
