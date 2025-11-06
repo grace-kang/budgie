@@ -13,7 +13,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
   const deleteBudget = useDeleteBudget();
   const updateBudget = useUpdateBudget(budget.id);
 
-  const sum = budget.transactions?.reduce((s, t) => s + t.amount, 0);
+  const sum = budget.transactions?.reduce((s, t) => s + Number(t.amount), 0);
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
@@ -40,7 +40,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
 
         <div className="budget-total">
           <span>
-            ${sum} / ${budget.total}
+            ${sum} / ${Number(budget.total)}
           </span>
         </div>
 

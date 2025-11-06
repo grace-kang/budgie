@@ -66,6 +66,7 @@ export default function TransactionForm({
           <input
             name="amount"
             type="number"
+            step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />

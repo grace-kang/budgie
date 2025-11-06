@@ -14,10 +14,10 @@ export default function MonthBudgets({ month }: { month: Month }) {
   const deleteMonth = useDeleteMonth(month.id);
 
   const used = month.budgets?.reduce(
-    (s, b) => s + b.transactions.reduce((st, t) => st + t.amount, 0),
+    (s, b) => s + b.transactions.reduce((st, t) => st + Number(t.amount), 0),
     0,
   );
-  const limit = month.budgets?.reduce((s, b) => s + b.total, 0);
+  const limit = month.budgets?.reduce((s, b) => s + Number(b.total), 0);
 
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
