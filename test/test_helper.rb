@@ -28,3 +28,16 @@ end
 
 # Include in all views during tests
 ActiveSupport.on_load(:action_view) { include ViteHelpersStub }
+
+def auth_user
+  @auth_user ||= User.find_or_create_by!(email: 'test@example.com') do |user|
+    user.name = 'Test User'
+    user.provider = 'google_oauth2'
+    user.uid = '1234567890'
+  end
+end
+
+def auth_headers(user = auth_user)
+  token = JsonWebToken.encode(user_id: user.id)
+  { 'Authorization' => "Bearer #{token}" }
+end
