@@ -11,4 +11,6 @@ Rails
         resources :transactions, only: %i[create destroy]
       end
     end
+
+    get '/auth/:provider/callback', to: 'sessions#create'
   end
