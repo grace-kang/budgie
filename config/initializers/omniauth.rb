@@ -6,6 +6,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
            ENV.fetch('GOOGLE_CLIENT_SECRET'),
            {
              scope: 'email,profile',
-             prompt: 'select_account'
+             prompt: 'select_account',
+             provider_ignores_state: Rails.env.development?
            }
 end
