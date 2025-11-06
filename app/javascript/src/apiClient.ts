@@ -5,6 +5,7 @@ export async function apiFetch<T>(url: string, options: RequestInit = {}): Promi
     headers: {
       'Content-Type': 'application/json',
       'X-CSRF-Token': csrfToken,
+      Authorization: `Bearer ${localStorage.getItem('jwt') || ''}`,
       ...options.headers,
     },
     credentials: 'same-origin',

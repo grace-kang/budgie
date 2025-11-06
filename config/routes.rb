@@ -13,4 +13,6 @@ Rails
     end
 
     get '/auth/:provider/callback', to: 'sessions#create'
+
+    get '*path', to: 'spa#index', constraints: ->(req) { !req.xhr? && req.format.html? }
   end
