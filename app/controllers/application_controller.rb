@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     return if current_user
 
     respond_to do |format|
-      format.html { redirect_to root_path, alert: 'Please sign in' }
+      format.html { redirect_to root_path, alert: 'Please sign in' } # rubocop:disable Rails/I18nLocaleTexts
       format.json { render json: { error: 'Unauthorized' }, status: :unauthorized }
     end
   end
