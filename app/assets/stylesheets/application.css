@@ -2,6 +2,8 @@ body {
   font-family: --apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
+  height: 100vh;
+  margin: 0;
 }
 
 a {
@@ -88,6 +90,19 @@ input[type='submit']:hover {
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
+#root {
+  height: 90%;
+}
+
+.app-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  height: 10%;
+}
+
 .form {
   display: flex;
   flex-direction: row;
@@ -107,13 +122,6 @@ input[type='submit']:hover {
 
 .hidden-submit {
   display: none;
-}
-
-.app-header {
-  display: flex;
-  justify-content: center;
-  background: var(--color-surface);
-  color: var(--color-primary);
 }
 
 .app-content {
