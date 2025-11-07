@@ -5,7 +5,7 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[update destroy]
 
   def show
-    budget = Budget.includes(:month, :transactions).find(params[:id])
+    budget = current_user.budgets.includes(:month, :transactions).find(params[:id])
 
     render json: budget.as_json(include: %i[month transactions]), status: :ok
   end
@@ -13,7 +13,7 @@ class BudgetsController < ApplicationController
   def edit; end
 
   def create
-    month = Month.find(params[:month_id])
+    month = current_user.months.find(params[:month_id])
     budget = month.budgets.build(budget_params)
     if budget.save
       render json: budget, status: :created
@@ -41,7 +41,7 @@ class BudgetsController < ApplicationController
   private
 
   def set_budget
-    @budget = Budget.find(params[:id])
+    @budget = current_user.budgets.find(params[:id])
   end
 
   def budget_params

@@ -14,7 +14,8 @@ class BudgetTest < ActiveSupport::TestCase
   end
 
   test 'has many transactions' do
-    month = Month.create(month: 1, year: 2024)
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    month = user.months.create(month: 1, year: 2024)
     budget = month.budgets.create(name: 'Monthly Budget', total: 1000)
     transaction1 = budget.transactions.create(amount: 100, description: 'Groceries', date: Date.new(2024, 1, 5))
     transaction2 = budget.transactions.create(amount: 200, description: 'Rent', date: Date.new(2024, 1, 1))
@@ -25,7 +26,8 @@ class BudgetTest < ActiveSupport::TestCase
   end
 
   test 'belongs to month' do
-    month = Month.create(month: 1, year: 2024)
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    month = user.months.create(month: 1, year: 2024)
     budget = month.budgets.create(name: 'Monthly Budget', total: 1000)
 
     assert_equal month, budget.month

@@ -2,7 +2,7 @@
 
 class TransactionsController < ApplicationController
   def create
-    budget = Budget.find(params[:budget_id])
+    budget = current_user.budgets.find(params[:budget_id])
     transaction = budget.transactions.new(transaction_params)
     if transaction.save
       render json: transaction, status: :created
@@ -12,8 +12,8 @@ class TransactionsController < ApplicationController
   end
 
   def destroy
-    @transaction = Transaction.find(params[:id])
-    @budget = Budget.find(@transaction.budget_id)
+    @transaction = current_user.transactions.find(params[:id])
+    @budget = current_user.budgets.find(@transaction.budget_id)
     if @transaction.destroy
       render json: { message: 'Transaction deleted' }, status: :ok
     else

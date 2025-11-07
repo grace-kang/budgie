@@ -2,7 +2,7 @@
 
 class MonthsController < ApplicationController
   def index
-    months = Month.includes(budgets: :transactions).all.reverse_order
+    months = current_user.months.includes(budgets: :transactions).all.reverse_order
 
     render json: months.as_json(
       include: {
@@ -14,8 +14,8 @@ class MonthsController < ApplicationController
   end
 
   def create
-    @month = Month.new(month_params)
-    prev_month = Month.order(year: :desc, month: :desc).first
+    @month = current_user.months.new(month_params)
+    prev_month = current_user.months.order(year: :desc, month: :desc).first
 
     if @month.save
       @month.create_budgets_from_previous(prev_month) if prev_month.present?
@@ -26,7 +26,7 @@ class MonthsController < ApplicationController
   end
 
   def destroy
-    @month = Month.find(params[:id])
+    @month = current_user.months.find(params[:id])
     if @month.destroy
       render json: { message: 'Month deleted successfully' }, status: :ok
     else

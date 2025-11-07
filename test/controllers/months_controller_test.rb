@@ -9,13 +9,14 @@ class MonthsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should create month and copy budgets from previous month' do
-    @previous_month = Month.create(month: 12, year: 2023)
-    @month = Month.create(month: 1, year: 2024)
+    user = test_user
+    @previous_month = user.months.create(month: 12, year: 2023)
+    @month = user.months.create(month: 1, year: 2024)
     assert_difference('Month.count') do
       post months_url, headers: auth_headers, params: { month: { month: 2, year: 2024 } }
     end
 
-    new_month = Month.last
+    new_month = user.months.last
     assert_equal 2, new_month.month
     assert_equal 2024, new_month.year
 
@@ -40,7 +41,7 @@ class MonthsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy month' do
-    month = Month.create(month: 3, year: 2024)
+    month = test_user.months.create(month: 3, year: 2024)
     assert_difference('Month.count', -1) do
       delete month_url(month), headers: auth_headers
     end
@@ -52,5 +53,11 @@ class MonthsControllerTest < ActionDispatch::IntegrationTest
       delete month_url(id: 'non-existent-id'), headers: auth_headers
     end
     assert_response :not_found
+  end
+
+  private
+
+  def test_user
+    User.create(email: 'test@example.com', provider: 'google', uid: '12345')
   end
 end

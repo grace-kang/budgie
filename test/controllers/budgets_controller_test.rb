@@ -4,18 +4,16 @@ require 'test_helper'
 
 class BudgetsControllerTest < ActionDispatch::IntegrationTest
   test 'should create budget' do
-    month = Month.create(month: 1, year: 2024)
     assert_difference('Budget.count') do
-      post month_budgets_url(month), headers: auth_headers, params: { budget: { name: 'New Budget', total: 500 } }
+      post month_budgets_url(test_month), headers: auth_headers, params: { budget: { name: 'New Budget', total: 500 } }
     end
 
     assert_response :created
   end
 
   test 'fails to create budget with invalid data' do
-    month = Month.create(month: 1, year: 2024)
     assert_no_difference('Budget.count') do
-      post month_budgets_url(month), headers: auth_headers, params: { budget: { name: '', total: 500 } }
+      post month_budgets_url(test_month), headers: auth_headers, params: { budget: { name: '', total: 500 } }
     end
     assert_response :unprocessable_entity
   end
@@ -54,8 +52,12 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
 
   private
 
+  def test_month
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    user.months.create(month: 1, year: 2024)
+  end
+
   def test_budget
-    month = Month.create(month: 1, year: 2024)
-    month.budgets.create(name: 'Test Budget', total: 1000)
+    test_month.budgets.create(name: 'Test Budget', total: 1000)
   end
 end
