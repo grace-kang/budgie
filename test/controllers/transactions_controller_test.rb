@@ -72,7 +72,8 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
   private
 
   def test_budget
-    month = Month.create(month: 1, year: 2024)
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    month = user.months.create(month: 1, year: 2024)
     month.budgets.create(name: 'Test Budget', total: 1000)
   end
 end
