@@ -1,14 +1,28 @@
+import React from 'react';
+import GoogleIcon from '/icons/google-logo.svg';
+
 export default function SignIn() {
+  const csrfToken =
+    (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '';
+
   return (
-    <form method="post" action="/auth/google_oauth2">
-      <input
-        type="hidden"
-        name="authenticity_token"
-        value={
-          (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''
-        }
-      />
-      <button type="submit">Sign in with Google</button>
-    </form>
+    <div className="signin-container">
+      <form method="post" action="/auth/google_oauth2" className="signin-card">
+        <h1 className="signin-title">Welcome Back</h1>
+        <p className="signin-subtitle">Sign in to your account using Google</p>
+
+        <input type="hidden" name="authenticity_token" value={csrfToken} />
+
+        <button type="submit" className="google-btn">
+          <img src={GoogleIcon} alt="Google Logo" className="google-icon" />
+          <span>Sign in with Google</span>
+        </button>
+
+        <p className="signin-footer">
+          By continuing, you agree to our <a href="/terms">Terms of Service</a> and{' '}
+          <a href="/privacy">Privacy Policy</a>.
+        </p>
+      </form>
+    </div>
   );
 }
