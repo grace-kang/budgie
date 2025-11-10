@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import SignIn from './SignIn';
 import Months from './Months';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';

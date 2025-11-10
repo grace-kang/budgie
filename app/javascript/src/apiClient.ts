@@ -12,6 +12,12 @@ export async function apiFetch<T>(url: string, options: RequestInit = {}): Promi
     ...options,
   });
 
+  if (res.status === 401) {
+    localStorage.removeItem('jwt');
+    window.location.href = '/signup'; // or navigate('/signup')
+    return res.json();
+  }
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Error ${res.status}: ${text}`);
