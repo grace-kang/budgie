@@ -12,6 +12,7 @@ export function useCreateTransaction(budgetId: number) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      queryClient.invalidateQueries({ queryKey: ['months'] });
     },
   });
 }
@@ -25,6 +26,7 @@ export function useDeleteTransaction(budgetId: number) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      queryClient.invalidateQueries({ queryKey: ['months'] });
     },
   });
 }
@@ -39,6 +41,7 @@ export function useUpdateTransaction(budgetId: number) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      queryClient.invalidateQueries({ queryKey: ['months'] });
     },
   });
 }
