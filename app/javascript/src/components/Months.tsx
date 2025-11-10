@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import AddIcon from '/icons/add.svg';
 
 import MonthBudgets from './MonthBudgets';
 import { useCreateMonth, useMonths } from '../hooks/useMonths';
+import { useNavigate } from 'react-router-dom';
 
 export default function Months() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    console.log(token);
+    if (!token) navigate('/signup');
+  }, [navigate]);
+
   const { data: months, isLoading, error } = useMonths();
   const createMonth = useCreateMonth();
 
