@@ -7,43 +7,44 @@ import { useCreateMonth, useMonths } from '../hooks/useMonths';
 import { useNavigate } from 'react-router-dom';
 
 export default function Months() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    console.log(token);
-    if (!token) navigate('/signup');
-  }, [navigate]);
-
-  const { data: months, isLoading, error } = useMonths();
+  const { data: months } = useMonths();
   const createMonth = useCreateMonth();
 
-  if (!months || months.length === 0) return null;
+  if (!months?.length) return null;
 
-  const first = months[0];
-  const firstDate = new Date(first.year, first.month - 1, 1);
-  const nextDate = new Date(firstDate);
-  nextDate.setMonth(firstDate.getMonth() + 1);
-  const nextMonthNum = nextDate.getMonth() + 1;
-  const nextYearNum = nextDate.getFullYear();
+  const sortedMonths = months.sort((a, b) => b.year - a.year || b.month - a.month);
+  const first = sortedMonths[0];
+  const last = sortedMonths[months.length - 1];
 
-  const handleCreate = (e: React.MouseEvent) => {
+  const createNewer = (e: React.MouseEvent) => {
     e.preventDefault();
-    createMonth.mutate({ month: nextMonthNum, year: nextYearNum });
+    createMonth.mutate({ month: first.month + 1, year: first.year });
+  };
+
+  const createOlder = (e: React.MouseEvent) => {
+    e.preventDefault();
+    createMonth.mutate({ month: last.month - 1, year: last.year });
   };
 
   return (
     <div className="months">
       <div className="create-month">
         <form className="new-month-form" onSubmit={(e) => e.preventDefault()}>
-          <button type="button" onClick={handleCreate} aria-label="Add month">
+          <button type="button" onClick={createNewer} aria-label="Add month">
             <img src={AddIcon} className="icon-button" alt="Add" />
           </button>
         </form>
       </div>
-      {months.map((month) => (
+      {sortedMonths.map((month) => (
         <MonthBudgets key={month.id} month={month} />
       ))}
+      <div className="create-month">
+        <form className="new-month-form" onSubmit={(e) => e.preventDefault()}>
+          <button type="button" onClick={createOlder} aria-label="Add month">
+            <img src={AddIcon} className="icon-button" alt="Add" />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
