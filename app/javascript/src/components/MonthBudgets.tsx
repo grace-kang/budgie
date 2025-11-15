@@ -6,6 +6,7 @@ import BudgetForm from './BudgetForm';
 import AddIcon from '/icons/add.svg';
 import TrashIcon from '/icons/trash.svg';
 import { useDeleteMonth } from '../hooks/useMonths';
+import { round } from '../helpers/money';
 
 export default function MonthBudgets({ month }: { month: Month }) {
   const [showForm, setShowForm] = useState(false);
@@ -31,9 +32,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
             .toUpperCase()}
         </h3>
         <div className="month-total">
-          <span>
-            ${used} / ${limit}
-          </span>
+          ${round(used)} / ${round(limit)}
         </div>
         <div className="month-actions">
           <button type="button" onClick={() => deleteMonth.mutate()} aria-label="Delete month">
