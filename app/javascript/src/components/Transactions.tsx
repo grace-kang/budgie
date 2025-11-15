@@ -5,6 +5,7 @@ import TrashIcon from '/icons/trash.svg';
 import { Budget, Transaction, TransactionParams } from '../types';
 import TransactionForm from './TransactionForm';
 import { useCreateTransaction, useDeleteTransaction } from '../hooks/useTransactions';
+import { round } from '../helpers/money';
 
 export default function Transactions({
   budget,
@@ -41,7 +42,7 @@ export default function Transactions({
         {sorted.map((transaction) => (
           <div className="transaction-row" key={transaction.id}>
             <span className="transaction-cell">{transaction.description}</span>
-            <span className="transaction-cell">${Number(transaction.amount).toFixed(2)}</span>
+            <span className="transaction-cell">${round(transaction.amount)}</span>
             <span className="transaction-cell">{transaction.date}</span>
             <button onClick={() => handleDelete(transaction.id)} aria-label="Delete transaction">
               <img className="icon-button" src={TrashIcon} alt=" Delete" />

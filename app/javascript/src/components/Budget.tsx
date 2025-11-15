@@ -5,6 +5,7 @@ import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
 import { BudgetModal } from './BudgetModal';
+import { round } from '../helpers/money';
 
 export default function Budgets({ budget }: { budget: Budget }) {
   const [editing, setEditing] = useState(false);
@@ -40,7 +41,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
 
         <div className="budget-total">
           <span>
-            ${sum} / ${Number(budget.total)}
+            ${round(sum)} / ${round(budget.total)}
           </span>
         </div>
 
