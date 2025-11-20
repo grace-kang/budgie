@@ -19,6 +19,9 @@ Rails • SQLLite
 ## 🚀 Setup
 
 ```bash
+# Copy .env.example and fill in
+cp .env.example .env
+
 # Install Ruby gems
 bundle install
 
@@ -30,5 +33,8 @@ bin/rails db:setup
 # (This runs db:create, db:schema:load, and db:seed in one go)
 
 # Start the dev server
-bin/dev
+bin/rails server
+
+# Start the frontend server
+vite dev
 ```
