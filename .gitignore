@@ -3,7 +3,6 @@
 log/*
 tmp/*
 .env
-.env.*
 
 /storage
 /node_modules
