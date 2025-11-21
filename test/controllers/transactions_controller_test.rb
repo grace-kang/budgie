@@ -3,6 +3,22 @@
 require 'test_helper'
 
 class TransactionControllerTest < ActionDispatch::IntegrationTest
+  test 'gets all transactions' do
+    get transactions_path, headers: auth_headers
+    assert_response :success
+  end
+
+  test 'gets transactions for a budget' do
+    budget = test_budget
+    get budget_transactions_path(budget), headers: auth_headers
+    assert_response :success
+  end
+
+  test 'gets transactions for a non-existent budget' do
+    get budget_transactions_path(budget_id: -1), headers: auth_headers
+    assert_response :not_found
+  end
+
   test 'creates a transaction' do
     budget = test_budget
     assert_difference('Transaction.count', 1) do

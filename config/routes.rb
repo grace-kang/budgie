@@ -8,9 +8,11 @@ Rails
 
     resources :months, shallow: true, only: %i[index create destroy] do
       resources :budgets, shallow: true, only: %i[show edit create update destroy] do
-        resources :transactions, only: %i[create destroy]
+        resources :transactions, only: %i[index create destroy]
       end
     end
+
+    resources :transactions, only: [:index]
 
     get '/auth/:provider/callback', to: 'sessions#create'
 
