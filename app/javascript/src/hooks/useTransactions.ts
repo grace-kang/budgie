@@ -1,7 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../apiClient';
 import { Transaction } from '../types';
 
+export function useAllTransactions() {
+  return useQuery({
+    queryKey: ['transactions'],
+    queryFn: () => apiFetch<Transaction[]>('/transactions'),
+  });
+}
 export function useCreateTransaction(budgetId: number) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -13,6 +19,7 @@ export function useCreateTransaction(budgetId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 }
@@ -27,6 +34,7 @@ export function useDeleteTransaction(budgetId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 }
@@ -42,6 +50,7 @@ export function useUpdateTransaction(budgetId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 }
