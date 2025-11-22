@@ -11,15 +11,19 @@ import {
 } from '../hooks/useTransactions';
 import { useMonths } from '../hooks/useMonths';
 
+const getTodayDate = () => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 export default function TransactionView() {
   const { data: transactions = [] } = useAllTransactions();
   const { data: months = [] } = useMonths();
 
-  // Flatten all budgets from all months
   const budgets = useMemo(() => {
     return months.flatMap((month) => month.budgets || []);
   }, [months]);
-  // For the inline form: track current values
+
   const [form, setForm] = useState<{
     budgetId: number;
     description: string;
@@ -29,23 +33,18 @@ export default function TransactionView() {
     budgetId: budgets[0]?.id ?? 0,
     description: '',
     amount: '',
-    date: '',
+    date: getTodayDate(),
   });
 
-  // All the hooks need a budgetId
   const [createBudgetId, setCreateBudgetId] = useState<number>(budgets[0]?.id ?? 0);
   const createTransaction = useCreateTransaction(createBudgetId);
-
-  // Delete must supply correct budgetId by transaction
   const getDeleteTransaction = (budgetId: number) => useDeleteTransaction(budgetId);
 
-  // Merge transactions with their budget's name
   const transactionsWithBudget = transactions.map((t) => ({
     ...t,
     budgetName: budgets.find((b) => b.id === t.budget_id)?.name ?? 'Unknown',
   }));
 
-  // Sort: most recent first
   const sorted = [...transactionsWithBudget].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
@@ -76,7 +75,7 @@ export default function TransactionView() {
           budgetId: budgets[0]?.id ?? 0,
           description: '',
           amount: '',
-          date: '',
+          date: getTodayDate(),
         }),
     });
   };
@@ -98,7 +97,6 @@ export default function TransactionView() {
           <span></span>
         </div>
 
-        {/* Inline creation form */}
         <form className="transaction-row" onSubmit={handleFormSubmit}>
           <span className="transaction-cell">
             <select name="budgetId" value={form.budgetId} onChange={handleFormChange} required>
