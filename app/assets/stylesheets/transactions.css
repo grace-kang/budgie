@@ -1,152 +1,132 @@
 .transaction-view {
   padding: 0 1rem;
-}
 
-.transaction-view .transactions {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
+  .transactions {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
 
-.transaction-view .transaction-row {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr 1fr 1fr auto;
-  gap: 1rem;
-  align-items: center;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--color-border);
-  transition: background-color 0.2s;
-}
+  .transaction-row {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.2rem;
+    transition: background-color 0.2s;
 
-.transaction-view .transaction-row:last-child {
-  border-bottom: none;
-}
+    form {
+      background-color: var(--color-bg-muted);
+      border-bottom: 2px solid var(--color-border);
+      padding: 1rem;
 
-.transaction-view .transaction-row:hover {
-  background-color: var(--color-bg-muted);
-}
+      &:hover {
+        background-color: var(--color-bg-muted);
+      }
 
-.transaction-view .transactions-header {
-  font-weight: 600;
-  color: var(--color-text-muted);
-  background-color: var(--color-bg-muted);
-  border-bottom: 2px solid var(--color-border);
-  padding: 1rem;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+      .transaction-cell {
+        display: flex;
+        align-items: center;
+      }
 
-.transaction-view .transactions-header:hover {
-  background-color: var(--color-bg-muted);
-}
+      input,
+      select {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        background-color: var(--color-surface);
+        color: var(--color-text);
+        font-size: 0.875rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
 
-.transaction-view .transaction-cell {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--color-text);
-}
+        &:focus {
+          outline: none;
+          border-color: var(--color-primary);
+          box-shadow: 0 0 0 3px var(--color-primary-muted);
+        }
+      }
 
-.transaction-view .transaction-row form {
-  background-color: var(--color-bg-muted);
-  border-bottom: 2px solid var(--color-border);
-  padding: 1rem;
-}
+      select {
+        cursor: pointer;
+      }
 
-.transaction-view .transaction-row form:hover {
-  background-color: var(--color-bg-muted);
-}
+      button[type='submit'] {
+        padding: 0.5rem 1rem;
+        background-color: var(--color-primary);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        white-space: nowrap;
 
-.transaction-view .transaction-row form .transaction-cell {
-  display: flex;
-  align-items: center;
-}
+        &:hover {
+          background-color: var(--color-primary-hover);
+        }
+      }
+    }
 
-.transaction-view .transaction-row form input,
-.transaction-view .transaction-row form select {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.875rem;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+  }
 
-.transaction-view .transaction-row form input:focus,
-.transaction-view .transaction-row form select:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-muted);
-}
+  .transactions-header {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    padding: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-.transaction-view .transaction-row form select {
-  cursor: pointer;
-}
+  .transaction-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
 
-.transaction-view .transaction-row form button[type='submit'] {
-  padding: 0.5rem 1rem;
-  background-color: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  white-space: nowrap;
-}
+  .transaction-amount {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
 
-.transaction-view .transaction-row form button[type='submit']:hover {
-  background-color: var(--color-primary-hover);
-}
+  .transaction-date {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
 
-.transaction-view .transaction-row button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
+  .transaction-budget {
+    font-weight: 500;
+    color: var(--color-primary);
+  }
 
-.transaction-view .transaction-row:hover button {
-  opacity: 1;
-}
+  .transaction-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
 
-.transaction-view .transaction-amount {
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-.transaction-view .transaction-date {
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-}
-
-.transaction-view .transaction-budget {
-  font-weight: 500;
-  color: var(--color-primary);
-}
-
-.transaction-view .transaction-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.transaction-view .transaction-empty {
-  padding: 2rem;
-  text-align: center;
-  color: var(--color-text-muted);
-  grid-column: 1 / -1;
+  .transaction-empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    grid-column: 1 / -1;
+  }
 }
