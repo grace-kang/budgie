@@ -86,8 +86,6 @@ export default function TransactionView() {
 
   return (
     <div className="transaction-view">
-      <h2>All Transactions</h2>
-
       <div className="transactions">
         <div className="transactions-header transaction-row">
           <span>Budget</span>
