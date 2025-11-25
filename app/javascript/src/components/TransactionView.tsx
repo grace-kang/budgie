@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
 import TrashIcon from '/icons/trash.svg';
+import AddIcon from '/icons/add.svg';
 
 import { Budget, Transaction, TransactionParams } from '../types';
 import { round } from '../helpers/money';
@@ -130,7 +131,9 @@ export default function TransactionView() {
             <input name="date" type="date" value={form.date} onChange={handleFormChange} required />
           </span>
           <span>
-            <button type="submit">Add</button>
+            <button type="submit">
+              <img src={AddIcon} className="icon-button" alt="Submit" />
+            </button>
           </span>
         </form>
 
