@@ -9,14 +9,30 @@ Track your money, set goals, and pretend you’re totally in control of your fin
 
 - Create budgets without crying.
 - Track spending with fewer clicks (and fewer regrets).
+- Connect bank accounts via Plaid for automatic transaction syncing.
 - A UI so minimal it might actually calm your anxiety.
-- No ads. No upsells. No “premium” tier. Just your data.
+- No ads. No upsells. No "premium" tier. Just your data.
 
 ## 🛠 Tech
 
-Rails • SQLLite
+Rails • PostgreSQL • React • TypeScript • Vite
 
 ## 🚀 Setup
+
+### Environment Variables
+
+Add these to your `.env` file:
+
+```bash
+# Plaid Integration (for bank account connections)
+PLAID_CLIENT_ID=your_client_id_here
+PLAID_SECRET=your_secret_key_here
+PLAID_ENV=sandbox  # Options: sandbox, development, production
+```
+
+Get your Plaid credentials from https://dashboard.plaid.com
+
+### Installation
 
 ```bash
 # Copy .env.example and fill in
