@@ -41,3 +41,27 @@ def auth_headers(user = auth_user)
   token = JsonWebToken.encode(user_id: user.id)
   { 'Authorization' => "Bearer #{token}" }
 end
+
+# Helper for stubbing PlaidService in tests
+# Usage:
+#   stub_plaid_service do |mock|
+#     def mock.create_link_token(_user_id)
+#       'link-token-123'
+#     end
+#
+#     # test code here
+#     post '/plaid/link_token', headers: @headers
+#   end
+def stub_plaid_service(mock_service = nil, &)
+  mock = mock_service || Object.new
+  original_new = PlaidService.method(:new)
+
+  # If no mock_service was provided, yield the mock for configuration
+  # Then execute the rest of the block as test code
+  PlaidService.define_singleton_method(:new) { mock }
+  begin
+    yield(mock)
+  ensure
+    PlaidService.define_singleton_method(:new) { |*args| original_new.call(*args) }
+  end
+end

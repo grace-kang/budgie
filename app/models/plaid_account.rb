@@ -11,4 +11,3 @@ class PlaidAccount < ApplicationRecord
     update(cursor: new_cursor, last_successful_update: Time.current)
   end
 end
-
