@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_07_174836) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_08_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -32,6 +32,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_174836) do
     t.index ["user_id"], name: "index_months_on_user_id"
   end
 
+  create_table "plaid_accounts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "access_token", null: false
+    t.string "item_id", null: false
+    t.string "institution_id"
+    t.string "institution_name"
+    t.string "cursor"
+    t.datetime "last_successful_update"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_plaid_accounts_on_item_id", unique: true
+    t.index ["user_id"], name: "index_plaid_accounts_on_user_id"
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.string "description"
     t.decimal "amount", precision: 8, scale: 2
@@ -39,7 +53,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_174836) do
     t.integer "budget_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "plaid_transaction_id"
+    t.bigint "plaid_account_id"
     t.index ["budget_id"], name: "index_transactions_on_budget_id"
+    t.index ["plaid_account_id"], name: "index_transactions_on_plaid_account_id"
+    t.index ["plaid_transaction_id"], name: "index_transactions_on_plaid_transaction_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -54,5 +72,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_174836) do
 
   add_foreign_key "budgets", "months"
   add_foreign_key "months", "users"
+  add_foreign_key "plaid_accounts", "users"
   add_foreign_key "transactions", "budgets"
+  add_foreign_key "transactions", "plaid_accounts"
 end
