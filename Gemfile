@@ -27,5 +27,6 @@ gem 'omniauth', '~> 2.1'
 gem 'omniauth-google-oauth2', '~> 1.2'
 gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'pg'
+gem 'plaid', '~> 22.0'
 gem 'ruby-lsp', '~> 0.26.1', group: :development
 gem 'vite_rails', '~> 3.0'
