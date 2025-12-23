@@ -30,3 +30,10 @@ export type TransactionParams = {
   amount: number;
   date: string;
 };
+
+export type PlaidAccount = {
+  id: number;
+  institution_name: string;
+  item_id: string;
+  last_successful_update: string | null;
+};
