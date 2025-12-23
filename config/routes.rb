@@ -14,6 +14,14 @@ Rails
 
     resources :transactions, only: [:index]
 
+    # Plaid integration routes
+    post '/plaid/link_token', to: 'plaid#create_link_token'
+    post '/plaid/exchange_token', to: 'plaid#exchange_token'
+    get '/plaid/accounts', to: 'plaid#accounts'
+    post '/plaid/accounts/:id/sync', to: 'plaid#sync'
+    delete '/plaid/accounts/:id', to: 'plaid#destroy'
+    post '/plaid/webhook', to: 'plaid#webhook'
+
     get '/auth/:provider/callback', to: 'sessions#create'
 
     get '*path', to: 'spa#index', constraints: ->(req) { !req.xhr? && req.format.html? }
