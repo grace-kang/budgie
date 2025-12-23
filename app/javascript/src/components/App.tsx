@@ -4,8 +4,9 @@ import Months from './Months';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthCallback from './AuthCallback';
 import TransactionView from './TransactionView';
+import PlaidAccounts from './PlaidAccounts';
 
-type ViewType = 'months' | 'transactions';
+type ViewType = 'months' | 'transactions' | 'accounts';
 
 function MainView() {
   const [view, setView] = useState<ViewType>('months');
@@ -25,8 +26,20 @@ function MainView() {
         >
           Transactions
         </button>
+        <button
+          onClick={() => setView('accounts')}
+          className={`view-toggle-button ${view === 'accounts' ? 'active' : ''}`}
+        >
+          Bank Accounts
+        </button>
       </div>
-      {view === 'months' ? <Months /> : <TransactionView />}
+      {view === 'months' ? (
+        <Months />
+      ) : view === 'transactions' ? (
+        <TransactionView />
+      ) : (
+        <PlaidAccounts />
+      )}
     </div>
   );
 }
