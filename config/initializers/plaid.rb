@@ -8,4 +8,3 @@
 
 # Default to sandbox if not set
 ENV['PLAID_ENV'] ||= 'sandbox'
-
