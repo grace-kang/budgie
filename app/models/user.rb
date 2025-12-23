@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :months, dependent: :destroy
   has_many :budgets, through: :months
   has_many :transactions, through: :budgets
+  has_many :plaid_accounts, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
   validates :provider, :uid, presence: true

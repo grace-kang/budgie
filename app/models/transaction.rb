@@ -2,9 +2,11 @@
 
 class Transaction < ApplicationRecord
   belongs_to :budget
+  belongs_to :plaid_account, optional: true
 
   validates :description, presence: true
   validates :amount, presence: true
+  validates :plaid_transaction_id, uniqueness: true, allow_nil: true
 
   validate :date_within_budget_month
 
