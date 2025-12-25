@@ -1,6 +1,7 @@
 export type Transaction = {
   id: number;
   budget_id: number;
+  month_id: number;
   amount: number;
   description: string;
   date: string;
@@ -11,13 +12,12 @@ export type Budget = {
   name: string;
   total: number;
   transactions: Transaction[];
-  month: Month;
 };
 export type Month = {
   id: number;
   year: number;
   month: number;
-  budgets: Budget[];
+  transactions: Transaction[];
 };
 
 export type BudgetParams = {
@@ -29,6 +29,7 @@ export type TransactionParams = {
   description: string;
   amount: number;
   date: string;
+  month_id: number;
 };
 
 export type PlaidAccount = {

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 import AddIcon from '/icons/add.svg';
-import { Budget, TransactionParams } from '../types';
+import { Budget, TransactionParams, Month } from '../types';
+import { useMonths } from '../hooks/useMonths';
 
 type Props = {
   budget: Budget;
+  month?: Month;
   transaction?: {
     description?: string;
     amount?: number;
@@ -16,33 +18,42 @@ type Props = {
 
 export default function TransactionForm({
   budget,
+  month,
   transaction = {},
   errors = [],
   onSubmit,
 }: Props) {
+  const { data: months = [] } = useMonths();
   const [description, setDescription] = useState<string>(transaction.description ?? '');
   const [amount, setAmount] = useState<string>(
     transaction.amount != null ? String(transaction.amount) : '',
   );
-  const defaultDate =
-    new Date().getMonth() + 1 == budget.month.month
-      ? new Date()
-      : new Date(budget.month.year, budget.month.month - 1, 1);
-  const monthStart = new Date(budget.month.year, budget.month.month - 1, 1)
-    .toISOString()
-    .slice(0, 10);
-  const monthEnd = new Date(budget.month.year, budget.month.month, 0).toISOString().slice(0, 10);
 
+  const defaultDate = new Date();
   const [date, setDate] = useState<string>(
     transaction.date ?? defaultDate.toISOString().slice(0, 10),
   );
 
+  // Find month based on date
+  const getMonthFromDate = (dateStr: string): Month | undefined => {
+    const dateObj = new Date(dateStr);
+    return months.find(
+      (m) => m.month === dateObj.getMonth() + 1 && m.year === dateObj.getFullYear(),
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const selectedMonth = month || getMonthFromDate(date);
+    if (!selectedMonth) {
+      // If no month found, we can't create the transaction
+      return;
+    }
     onSubmit({
       description,
       amount: Number(amount || 0),
       date,
+      month_id: selectedMonth.id,
     });
     setDescription('');
     setAmount('');
@@ -73,14 +84,7 @@ export default function TransactionForm({
         </div>
 
         <div className="form-input">
-          <input
-            name="date"
-            type="date"
-            min={monthStart}
-            max={monthEnd}
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <input name="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
 
         <input type="hidden" name="budget_id" value={String(budget.id)} />
