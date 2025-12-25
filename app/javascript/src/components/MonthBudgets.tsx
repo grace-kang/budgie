@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useCreateBudget } from '../hooks/useBudgets';
-import { BudgetParams, Month } from '../types';
+import { useState, useMemo } from 'react';
+import { useCreateBudget, useBudgets } from '../hooks/useBudgets';
+import { Month } from '../types';
 import Budget from './Budget';
 import BudgetForm from './BudgetForm';
 import AddIcon from '/icons/add.svg';
@@ -11,14 +11,22 @@ import { round } from '../helpers/money';
 export default function MonthBudgets({ month }: { month: Month }) {
   const [showForm, setShowForm] = useState(false);
 
-  const createBudget = useCreateBudget(month.id);
+  const { data: allBudgets = [] } = useBudgets();
+  const createBudget = useCreateBudget();
   const deleteMonth = useDeleteMonth(month.id);
 
-  const used = month.budgets?.reduce(
-    (s, b) => s + b.transactions.reduce((st, t) => st + Number(t.amount), 0),
-    0,
-  );
-  const limit = month.budgets?.reduce((s, b) => s + Number(b.total), 0);
+  // Filter budgets that have transactions in this month
+  const monthBudgets = useMemo(() => {
+    return allBudgets.filter((budget) => budget.transactions?.some((t) => t.month_id === month.id));
+  }, [allBudgets, month.id]);
+
+  const used = useMemo(() => {
+    return month.transactions?.reduce((s, t) => s + Number(t.amount), 0) || 0;
+  }, [month.transactions]);
+
+  const limit = useMemo(() => {
+    return monthBudgets.reduce((s, b) => s + Number(b.total), 0);
+  }, [monthBudgets]);
 
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
@@ -41,7 +49,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
         </div>
       </div>
 
-      {month.budgets?.map((budget) => (
+      {monthBudgets.map((budget) => (
         <Budget key={budget.id} budget={budget} />
       ))}
 
@@ -56,7 +64,6 @@ export default function MonthBudgets({ month }: { month: Month }) {
 
       <div className={showForm ? 'show' : 'hide'}>
         <BudgetForm
-          monthId={month.id}
           onSubmit={(params) => createBudget.mutate(params)}
           onClose={() => setShowForm(false)}
         />

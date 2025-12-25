@@ -58,7 +58,7 @@ export default function Budgets({ budget }: { budget: Budget }) {
 
       <div className={editing ? 'show' : 'hide'}>
         <BudgetForm
-          monthId={budget.id}
+          initialBudget={{ name: budget.name, total: budget.total }}
           onSubmit={(params) => updateBudget.mutate(params)}
           onClose={() => setEditing(false)}
         />

@@ -11,13 +11,14 @@ export function useAllTransactions() {
 export function useCreateTransaction(budgetId: number) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { description: string; amount: number; date: string }) =>
+    mutationFn: (data: { description: string; amount: number; date: string; month_id: number }) =>
       apiFetch<Transaction>(`/budgets/${budgetId}/transactions`, {
         method: 'POST',
         body: JSON.stringify({ transaction: data }),
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },

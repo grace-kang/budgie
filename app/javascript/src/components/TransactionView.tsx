@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import TrashIcon from '/icons/trash.svg';
 import AddIcon from '/icons/add.svg';
 
-import { Budget, Transaction, TransactionParams } from '../types';
+import { Transaction, TransactionParams } from '../types';
 import { round } from '../helpers/money';
 import {
   useAllTransactions,
@@ -11,6 +11,7 @@ import {
   useDeleteTransaction,
 } from '../hooks/useTransactions';
 import { useMonths } from '../hooks/useMonths';
+import { useBudgets } from '../hooks/useBudgets';
 
 const getTodayDate = () => {
   const today = new Date();
@@ -20,10 +21,7 @@ const getTodayDate = () => {
 export default function TransactionView() {
   const { data: transactions = [] } = useAllTransactions();
   const { data: months = [] } = useMonths();
-
-  const budgets = useMemo(() => {
-    return months.flatMap((month) => month.budgets || []);
-  }, [months]);
+  const { data: budgets = [] } = useBudgets();
 
   const [form, setForm] = useState<{
     budgetId: number;
@@ -62,13 +60,27 @@ export default function TransactionView() {
     }
   };
 
+  // Find month based on date
+  const getMonthFromDate = (dateStr: string) => {
+    const dateObj = new Date(dateStr);
+    return months.find(
+      (m) => m.month === dateObj.getMonth() + 1 && m.year === dateObj.getFullYear(),
+    );
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.description || !form.amount || !form.date || !form.budgetId) return;
+    const selectedMonth = getMonthFromDate(form.date);
+    if (!selectedMonth) {
+      // If no month found, we can't create the transaction
+      return;
+    }
     const params: TransactionParams = {
       description: form.description,
       amount: Number(form.amount),
       date: form.date,
+      month_id: selectedMonth.id,
     };
     createTransaction.mutate(params, {
       onSuccess: () =>
