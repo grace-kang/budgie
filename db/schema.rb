@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_08_000002) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_08_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,8 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_08_000002) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "total", precision: 8, scale: 2
-    t.integer "month_id", default: 1, null: false
-    t.index ["month_id"], name: "index_budgets_on_month_id"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_budgets_on_user_id"
   end
 
   create_table "months", force: :cascade do |t|
@@ -55,7 +55,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_08_000002) do
     t.datetime "updated_at", null: false
     t.string "plaid_transaction_id"
     t.bigint "plaid_account_id"
+    t.bigint "month_id", null: false
     t.index ["budget_id"], name: "index_transactions_on_budget_id"
+    t.index ["month_id"], name: "index_transactions_on_month_id"
     t.index ["plaid_account_id"], name: "index_transactions_on_plaid_account_id"
     t.index ["plaid_transaction_id"], name: "index_transactions_on_plaid_transaction_id", unique: true
   end
@@ -70,9 +72,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_08_000002) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "budgets", "months"
+  add_foreign_key "budgets", "users"
   add_foreign_key "months", "users"
   add_foreign_key "plaid_accounts", "users"
   add_foreign_key "transactions", "budgets"
+  add_foreign_key "transactions", "months"
   add_foreign_key "transactions", "plaid_accounts"
 end
