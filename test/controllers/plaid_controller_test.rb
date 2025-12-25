@@ -2,11 +2,12 @@
 
 require 'test_helper'
 
-class PlaidControllerTest < ActionDispatch::IntegrationTest
-  # Test doubles for Plaid objects
-  Account = Struct.new(:institution_id, keyword_init: true)
-  Item = Struct.new(:institution_id, keyword_init: true)
+# Test doubles for Plaid objects
+Account = Struct.new(:institution_id, keyword_init: true)
+Item = Struct.new(:institution_id, keyword_init: true)
 
+# rubocop:disable Metrics/ClassLength
+class PlaidControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = auth_user
     @headers = auth_headers(@user)
@@ -14,7 +15,7 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
 
   test 'creates link token' do
     stub_plaid_service do |mock|
-      def mock.create_link_token(_user_id)
+      mock.define_singleton_method(:create_link_token) do |_user_id|
         'link-token-123'
       end
 
@@ -28,15 +29,15 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
 
   test 'exchanges public token' do
     stub_plaid_service do |mock|
-      def mock.exchange_public_token(_public_token)
+      mock.define_singleton_method(:exchange_public_token) do |_public_token|
         { access_token: 'access-token-123', item_id: 'item-123' }
       end
 
-      def mock.get_item(_access_token)
+      mock.define_singleton_method(:get_item) do |_access_token|
         Item.new(institution_id: 'ins_123')
       end
 
-      def mock.get_institution_name(_institution_id)
+      mock.define_singleton_method(:get_institution_name) do |_institution_id|
         'Test Bank'
       end
 
@@ -124,7 +125,7 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
     )
 
     stub_plaid_service do |mock|
-      def mock.remove_item(_access_token)
+      mock.define_singleton_method(:remove_item) do |_access_token|
         true
       end
 
@@ -161,3 +162,4 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 end
+# rubocop:enable Metrics/ClassLength

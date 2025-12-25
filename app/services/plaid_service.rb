@@ -14,44 +14,19 @@ class PlaidService
   end
 
   def create_link_token(user_id)
-    request = Plaid::LinkTokenCreateRequest.new(
-      {
-        user: {
-          client_user_id: user_id.to_s
-        },
-        client_name: 'Budgie Budgeting App',
-        products: ['transactions'],
-        country_codes: ['US'],
-        language: 'en'
-      }
-    )
-
+    request = build_link_token_request(user_id)
     response = @client.link_token_create(request)
     response.link_token
   end
 
   def exchange_public_token(public_token)
-    request = Plaid::ItemPublicTokenExchangeRequest.new(
-      {
-        public_token: public_token
-      }
-    )
-
+    request = Plaid::ItemPublicTokenExchangeRequest.new(public_token: public_token)
     response = @client.item_public_token_exchange(request)
-    {
-      access_token: response.access_token,
-      item_id: response.item_id
-    }
+    { access_token: response.access_token, item_id: response.item_id }
   end
 
   def get_institution_name(institution_id)
-    request = Plaid::InstitutionsGetByIdRequest.new(
-      {
-        institution_id: institution_id,
-        country_codes: ['US']
-      }
-    )
-
+    request = build_institution_request(institution_id)
     response = @client.institutions_get_by_id(request)
     response.institution.name
   rescue Plaid::ApiError => e
@@ -60,63 +35,57 @@ class PlaidService
   end
 
   def get_accounts(access_token)
-    request = Plaid::AccountsGetRequest.new(
-      {
-        access_token: access_token
-      }
-    )
-
-    response = @client.accounts_get(request)
-    response.accounts
+    @client.accounts_get(Plaid::AccountsGetRequest.new(access_token: access_token)).accounts
   end
 
   def get_item(access_token)
-    request = Plaid::ItemGetRequest.new(
-      {
-        access_token: access_token
-      }
-    )
-
-    response = @client.item_get(request)
-    response.item
+    @client.item_get(Plaid::ItemGetRequest.new(access_token: access_token)).item
   end
 
-  def get_transactions(access_token, cursor: nil, start_date: nil, end_date: nil)
-    request = Plaid::TransactionsSyncRequest.new(
-      {
-        access_token: access_token,
-        cursor: cursor,
-        count: 500
-      }
-    )
-
+  def get_transactions(access_token, cursor: nil, _start_date: nil, _end_date: nil)
+    request = build_transactions_sync_request(access_token, cursor)
     response = @client.transactions_sync(request)
+    process_transactions_response(response)
+  rescue Plaid::ApiError => e
+    log_plaid_api_error(e)
+    raise
+  end
 
-    added_count = response.added&.length || 0
-    modified_count = response.modified&.length || 0
-    removed_count = response.removed&.length || 0
-
-    Rails.logger.info "Plaid API response: #{added_count} added, #{modified_count} modified, #{removed_count} removed, has_more: #{response.has_more}"
-
+  def process_transactions_response(response)
     {
       transactions: response.added + response.modified,
       removed: response.removed,
       has_more: response.has_more,
       next_cursor: response.next_cursor
     }
-  rescue Plaid::ApiError => e
-    Rails.logger.error "Plaid API error: #{e.message}"
-    Rails.logger.error "Error response: #{e.response_body}"
-    raise
+  end
+
+  def log_plaid_api_error(error)
+    Rails.logger.error "Plaid API error: #{error.message}"
+    Rails.logger.error "Error response: #{error.response_body}"
   end
 
   def remove_item(access_token)
-    request = Plaid::ItemRemoveRequest.new(
-      {
-        access_token: access_token
-      }
-    )
+    @client.item_remove(Plaid::ItemRemoveRequest.new(access_token: access_token))
+  end
 
-    @client.item_remove(request)
+  private
+
+  def build_link_token_request(user_id)
+    Plaid::LinkTokenCreateRequest.new(
+      user: { client_user_id: user_id.to_s },
+      client_name: 'Budgie Budgeting App',
+      products: ['transactions'],
+      country_codes: ['US'],
+      language: 'en'
+    )
+  end
+
+  def build_institution_request(institution_id)
+    Plaid::InstitutionsGetByIdRequest.new(institution_id: institution_id, country_codes: ['US'])
+  end
+
+  def build_transactions_sync_request(access_token, cursor)
+    Plaid::TransactionsSyncRequest.new(access_token: access_token, cursor: cursor, count: 500)
   end
 end
