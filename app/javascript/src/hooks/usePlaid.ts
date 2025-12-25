@@ -38,10 +38,19 @@ export function useExchangePlaidToken() {
 export function useSyncPlaidAccount() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ accountId, forceResync = false }: { accountId: number; forceResync?: boolean }) =>
-      apiFetch<{ message: string }>(`/plaid/accounts/${accountId}/sync?force_resync=${forceResync}`, {
-        method: 'POST',
-      }),
+    mutationFn: ({
+      accountId,
+      forceResync = false,
+    }: {
+      accountId: number;
+      forceResync?: boolean;
+    }) =>
+      apiFetch<{ message: string }>(
+        `/plaid/accounts/${accountId}/sync?force_resync=${forceResync}`,
+        {
+          method: 'POST',
+        },
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
@@ -61,4 +70,3 @@ export function useDeletePlaidAccount() {
     },
   });
 }
-

@@ -2,16 +2,17 @@
 
 require 'test_helper'
 
-class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
-  # Define test doubles for Plaid objects
-  PersonalFinanceCategory = Struct.new(:primary, :detailed, keyword_init: true)
-  PlaidTransaction = Struct.new(
-    :transaction_id, :pending, :date, :name, :merchant_name,
-    :amount, :category, :personal_finance_category,
-    keyword_init: true
-  )
-  RemovedTransaction = Struct.new(:transaction_id, keyword_init: true)
+# Define test doubles for Plaid objects
+PersonalFinanceCategory = Struct.new(:primary, :detailed, keyword_init: true)
+PlaidTransaction = Struct.new(
+  :transaction_id, :pending, :date, :name, :merchant_name,
+  :amount, :category, :personal_finance_category,
+  keyword_init: true
+)
+RemovedTransaction = Struct.new(:transaction_id, keyword_init: true)
 
+# rubocop:disable Metrics/ClassLength
+class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
   setup do
     @user = User.create!(
       email: 'test@example.com',
@@ -26,6 +27,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     )
   end
 
+  # rubocop:disable Metrics/BlockLength
   test 'performs sync for valid plaid account' do
     # Mock Plaid transaction response
     mock_transaction = PlaidTransaction.new(
@@ -50,7 +52,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     }
 
     stub_plaid_service do |mock|
-      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, start_date: nil, end_date: nil|
+      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, _start_date: nil, _end_date: nil| # rubocop:disable Lint/UnusedBlockArgument
         mock_result
       end
 
@@ -63,6 +65,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     assert_equal 'cursor-123', @plaid_account.cursor
     assert_not_nil @plaid_account.last_successful_update
   end
+  # rubocop:enable Metrics/BlockLength
 
   test 'skips pending transactions' do
     mock_transaction = PlaidTransaction.new(
@@ -84,7 +87,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     }
 
     stub_plaid_service do |mock|
-      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, start_date: nil, end_date: nil|
+      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, _start_date: nil, _end_date: nil| # rubocop:disable Lint/UnusedBlockArgument
         mock_result
       end
 
@@ -114,7 +117,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     }
 
     stub_plaid_service do |mock|
-      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, start_date: nil, end_date: nil|
+      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, _start_date: nil, _end_date: nil| # rubocop:disable Lint/UnusedBlockArgument
         mock_result
       end
 
@@ -130,6 +133,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     end
   end
 
+  # rubocop:disable Metrics/BlockLength
   test 'categorizes transactions correctly' do
     @user.months.create!(month: Time.zone.today.month, year: Time.zone.today.year)
 
@@ -155,7 +159,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     }
 
     stub_plaid_service do |mock|
-      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, start_date: nil, end_date: nil|
+      mock.define_singleton_method(:get_transactions) do |_access_token, cursor: nil, _start_date: nil, _end_date: nil| # rubocop:disable Lint/UnusedBlockArgument
         mock_result
       end
 
@@ -166,4 +170,6 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     assert_not_nil transaction
     assert_equal 'Food & Dining', transaction.budget.name
   end
+  # rubocop:enable Metrics/BlockLength
 end
+# rubocop:enable Metrics/ClassLength
