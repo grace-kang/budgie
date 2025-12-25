@@ -20,14 +20,15 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'creates a transaction' do
-    budget = test_budget
+    budget, month = test_budget_and_month
     assert_difference('Transaction.count', 1) do
       post budget_transactions_path(budget), headers: auth_headers, params: {
         transaction: {
           description: 'Test Transaction',
           amount: 100,
           date: Date.new(2024, 1, 15),
-          budget_id: budget.id
+          budget_id: budget.id,
+          month_id: month.id
         }
       }
     end
@@ -35,52 +36,56 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'fails to create a transaction with invalid data' do
-    budget = test_budget
+    budget, month = test_budget_and_month
     assert_no_difference('Transaction.count') do
       post budget_transactions_path(budget), headers: auth_headers, params: {
         transaction: {
           description: nil,
           amount: 100,
           date: Date.new(2024, 1, 15),
-          budget_id: budget.id
+          budget_id: budget.id,
+          month_id: month.id
         }
       }
     end
     assert_response :unprocessable_entity
   end
 
-  test 'fails to create a transaction with date outside budget month' do
-    budget = test_budget
+  test 'fails to create a transaction without month_id' do
+    budget, _month = test_budget_and_month
     assert_no_difference('Transaction.count') do
       post budget_transactions_path(budget), headers: auth_headers, params: {
         transaction: {
           description: 'Test Transaction',
           amount: 100,
-          date: Date.new(2024, 2, 15),
+          date: Date.new(2024, 1, 15),
           budget_id: budget.id
         }
       }
     end
-    assert_response :unprocessable_entity
+    # find(nil) will raise ActiveRecord::RecordNotFound, which Rails converts to 404
+    assert_response :not_found
   end
 
   test 'deletes a transaction' do
-    budget = test_budget
+    budget, month = test_budget_and_month
     transaction = Transaction.create(
       description: 'Test Transaction',
       amount: 100,
       date: Date.new(2024, 1, 15),
-      budget_id: budget.id
+      budget_id: budget.id,
+      month_id: month.id
     )
     assert_difference('Transaction.count', -1) do
-      delete transaction_path(transaction), headers: auth_headers
+      delete budget_transaction_path(budget, transaction), headers: auth_headers
     end
     assert_response :ok
   end
 
   test 'fails to delete a non-existent transaction' do
+    budget = test_budget
     assert_no_difference('Transaction.count') do
-      delete transaction_path(id: -1), headers: auth_headers
+      delete budget_transaction_path(budget, id: -1), headers: auth_headers
     end
     assert_response :not_found
   end
@@ -88,8 +93,14 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
   private
 
   def test_budget
-    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    month = user.months.create(month: 1, year: 2024)
-    month.budgets.create(name: 'Test Budget', total: 1000)
+    budget, _month = test_budget_and_month
+    budget
+  end
+
+  def test_budget_and_month
+    user = auth_user
+    month = user.months.find_or_create_by(month: 1, year: 2024)
+    budget = user.budgets.find_or_create_by(name: 'Test Budget') { |b| b.total = 1000 }
+    [budget, month]
   end
 end

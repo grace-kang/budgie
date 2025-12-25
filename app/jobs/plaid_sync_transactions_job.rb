@@ -86,8 +86,10 @@ class PlaidSyncTransactionsJob < ApplicationJob
     transaction = find_or_initialize_transaction(plaid_transaction)
     transaction_date = parse_transaction_date(plaid_transaction)
     budget = find_or_create_budget(plaid_account, plaid_transaction, transaction_date)
+    month = find_or_create_month(plaid_account, transaction_date)
 
-    update_transaction_attributes(transaction, plaid_account, budget, plaid_transaction, transaction_date)
+    transaction_data = { plaid_transaction: plaid_transaction, transaction_date: transaction_date }
+    update_transaction_attributes(transaction, plaid_account, budget, month, transaction_data)
     transaction.save!
   rescue StandardError => e
     Rails.logger.error "Failed to sync transaction #{plaid_transaction.transaction_id}: #{e.message}"
@@ -108,23 +110,33 @@ class PlaidSyncTransactionsJob < ApplicationJob
     end
   end
 
-  def find_or_create_budget(plaid_account, plaid_transaction, transaction_date)
-    month = plaid_account.user.months.find_or_create_by(
+  def find_or_create_budget(plaid_account, plaid_transaction, _transaction_date)
+    budget_name = categorize_transaction(plaid_transaction)
+    plaid_account.user.budgets.find_or_create_by(name: budget_name) { |b| b.total = 0 }
+  end
+
+  def find_or_create_month(plaid_account, transaction_date)
+    plaid_account.user.months.find_or_create_by(
       month: transaction_date.month,
       year: transaction_date.year
     )
-    budget_name = categorize_transaction(plaid_transaction)
-    month.budgets.find_or_create_by(name: budget_name) { |b| b.total = 0 }
   end
 
-  def update_transaction_attributes(transaction, plaid_account, budget, plaid_transaction, transaction_date)
+  def update_transaction_attributes(transaction, plaid_account, budget, month, transaction_data)
+    plaid_transaction = transaction_data[:plaid_transaction]
+    transaction_date = transaction_data[:transaction_date]
     transaction.assign_attributes(
       plaid_account: plaid_account,
       budget: budget,
-      description: plaid_transaction.name || plaid_transaction.merchant_name || 'Unknown',
+      month: month,
+      description: extract_description(plaid_transaction),
       amount: plaid_transaction.amount.abs,
       date: transaction_date
     )
+  end
+
+  def extract_description(plaid_transaction)
+    plaid_transaction.name || plaid_transaction.merchant_name || 'Unknown'
   end
 
   def categorize_transaction(plaid_transaction)
