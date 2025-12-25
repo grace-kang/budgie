@@ -90,14 +90,15 @@ class PlaidAccountTest < ActiveSupport::TestCase
       item_id: 'item-123'
     )
 
-    month = @user.months.create!(month: 1, year: 2024)
-    budget = month.budgets.create!(name: 'Test', total: 1000)
+    month = @user.months.create(month: 1, year: 2024)
+    budget = @user.budgets.create!(name: 'Test', total: 1000)
     transaction = budget.transactions.create!(
       description: 'Test',
       amount: 100,
       date: Date.new(2024, 1, 15),
       plaid_account: account,
-      plaid_transaction_id: 'plaid-123'
+      plaid_transaction_id: 'plaid-123',
+      month: month
     )
 
     account.destroy

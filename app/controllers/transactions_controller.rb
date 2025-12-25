@@ -13,8 +13,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    budget = current_user.budgets.find(params[:budget_id])
-    transaction = budget.transactions.new(transaction_params)
+    transaction = build_transaction
     if transaction.save
       render json: transaction, status: :created
     else
@@ -34,11 +33,28 @@ class TransactionsController < ApplicationController
 
   private
 
+  def build_transaction
+    budget = find_budget
+    month = find_month
+    budget.transactions.new(transaction_params.merge(month: month))
+  end
+
+  def find_budget
+    current_user.budgets.find(params[:budget_id])
+  end
+
+  def find_month
+    current_user.months.find(params[:transaction][:month_id])
+  end
+
   def invalid_budget?
     params[:budget_id].present? && current_user.budgets.find_by(id: params[:budget_id]).nil?
   end
 
   def transaction_params
-    params.expect(transaction: %i[description amount date budget_id])
+    # rubocop:disable Rails/StrongParametersExpect
+    # Using permit explicitly to ensure nested transaction params are permitted for mass assignment
+    params.require(:transaction).permit(:description, :amount, :date, :budget_id, :month_id)
+    # rubocop:enable Rails/StrongParametersExpect
   end
 end

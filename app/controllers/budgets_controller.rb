@@ -4,17 +4,22 @@ class BudgetsController < ApplicationController
   before_action :authorize_request
   before_action :set_budget, only: %i[update destroy]
 
-  def show
-    budget = current_user.budgets.includes(:month, :transactions).find(params[:id])
+  def index
+    budgets = current_user.budgets.includes(:transactions).all
 
-    render json: budget.as_json(include: %i[month transactions]), status: :ok
+    render json: budgets.as_json(include: :transactions), status: :ok
+  end
+
+  def show
+    budget = current_user.budgets.includes(:transactions).find(params[:id])
+
+    render json: budget.as_json(include: :transactions), status: :ok
   end
 
   def edit; end
 
   def create
-    month = current_user.months.find(params[:month_id])
-    budget = month.budgets.build(budget_params)
+    budget = current_user.budgets.build(budget_params)
     if budget.save
       render json: budget, status: :created
     else

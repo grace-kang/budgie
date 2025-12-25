@@ -99,13 +99,14 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
 
   test 'handles removed transactions' do
     month = @user.months.create!(month: Time.zone.today.month, year: Time.zone.today.year)
-    budget = month.budgets.create!(name: 'Other', total: 0)
+    budget = @user.budgets.create!(name: 'Other', total: 0)
     budget.transactions.create!(
       description: 'Old Transaction',
       amount: 100,
       date: Time.zone.today,
       plaid_transaction_id: 'txn-removed-123',
-      plaid_account: @plaid_account
+      plaid_account: @plaid_account,
+      month: month
     )
 
     mock_removed = RemovedTransaction.new(transaction_id: 'txn-removed-123')
