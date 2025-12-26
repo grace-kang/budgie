@@ -24,5 +24,8 @@ Rails
 
     get '/auth/:provider/callback', to: 'sessions#create'
 
+    get '/user/preferences', to: 'users#preferences'
+    patch '/user/preferences', to: 'users#update_preferences'
+
     get '*path', to: 'spa#index', constraints: ->(req) { !req.xhr? && req.format.html? }
   end
