@@ -1,5 +1,6 @@
 import React from 'react';
 import GoogleIcon from '/icons/google-logo.svg';
+import Logo from './Logo';
 
 export default function SignIn() {
   const csrfToken =
@@ -8,6 +9,9 @@ export default function SignIn() {
   return (
     <div className="signin-container">
       <form method="post" action="/auth/google_oauth2" className="signin-card">
+        <div className="signin-logo">
+          <Logo className="signin-logo-icon" size={64} />
+        </div>
         <h1 className="signin-title">Welcome Back</h1>
         <p className="signin-subtitle">Sign in to your account using Google</p>
 
