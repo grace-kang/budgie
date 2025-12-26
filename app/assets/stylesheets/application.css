@@ -173,6 +173,40 @@ input[type='submit']:hover {
   box-sizing: border-box;
 }
 
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+/* Logo theme colors */
+.logo-bg {
+  fill: var(--color-primary);
+  transition: fill 0.2s ease;
+}
+
+.logo-bird {
+  fill: #ffffff;
+}
+
+.logo-eye {
+  fill: var(--color-primary);
+  transition: fill 0.2s ease;
+}
+
 body > .app-header {
   display: flex;
   justify-content: center;
@@ -186,12 +220,29 @@ body > .app-header {
   z-index: 100;
 }
 
+body > .app-header .app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+body > .app-header .logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+
+body > .app-header .app-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 body > .app-header h1 {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
   color: var(--color-primary);
-  text-align: center;
 }
 
 .app-main {
@@ -510,6 +561,10 @@ body > .app-header h1 {
     font-size: 1.5rem;
   }
 
+  .logo-text {
+    display: none;
+  }
+
   .view-toggle-button {
     padding: 0.5rem 0.5rem;
     font-size: 0.8125rem;
@@ -529,6 +584,13 @@ body > .app-header h1 {
   .app-header-content {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .app-logo {
+    order: 0;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
   }
 
   body > .app-header h1 {

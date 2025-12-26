@@ -6,6 +6,7 @@ import AuthCallback from './AuthCallback';
 import TransactionView from './TransactionView';
 import PlaidAccounts from './PlaidAccounts';
 import ThemeSelector from './ThemeSelector';
+import Logo from './Logo';
 import { useTheme } from '../hooks/useTheme';
 
 type ViewType = 'months' | 'transactions' | 'accounts';
