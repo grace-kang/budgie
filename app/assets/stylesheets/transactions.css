@@ -1,6 +1,4 @@
 .transaction-view {
-  padding: 0 1rem;
-
   .transactions {
     display: flex;
     flex-direction: column;
