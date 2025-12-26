@@ -5,11 +5,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthCallback from './AuthCallback';
 import TransactionView from './TransactionView';
 import PlaidAccounts from './PlaidAccounts';
+import ThemeSelector from './ThemeSelector';
+import { useTheme } from '../hooks/useTheme';
 
 type ViewType = 'months' | 'transactions' | 'accounts';
 
 function MainView() {
   const [view, setView] = useState<ViewType>('months');
+  useTheme(); // Initialize theme on mount
 
   return (
     <div>
@@ -32,6 +35,9 @@ function MainView() {
         >
           Bank Accounts
         </button>
+        <div style={{ marginLeft: 'auto' }}>
+          <ThemeSelector />
+        </div>
       </div>
       {view === 'months' ? (
         <Months />
