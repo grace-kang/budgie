@@ -19,7 +19,6 @@ class UsersController < ApplicationController
   private
 
   def preferences_params
-    params.require(:preferences).permit(:theme)
+    params.expect(preferences: [:theme])
   end
 end
-

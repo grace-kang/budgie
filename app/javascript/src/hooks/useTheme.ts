@@ -64,4 +64,3 @@ export function useTheme() {
     isLoading,
   };
 }
-

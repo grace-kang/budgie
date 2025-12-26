@@ -15,37 +15,41 @@ function MainView() {
   useTheme(); // Initialize theme on mount
 
   return (
-    <div>
-      <div className="view-toggle-container">
-        <button
-          onClick={() => setView('months')}
-          className={`view-toggle-button ${view === 'months' ? 'active' : ''}`}
-        >
-          Months
-        </button>
-        <button
-          onClick={() => setView('transactions')}
-          className={`view-toggle-button ${view === 'transactions' ? 'active' : ''}`}
-        >
-          Transactions
-        </button>
-        <button
-          onClick={() => setView('accounts')}
-          className={`view-toggle-button ${view === 'accounts' ? 'active' : ''}`}
-        >
-          Bank Accounts
-        </button>
-        <div style={{ marginLeft: 'auto' }}>
+    <div className="main-view">
+      <header className="app-header">
+        <div className="app-header-content">
+          <div className="view-toggle-group">
+            <button
+              onClick={() => setView('months')}
+              className={`view-toggle-button ${view === 'months' ? 'active' : ''}`}
+            >
+              Months
+            </button>
+            <button
+              onClick={() => setView('transactions')}
+              className={`view-toggle-button ${view === 'transactions' ? 'active' : ''}`}
+            >
+              Transactions
+            </button>
+            <button
+              onClick={() => setView('accounts')}
+              className={`view-toggle-button ${view === 'accounts' ? 'active' : ''}`}
+            >
+              Bank Accounts
+            </button>
+          </div>
           <ThemeSelector />
         </div>
-      </div>
-      {view === 'months' ? (
-        <Months />
-      ) : view === 'transactions' ? (
-        <TransactionView />
-      ) : (
-        <PlaidAccounts />
-      )}
+      </header>
+      <main className="app-main">
+        {view === 'months' ? (
+          <Months />
+        ) : view === 'transactions' ? (
+          <TransactionView />
+        ) : (
+          <PlaidAccounts />
+        )}
+      </main>
     </div>
   );
 }
