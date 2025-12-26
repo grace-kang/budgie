@@ -25,6 +25,33 @@
   text-align: center;
 }
 
+/* Logo */
+.signin-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.signin-logo-icon {
+  width: 4rem;
+  height: 4rem;
+}
+
+/* Logo theme colors for signin */
+.signin-logo-icon .logo-bg {
+  fill: var(--color-primary);
+  transition: fill 0.2s ease;
+}
+
+.signin-logo-icon .logo-bird {
+  fill: #ffffff;
+}
+
+.signin-logo-icon .logo-eye {
+  fill: var(--color-primary);
+  transition: fill 0.2s ease;
+}
+
 /* Text */
 .signin-title {
   font-size: 1.75rem;
