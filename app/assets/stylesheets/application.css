@@ -205,7 +205,7 @@ input[type='submit']:hover {
   transition: fill 0.2s ease;
 }
 
-body > .app-header {
+.title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -218,25 +218,19 @@ body > .app-header {
   z-index: 100;
 }
 
-body > .app-header .app-logo {
+.title .app-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-body > .app-header .logo-icon {
+.title .logo-icon {
   width: 2.5rem;
   height: 2.5rem;
   flex-shrink: 0;
 }
 
-body > .app-header .app-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-body > .app-header h1 {
+.title h1 {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
@@ -527,11 +521,11 @@ body > .app-header h1 {
     gap: 0.75rem;
   }
 
-  body > .app-header {
+  .title {
     padding: 1.25rem 1rem;
   }
 
-  body > .app-header h1 {
+  .title h1 {
     font-size: 1.75rem;
   }
 
@@ -555,7 +549,7 @@ body > .app-header h1 {
 }
 
 @media (max-width: 600px) {
-  body > .app-header h1 {
+  .title h1 {
     font-size: 1.5rem;
   }
 
@@ -591,7 +585,7 @@ body > .app-header h1 {
     margin-bottom: 0.5rem;
   }
 
-  body > .app-header h1 {
+  .title h1 {
     font-size: 1.25rem;
   }
 
