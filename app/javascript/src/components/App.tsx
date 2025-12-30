@@ -17,7 +17,13 @@ function MainView() {
 
   return (
     <div className="main-view">
-      <header className="app-header">
+      <div className="app-header">
+        <div className="title">
+          <div className="app-logo">
+            <Logo className="logo-icon" size={40} />
+            <h1>budgie</h1>
+          </div>
+        </div>
         <div className="app-header-content">
           <div className="view-toggle-group">
             <button
@@ -41,7 +47,7 @@ function MainView() {
           </div>
           <ThemeSelector />
         </div>
-      </header>
+      </div>
       <main className="app-main">
         {view === 'months' ? (
           <Months />
