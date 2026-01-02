@@ -15,18 +15,13 @@ export default function MonthBudgets({ month }: { month: Month }) {
   const createBudget = useCreateBudget();
   const deleteMonth = useDeleteMonth(month.id);
 
-  // Filter budgets that have transactions in this month
-  const monthBudgets = useMemo(() => {
-    return allBudgets.filter((budget) => budget.transactions?.some((t) => t.month_id === month.id));
-  }, [allBudgets, month.id]);
-
   const used = useMemo(() => {
     return month.transactions?.reduce((s, t) => s + Number(t.amount), 0) || 0;
   }, [month.transactions]);
 
   const limit = useMemo(() => {
-    return monthBudgets.reduce((s, b) => s + Number(b.total), 0);
-  }, [monthBudgets]);
+    return allBudgets.reduce((s, b) => s + Number(b.total), 0);
+  }, [allBudgets]);
 
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
@@ -49,7 +44,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
         </div>
       </div>
 
-      {monthBudgets.map((budget) => (
+      {allBudgets.map((budget) => (
         <Budget key={budget.id} month={month} budget={budget} />
       ))}
 
