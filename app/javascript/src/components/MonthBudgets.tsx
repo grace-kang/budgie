@@ -50,7 +50,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
       </div>
 
       {monthBudgets.map((budget) => (
-        <Budget key={budget.id} budget={budget} />
+        <Budget key={budget.id} month={month} budget={budget} />
       ))}
 
       <div className={showForm ? 'hide' : 'create-budget-button show'}>
