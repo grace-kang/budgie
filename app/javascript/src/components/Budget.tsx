@@ -1,20 +1,22 @@
 import { useState } from 'react';
 import { useDeleteBudget, useUpdateBudget } from '../hooks/useBudgets';
-import { Budget } from '../types';
+import { Budget, Month } from '../types';
 import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
 import { BudgetModal } from './BudgetModal';
 import { round } from '../helpers/money';
 
-export default function Budgets({ budget }: { budget: Budget }) {
+export default function Budgets({ month, budget }: { month: Month; budget: Budget }) {
   const [editing, setEditing] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<number | null>(null);
 
   const deleteBudget = useDeleteBudget();
   const updateBudget = useUpdateBudget(budget.id);
 
-  const sum = budget.transactions?.reduce((s, t) => s + Number(t.amount), 0);
+  const sum = month.transactions
+    ?.filter((t) => t.budget_id === budget.id)
+    .reduce((s, t) => s + Number(t.amount), 0);
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
@@ -65,7 +67,11 @@ export default function Budgets({ budget }: { budget: Budget }) {
       </div>
 
       {selectedBudget && (
-        <BudgetModal budgetId={selectedBudget} onClose={() => setSelectedBudget(null)} />
+        <BudgetModal
+          month={month}
+          budgetId={selectedBudget}
+          onClose={() => setSelectedBudget(null)}
+        />
       )}
     </>
   );
