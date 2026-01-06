@@ -1,5 +1,3 @@
-import React from 'react';
-
 import TrashIcon from '/icons/trash.svg';
 
 import { Budget, Transaction, TransactionParams, Month } from '../types';
@@ -8,7 +6,7 @@ import { useCreateTransaction, useDeleteTransaction } from '../hooks/useTransact
 import { useMonths } from '../hooks/useMonths';
 import { round } from '../helpers/money';
 
-export default function Transactions({
+export default function BudgetTransactions({
   budget,
   transactions,
 }: {
