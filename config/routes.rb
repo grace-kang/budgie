@@ -12,7 +12,7 @@ Rails
       resources :transactions, only: %i[index create destroy]
     end
 
-    resources :transactions, only: [:index]
+    resources :transactions, only: %i[index update]
 
     # Plaid integration routes
     post '/plaid/link_token', to: 'plaid#create_link_token'

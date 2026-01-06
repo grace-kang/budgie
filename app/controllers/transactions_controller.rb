@@ -21,6 +21,20 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def update
+    @transaction = current_user.transactions.find(params[:id])
+    params_to_update = transaction_params
+
+    return render json: { error: 'Budget not found' }, status: :not_found unless valid_budget_update?(params_to_update)
+    return render json: { error: 'Month not found' }, status: :not_found unless valid_month_update?(params_to_update)
+
+    if @transaction.update(params_to_update)
+      render json: @transaction, status: :ok
+    else
+      render json: @transaction.errors, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @transaction = current_user.transactions.find(params[:id])
     @budget = current_user.budgets.find(@transaction.budget_id)
@@ -56,5 +70,19 @@ class TransactionsController < ApplicationController
     # Using permit explicitly to ensure nested transaction params are permitted for mass assignment
     params.require(:transaction).permit(:description, :amount, :date, :budget_id, :month_id)
     # rubocop:enable Rails/StrongParametersExpect
+  end
+
+  def valid_budget_update?(params_to_update)
+    return true if params_to_update[:budget_id].blank?
+    return true if params_to_update[:budget_id].to_i == @transaction.budget_id
+
+    current_user.budgets.exists?(id: params_to_update[:budget_id])
+  end
+
+  def valid_month_update?(params_to_update)
+    return true if params_to_update[:month_id].blank?
+    return true if params_to_update[:month_id].to_i == @transaction.month_id
+
+    current_user.months.exists?(id: params_to_update[:month_id])
   end
 end
