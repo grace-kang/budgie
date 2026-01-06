@@ -1,5 +1,5 @@
 import { getBudget } from '../hooks/useBudgets';
-import Transactions from './Transactions';
+import BudgetTransactions from './BudgetTransactions';
 import { Month } from '../types';
 
 export function BudgetModal({
@@ -22,7 +22,7 @@ export function BudgetModal({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>{budget?.name}</h2>
-        <Transactions budget={budget!} transactions={transactions!} />
+        <BudgetTransactions budget={budget!} transactions={transactions!} />
       </div>
     </div>
   );
