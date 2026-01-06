@@ -61,7 +61,7 @@ export default function BudgetTransactions({
             <span className="transaction-cell">${round(transaction.amount)}</span>
             <span className="transaction-cell">{transaction.date}</span>
             <button onClick={() => handleDelete(transaction.id)} aria-label="Delete transaction">
-              <img className="icon-button" src={TrashIcon} alt=" Delete" />
+              <img className="icon-button" src={TrashIcon} alt="Delete" />
             </button>
           </div>
         ))}

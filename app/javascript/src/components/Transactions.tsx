@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import TrashIcon from '/icons/trash.svg';
 import AddIcon from '/icons/add.svg';
+import EditIcon from '/icons/edit.svg';
 
 import { Transaction, Budget } from '../types';
 import { round } from '../helpers/money';
+import TransactionEditForm from './TransactionEditForm';
 
 type TransactionsProps = {
   transactions: (Transaction & { budgetName: string })[];
@@ -18,6 +20,14 @@ type TransactionsProps = {
   onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onFormSubmit: (e: React.FormEvent) => void;
   onDelete: (transaction: Transaction) => void;
+  onUpdateTransaction?: (data: {
+    id: number;
+    budget_id: number;
+    description: string;
+    amount: number;
+    date: string;
+    month_id: number;
+  }) => void;
 };
 
 export default function Transactions({
@@ -27,7 +37,9 @@ export default function Transactions({
   onFormChange,
   onFormSubmit,
   onDelete,
+  onUpdateTransaction,
 }: TransactionsProps) {
+  const [editingTransactionId, setEditingTransactionId] = useState<number | null>(null);
   const sorted = [...transactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
@@ -90,23 +102,52 @@ export default function Transactions({
           </div>
         ) : (
           sorted.map((transaction) => (
-            <div className="transaction-row" key={transaction.id}>
-              <span className="transaction-cell transaction-budget">{transaction.budgetName}</span>
-              <span className="transaction-cell">{transaction.description}</span>
-              <span className="transaction-cell transaction-amount">
-                ${round(transaction.amount)}
-              </span>
-              <span className="transaction-cell transaction-date">{transaction.date}</span>
-              <div className="transaction-actions">
-                <button onClick={() => onDelete(transaction)} aria-label="Delete transaction">
-                  <img className="icon-button" src={TrashIcon} alt="Delete" />
-                </button>
+            <React.Fragment key={transaction.id}>
+              <div
+                className={`transaction-row ${editingTransactionId === transaction.id ? 'hide' : ''}`}
+              >
+                <span className="transaction-cell transaction-budget">
+                  {transaction.budgetName}
+                </span>
+                <span className="transaction-cell">{transaction.description}</span>
+                <span className="transaction-cell transaction-amount">
+                  ${round(transaction.amount)}
+                </span>
+                <span className="transaction-cell transaction-date">{transaction.date}</span>
+                <div className="transaction-actions">
+                  {onUpdateTransaction && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingTransactionId(transaction.id)}
+                      aria-label="Edit transaction"
+                    >
+                      <img className="icon-button" src={EditIcon} alt="Edit" />
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => onDelete(transaction)}
+                    aria-label="Delete transaction"
+                  >
+                    <img className="icon-button" src={TrashIcon} alt="Delete" />
+                  </button>
+                </div>
               </div>
-            </div>
+
+              <div className={editingTransactionId === transaction.id ? '' : 'hide'}>
+                {onUpdateTransaction && (
+                  <TransactionEditForm
+                    transaction={transaction}
+                    budgets={budgets}
+                    onSubmit={onUpdateTransaction}
+                    onClose={() => setEditingTransactionId(null)}
+                  />
+                )}
+              </div>
+            </React.Fragment>
           ))
         )}
       </div>
     </div>
   );
 }
-
