@@ -51,7 +51,9 @@ export default function BudgetForm({ initialBudget, onSubmit, onClose }: Props) 
           <button type="submit"></button>
         </div>
 
-        <img src={CloseIcon} className="icon-button" alt="Close" onClick={onClose} />
+        <button type="button" className="icon-button" aria-label="Close" onClick={onClose}>
+          <img src={CloseIcon} alt="" />
+        </button>
       </div>
     </form>
   );

@@ -5,6 +5,7 @@ import {
   useAllTransactions,
   useCreateTransaction,
   useDeleteTransaction,
+  useUpdateTransaction,
 } from '../hooks/useTransactions';
 import { useMonths } from '../hooks/useMonths';
 import { useBudgets } from '../hooks/useBudgets';
@@ -35,6 +36,7 @@ export default function TransactionView() {
   const [createBudgetId, setCreateBudgetId] = useState<number>(budgets[0]?.id ?? 0);
   const createTransaction = useCreateTransaction(createBudgetId);
   const getDeleteTransaction = (budgetId: number) => useDeleteTransaction(budgetId);
+  const updateTransaction = useUpdateTransaction();
 
   const transactionsWithBudget = transactions.map((t) => ({
     ...t,
@@ -90,6 +92,17 @@ export default function TransactionView() {
     getDeleteTransaction(transaction.budget_id).mutate(transaction.id);
   };
 
+  const handleUpdateTransaction = (data: {
+    id: number;
+    budget_id: number;
+    description: string;
+    amount: number;
+    date: string;
+    month_id: number;
+  }) => {
+    updateTransaction.mutate(data);
+  };
+
   return (
     <Transactions
       transactions={transactionsWithBudget}
@@ -98,6 +111,7 @@ export default function TransactionView() {
       onFormChange={handleFormChange}
       onFormSubmit={handleFormSubmit}
       onDelete={handleDelete}
+      onUpdateTransaction={handleUpdateTransaction}
     />
   );
 }
