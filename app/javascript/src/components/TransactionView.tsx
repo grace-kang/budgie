@@ -10,6 +10,7 @@ import {
 import { useMonths } from '../hooks/useMonths';
 import { useBudgets } from '../hooks/useBudgets';
 import Transactions from './Transactions';
+import { getMonthFromDate } from '../helpers/date';
 
 const getTodayDate = () => {
   const today = new Date();
@@ -55,18 +56,10 @@ export default function TransactionView() {
     }
   };
 
-  // Find month based on date
-  const getMonthFromDate = (dateStr: string) => {
-    const dateObj = new Date(dateStr);
-    return months.find(
-      (m) => m.month === dateObj.getMonth() + 1 && m.year === dateObj.getFullYear(),
-    );
-  };
-
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.description || !form.amount || !form.date || !form.budgetId) return;
-    const selectedMonth = getMonthFromDate(form.date);
+    const selectedMonth = getMonthFromDate(form.date, months);
     if (!selectedMonth) {
       // If no month found, we can't create the transaction
       return;

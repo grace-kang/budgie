@@ -3,6 +3,7 @@ import { useState } from 'react';
 import AddIcon from '/icons/add.svg';
 import { Budget, TransactionParams, Month } from '../types';
 import { useMonths } from '../hooks/useMonths';
+import { getMonthFromDate } from '../helpers/date';
 
 type Props = {
   budget: Budget;
@@ -34,17 +35,9 @@ export default function TransactionForm({
     transaction.date ?? defaultDate.toISOString().slice(0, 10),
   );
 
-  // Find month based on date
-  const getMonthFromDate = (dateStr: string): Month | undefined => {
-    const dateObj = new Date(dateStr);
-    return months.find(
-      (m) => m.month === dateObj.getMonth() + 1 && m.year === dateObj.getFullYear(),
-    );
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedMonth = month || getMonthFromDate(date);
+    const selectedMonth = month || getMonthFromDate(date, months);
     if (!selectedMonth) {
       // If no month found, we can't create the transaction
       return;

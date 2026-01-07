@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import CloseIcon from '/icons/close.svg';
-import { Transaction, Budget, Month } from '../types';
+import { Transaction, Budget } from '../types';
 import { useMonths } from '../hooks/useMonths';
+import { getMonthFromDate } from '../helpers/date';
 
 type Props = {
   transaction: Transaction;
@@ -25,18 +26,10 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
   const [amount, setAmount] = useState<string>(String(transaction.amount));
   const [date, setDate] = useState<string>(transaction.date);
 
-  // Find month based on date
-  const getMonthFromDate = (dateStr: string): Month | undefined => {
-    const dateObj = new Date(dateStr);
-    return months.find(
-      (m) => m.month === dateObj.getMonth() + 1 && m.year === dateObj.getFullYear(),
-    );
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description || !amount || !date || !budgetId) return;
-    const selectedMonth = getMonthFromDate(date);
+    const selectedMonth = getMonthFromDate(date, months);
     if (!selectedMonth) {
       // If no month found, we can't update the transaction
       return;
