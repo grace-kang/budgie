@@ -4,12 +4,10 @@ import { Budget, Month } from '../types';
 import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
 import TrashIcon from '/icons/trash.svg';
-import { BudgetModal } from './BudgetModal';
 import { round } from '../helpers/money';
 
 export default function Budgets({ month, budget }: { month: Month; budget: Budget }) {
   const [editing, setEditing] = useState(false);
-  const [selectedBudget, setSelectedBudget] = useState<number | null>(null);
 
   const deleteBudget = useDeleteBudget();
   const updateBudget = useUpdateBudget(budget.id);
@@ -20,7 +18,6 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
   const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
-  const onBudgetClick = () => setSelectedBudget(budget.id);
   const onEditClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setEditing((e) => !e);
@@ -32,13 +29,7 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
 
   return (
     <>
-      <div
-        key={budget.id}
-        className={`budget ${bgClass} ${editing ? 'hide' : ''}`}
-        onClick={onBudgetClick}
-        role="button"
-        tabIndex={0}
-      >
+      <div key={budget.id} className={`budget ${bgClass} ${editing ? 'hide' : ''}`}>
         <span>{budget.name}</span>
 
         <div className="budget-total">
@@ -65,14 +56,6 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
           onClose={() => setEditing(false)}
         />
       </div>
-
-      {selectedBudget && (
-        <BudgetModal
-          month={month}
-          budgetId={selectedBudget}
-          onClose={() => setSelectedBudget(null)}
-        />
-      )}
     </>
   );
 }
