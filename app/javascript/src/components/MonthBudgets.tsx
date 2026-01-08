@@ -26,7 +26,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
       <div className="month-header">
-        <h3>
+        <h3 className="month-title">
           {new Date(month.year, month.month - 1)
             .toLocaleString(undefined, {
               month: 'long',

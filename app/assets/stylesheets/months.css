@@ -41,6 +41,10 @@
   }
 }
 
+.month-title {
+  white-space: nowrap;
+}
+
 .month-total {
   display: flex;
   white-space: nowrap;
