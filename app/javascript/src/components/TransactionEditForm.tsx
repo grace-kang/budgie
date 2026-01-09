@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import CloseIcon from '/icons/close.svg';
 import { Transaction, Budget } from '../types';
-import { useMonths } from '../hooks/useMonths';
-import { getMonthFromDate } from '../helpers/date';
 
 type Props = {
   transaction: Transaction;
@@ -14,13 +12,12 @@ type Props = {
     description: string;
     amount: number;
     date: string;
-    month_id: number;
+    // month_id not needed - backend derives it from date
   }) => void;
   onClose: () => void;
 };
 
 export default function TransactionEditForm({ transaction, budgets, onSubmit, onClose }: Props) {
-  const { data: months = [] } = useMonths();
   const [budgetId, setBudgetId] = useState<number>(transaction.budget_id);
   const [description, setDescription] = useState<string>(transaction.description);
   const [amount, setAmount] = useState<string>(String(transaction.amount));
@@ -29,18 +26,12 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description || !amount || !date || !budgetId) return;
-    const selectedMonth = getMonthFromDate(date, months);
-    if (!selectedMonth) {
-      // If no month found, we can't update the transaction
-      return;
-    }
     onSubmit({
       id: transaction.id,
       budget_id: budgetId,
       description,
       amount: Number(amount),
       date,
-      month_id: selectedMonth.id,
     });
     onClose();
   };

@@ -7,10 +7,8 @@ import {
   useDeleteTransaction,
   useUpdateTransaction,
 } from '../hooks/useTransactions';
-import { useMonths } from '../hooks/useMonths';
 import { useBudgets } from '../hooks/useBudgets';
 import Transactions from './Transactions';
-import { getMonthFromDate } from '../helpers/date';
 
 const getTodayDate = () => {
   const today = new Date();
@@ -19,7 +17,6 @@ const getTodayDate = () => {
 
 export default function TransactionView() {
   const { data: transactions = [] } = useAllTransactions();
-  const { data: months = [] } = useMonths();
   const { data: budgets = [] } = useBudgets();
 
   const [form, setForm] = useState<{
@@ -59,16 +56,10 @@ export default function TransactionView() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.description || !form.amount || !form.date || !form.budgetId) return;
-    const selectedMonth = getMonthFromDate(form.date, months);
-    if (!selectedMonth) {
-      // If no month found, we can't create the transaction
-      return;
-    }
     const params: TransactionParams = {
       description: form.description,
       amount: Number(form.amount),
       date: form.date,
-      month_id: selectedMonth.id,
     };
     createTransaction.mutate(params, {
       onSuccess: () =>
@@ -91,7 +82,6 @@ export default function TransactionView() {
     description: string;
     amount: number;
     date: string;
-    month_id: number;
   }) => {
     updateTransaction.mutate(data);
   };

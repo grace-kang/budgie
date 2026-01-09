@@ -51,22 +51,6 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'fails to create a transaction without month_id' do
-    budget, _month = test_budget_and_month
-    assert_no_difference('Transaction.count') do
-      post budget_transactions_path(budget), headers: auth_headers, params: {
-        transaction: {
-          description: 'Test Transaction',
-          amount: 100,
-          date: Date.new(2024, 1, 15),
-          budget_id: budget.id
-        }
-      }
-    end
-    # find(nil) will raise ActiveRecord::RecordNotFound, which Rails converts to 404
-    assert_response :not_found
-  end
-
   test 'deletes a transaction' do
     budget, month = test_budget_and_month
     transaction = Transaction.create(

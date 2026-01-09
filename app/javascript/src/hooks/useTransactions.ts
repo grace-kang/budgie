@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../apiClient';
-import { Transaction } from '../types';
+import { Transaction, TransactionParams } from '../types';
 
 export function useAllTransactions() {
   return useQuery({
@@ -11,7 +11,7 @@ export function useAllTransactions() {
 export function useCreateTransaction(budgetId: number) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { description: string; amount: number; date: string; month_id: number }) =>
+    mutationFn: (data: TransactionParams) =>
       apiFetch<Transaction>(`/budgets/${budgetId}/transactions`, {
         method: 'POST',
         body: JSON.stringify({ transaction: data }),
@@ -45,11 +45,10 @@ export function useUpdateTransaction(budgetId?: number) {
   return useMutation({
     mutationFn: (data: {
       id: number;
-      description?: string;
-      amount?: number;
-      date?: string;
-      budget_id?: number;
-      month_id?: number;
+      budget_id: number;
+      description: string;
+      amount: number;
+      date: string;
     }) =>
       apiFetch<Transaction>(`/transactions/${data.id}`, {
         method: 'PUT',
