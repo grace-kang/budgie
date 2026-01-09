@@ -1,13 +1,10 @@
 import { useState } from 'react';
 
 import AddIcon from '/icons/add.svg';
-import { Budget, TransactionParams, Month } from '../types';
-import { useMonths } from '../hooks/useMonths';
-import { getMonthFromDate } from '../helpers/date';
+import { Budget, TransactionParams } from '../types';
 
 type Props = {
   budget: Budget;
-  month?: Month;
   transaction?: {
     description?: string;
     amount?: number;
@@ -19,12 +16,10 @@ type Props = {
 
 export default function TransactionForm({
   budget,
-  month,
   transaction = {},
   errors = [],
   onSubmit,
 }: Props) {
-  const { data: months = [] } = useMonths();
   const [description, setDescription] = useState<string>(transaction.description ?? '');
   const [amount, setAmount] = useState<string>(
     transaction.amount != null ? String(transaction.amount) : '',
@@ -37,16 +32,10 @@ export default function TransactionForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedMonth = month || getMonthFromDate(date, months);
-    if (!selectedMonth) {
-      // If no month found, we can't create the transaction
-      return;
-    }
     onSubmit({
       description,
       amount: Number(amount || 0),
       date,
-      month_id: selectedMonth.id,
     });
     setDescription('');
     setAmount('');

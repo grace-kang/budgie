@@ -29,7 +29,6 @@ export type TransactionParams = {
   description: string;
   amount: number;
   date: string;
-  month_id: number;
 };
 
 export type PlaidAccount = {

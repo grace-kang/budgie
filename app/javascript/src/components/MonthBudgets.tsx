@@ -4,8 +4,6 @@ import { Month } from '../types';
 import Budget from './Budget';
 import BudgetForm from './BudgetForm';
 import AddIcon from '/icons/add.svg';
-import TrashIcon from '/icons/trash.svg';
-import { useDeleteMonth } from '../hooks/useMonths';
 import { round } from '../helpers/money';
 
 export default function MonthBudgets({ month }: { month: Month }) {
@@ -13,7 +11,6 @@ export default function MonthBudgets({ month }: { month: Month }) {
 
   const { data: allBudgets = [] } = useBudgets();
   const createBudget = useCreateBudget();
-  const deleteMonth = useDeleteMonth(month.id);
 
   const used = useMemo(() => {
     return month.transactions?.reduce((s, t) => s + Number(t.amount), 0) || 0;
@@ -36,11 +33,6 @@ export default function MonthBudgets({ month }: { month: Month }) {
         </h3>
         <div className="month-total">
           ${round(used)} / ${round(limit)}
-        </div>
-        <div className="month-actions">
-          <button type="button" onClick={() => deleteMonth.mutate()} aria-label="Delete month">
-            <img src={TrashIcon} className="icon-button" alt="Delete Month" />
-          </button>
         </div>
       </div>
 
