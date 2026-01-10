@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CloseIcon from '/icons/close.svg';
 
@@ -15,12 +15,23 @@ export default function BudgetForm({ initialBudget, onSubmit, onClose }: Props) 
   const [name, setName] = useState(initialBudget?.name ?? '');
   const [total, setTotal] = useState<number | ''>(initialBudget?.total ?? '');
 
+  // Update form state when initialBudget changes
+  useEffect(() => {
+    if (initialBudget) {
+      setName(initialBudget.name ?? '');
+      setTotal(initialBudget.total ?? '');
+    }
+  }, [initialBudget]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !total) return;
     onSubmit({ name, total });
-    setName('');
-    setTotal('');
+    // Only clear form if creating (no initialBudget), not when editing
+    if (!initialBudget) {
+      setName('');
+      setTotal('');
+    }
     onClose();
   };
 
