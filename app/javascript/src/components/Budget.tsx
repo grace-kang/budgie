@@ -19,6 +19,12 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
     return customLimit ? customLimit.limit : budget.total;
   }, [budget, month.id]);
 
+  // Memoize initialBudget to prevent unnecessary re-renders
+  const initialBudget = useMemo(
+    () => ({ name: budget.name, total: monthLimit }),
+    [budget.name, monthLimit],
+  );
+
   const sum =
     month.transactions
       ?.filter((t) => t.budget_id === budget.id)
@@ -59,7 +65,7 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
 
       <div className={editing ? 'show' : 'hide'}>
         <BudgetForm
-          initialBudget={{ name: budget.name, total: monthLimit }}
+          initialBudget={initialBudget}
           onSubmit={(params) => {
             // Update budget name if it changed
             const nameChanged = params.name !== budget.name;
