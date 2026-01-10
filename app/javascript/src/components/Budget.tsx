@@ -41,6 +41,44 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
     deleteBudget.mutate(budget.id);
   };
 
+  const handleBudgetUpdate = (params: { name: string; total: number }) => {
+    const nameChanged = params.name !== budget.name;
+    const limitChanged = params.total !== monthLimit;
+
+    if (!nameChanged && !limitChanged) {
+      // Nothing changed
+      setEditing(false);
+      return;
+    }
+
+    if (nameChanged && limitChanged) {
+      // Update both name and limit
+      updateBudget.mutate(
+        { name: params.name, total: budget.total },
+        {
+          onSuccess: () => {
+            updateCustomLimit.mutate(params.total, {
+              onSuccess: () => setEditing(false),
+            });
+          },
+        },
+      );
+    } else if (nameChanged) {
+      // Only update name
+      updateBudget.mutate(
+        { name: params.name, total: budget.total },
+        {
+          onSuccess: () => setEditing(false),
+        },
+      );
+    } else if (limitChanged) {
+      // Only update limit
+      updateCustomLimit.mutate(params.total, {
+        onSuccess: () => setEditing(false),
+      });
+    }
+  };
+
   return (
     <>
       <div key={budget.id} className={`budget ${bgClass} ${editing ? 'hide' : ''}`}>
@@ -66,41 +104,7 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
       <div className={editing ? 'show' : 'hide'}>
         <BudgetForm
           initialBudget={initialBudget}
-          onSubmit={(params) => {
-            // Update budget name if it changed
-            const nameChanged = params.name !== budget.name;
-            const limitChanged = params.total !== monthLimit;
-
-            if (nameChanged && limitChanged) {
-              // Update both name and limit
-              updateBudget.mutate(
-                { name: params.name, total: budget.total },
-                {
-                  onSuccess: () => {
-                    updateCustomLimit.mutate(params.total, {
-                      onSuccess: () => setEditing(false),
-                    });
-                  },
-                },
-              );
-            } else if (nameChanged) {
-              // Only update name
-              updateBudget.mutate(
-                { name: params.name, total: budget.total },
-                {
-                  onSuccess: () => setEditing(false),
-                },
-              );
-            } else if (limitChanged) {
-              // Only update limit
-              updateCustomLimit.mutate(params.total, {
-                onSuccess: () => setEditing(false),
-              });
-            } else {
-              // Nothing changed
-              setEditing(false);
-            }
-          }}
+          onSubmit={handleBudgetUpdate}
           onClose={() => setEditing(false)}
         />
       </div>
