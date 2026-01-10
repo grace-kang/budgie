@@ -35,6 +35,32 @@ class MonthTest < ActiveSupport::TestCase
     assert_includes month.transactions, transaction2
   end
 
+  test 'should have many custom_budget_limits' do
+    user = test_user
+    month = user.months.create(month: 6, year: 2024)
+    budget1 = user.budgets.create(name: 'June Budget', total: 1000)
+    budget2 = user.budgets.create(name: 'Another Budget', total: 2000)
+    limit1 = month.custom_budget_limits.create(budget: budget1, limit: 500)
+    limit2 = month.custom_budget_limits.create(budget: budget2, limit: 600)
+
+    assert_equal 2, month.custom_budget_limits.count
+    assert_includes month.custom_budget_limits, limit1
+    assert_includes month.custom_budget_limits, limit2
+  end
+
+  test 'should have many budgets through custom_budget_limits' do
+    user = test_user
+    month = user.months.create(month: 6, year: 2024)
+    budget1 = user.budgets.create(name: 'June Budget', total: 1000)
+    budget2 = user.budgets.create(name: 'Another Budget', total: 2000)
+    month.custom_budget_limits.create(budget: budget1, limit: 500)
+    month.custom_budget_limits.create(budget: budget2, limit: 600)
+
+    assert_equal 2, month.budgets.count
+    assert_includes month.budgets, budget1
+    assert_includes month.budgets, budget2
+  end
+
   private
 
   def test_user

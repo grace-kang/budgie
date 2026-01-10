@@ -33,4 +33,59 @@ class BudgetTest < ActiveSupport::TestCase
 
     assert_equal user, budget.user
   end
+
+  test 'has many custom_budget_limits' do
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month1 = user.months.create(month: 1, year: 2024)
+    month2 = user.months.create(month: 2, year: 2024)
+    limit1 = budget.custom_budget_limits.create(month: month1, limit: 500)
+    limit2 = budget.custom_budget_limits.create(month: month2, limit: 600)
+
+    assert_equal 2, budget.custom_budget_limits.count
+    assert_includes budget.custom_budget_limits, limit1
+    assert_includes budget.custom_budget_limits, limit2
+  end
+
+  test 'has many months through custom_budget_limits' do
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month1 = user.months.create(month: 1, year: 2024)
+    month2 = user.months.create(month: 2, year: 2024)
+    budget.custom_budget_limits.create(month: month1, limit: 500)
+    budget.custom_budget_limits.create(month: month2, limit: 600)
+
+    assert_equal 2, budget.months.count
+    assert_includes budget.months, month1
+    assert_includes budget.months, month2
+  end
+
+  test 'limit_for_month returns custom limit when set' do
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month = user.months.create(month: 1, year: 2024)
+    budget.custom_budget_limits.create(month: month, limit: 500)
+
+    assert_equal 500, budget.limit_for_month(month)
+  end
+
+  test 'limit_for_month returns budget total when no custom limit is set' do
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month = user.months.create(month: 1, year: 2024)
+
+    assert_equal 1000, budget.limit_for_month(month)
+  end
+
+  test 'limit_for_month returns different limits for different months' do
+    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
+    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month1 = user.months.create(month: 1, year: 2024)
+    month2 = user.months.create(month: 2, year: 2024)
+    budget.custom_budget_limits.create(month: month1, limit: 500)
+    budget.custom_budget_limits.create(month: month2, limit: 600)
+
+    assert_equal 500, budget.limit_for_month(month1)
+    assert_equal 600, budget.limit_for_month(month2)
+  end
 end

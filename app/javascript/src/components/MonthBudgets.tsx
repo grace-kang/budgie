@@ -17,8 +17,13 @@ export default function MonthBudgets({ month }: { month: Month }) {
   }, [month.transactions]);
 
   const limit = useMemo(() => {
-    return allBudgets.reduce((s, b) => s + Number(b.total), 0);
-  }, [allBudgets]);
+    return allBudgets.reduce((s, b) => {
+      // Get month-specific limit or fall back to budget total
+      const customLimit = b.custom_budget_limits?.find((cbl) => cbl.month_id === month.id);
+      const budgetLimit = customLimit ? customLimit.limit : b.total;
+      return s + Number(budgetLimit);
+    }, 0);
+  }, [allBudgets, month.id]);
 
   return (
     <div className="month" key={`${month.year}-${month.month}`}>

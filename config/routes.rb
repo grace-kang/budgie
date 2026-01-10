@@ -6,10 +6,13 @@ Rails
   .draw do
     root 'spa#index'
 
-    resources :months, only: %i[index create destroy]
+    resources :months, only: [:index]
 
     resources :budgets, only: %i[index show edit create update destroy] do
       resources :transactions, only: %i[index create destroy]
+      member do
+        put 'custom_limits/:month_id', to: 'budgets#update_custom_limit', as: 'custom_limit'
+      end
     end
 
     resources :transactions, only: %i[index update]

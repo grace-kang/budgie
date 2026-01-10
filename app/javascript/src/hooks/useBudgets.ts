@@ -58,3 +58,18 @@ export function useUpdateBudget(budgetId: number) {
     },
   });
 }
+
+export function useUpdateCustomBudgetLimit(budgetId: number, monthId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (limit: number) =>
+      apiFetch<Budget>(`/budgets/${budgetId}/custom_limits/${monthId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ limit }),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      queryClient.invalidateQueries({ queryKey: ['months'] });
+    },
+  });
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_09_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_09_171749) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_000000) do
     t.bigint "user_id", null: false
     t.index ["user_id", "name"], name: "index_budgets_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_budgets_on_user_id"
+  end
+
+  create_table "custom_budget_limits", force: :cascade do |t|
+    t.bigint "budget_id", null: false
+    t.bigint "month_id", null: false
+    t.decimal "limit", precision: 8, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["budget_id", "month_id"], name: "index_custom_budget_limits_on_budget_id_and_month_id", unique: true
+    t.index ["budget_id"], name: "index_custom_budget_limits_on_budget_id"
+    t.index ["month_id"], name: "index_custom_budget_limits_on_month_id"
   end
 
   create_table "months", force: :cascade do |t|
@@ -75,6 +86,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_09_000000) do
   end
 
   add_foreign_key "budgets", "users"
+  add_foreign_key "custom_budget_limits", "budgets"
+  add_foreign_key "custom_budget_limits", "months"
   add_foreign_key "months", "users"
   add_foreign_key "plaid_accounts", "users"
   add_foreign_key "transactions", "budgets"
