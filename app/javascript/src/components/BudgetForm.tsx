@@ -16,12 +16,13 @@ export default function BudgetForm({ initialBudget, onSubmit, onClose }: Props) 
   const [total, setTotal] = useState<number | ''>(initialBudget?.total ?? '');
 
   // Update form state when initialBudget changes
+  // Use primitive values as dependencies to avoid unnecessary re-renders
   useEffect(() => {
     if (initialBudget) {
       setName(initialBudget.name ?? '');
       setTotal(initialBudget.total ?? '');
     }
-  }, [initialBudget]);
+  }, [initialBudget?.name, initialBudget?.total]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
