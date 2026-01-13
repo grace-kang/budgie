@@ -48,11 +48,11 @@ class BudgetsController < ApplicationController
   end
 
   def destroy
-    if @budget.destroy
-      render json: { message: 'Budget deleted successfully' }, status: :ok
-    else
-      render json: { error: 'Failed to delete budget' }, status: :unprocessable_entity
-    end
+    @budget.destroy!
+    render json: { message: 'Budget deleted successfully' }, status: :ok
+  rescue ActiveRecord::RecordNotDestroyed
+    render json: { error: 'Failed to delete budget', errors: @budget.errors.full_messages },
+           status: :unprocessable_entity
   end
 
   private
