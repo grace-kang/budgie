@@ -34,7 +34,8 @@ class BudgetsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy budget' do
-    assert_difference('Budget.count', -1) { delete budget_url(test_budget), headers: auth_headers }
+    budget = test_budget
+    assert_difference('Budget.count', -1) { delete budget_url(budget), headers: auth_headers }
     assert_response :ok
   end
 
