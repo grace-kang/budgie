@@ -46,7 +46,7 @@ class TransactionTest < ActiveSupport::TestCase
   def test_budget_and_month
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
     month = user.months.create(month: 1, year: 2024)
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
     [budget, month]
   end
 end
