@@ -85,8 +85,8 @@ class PlaidSyncTransactionsJob < ApplicationJob
 
     transaction = find_or_initialize_transaction(plaid_transaction)
     transaction_date = parse_transaction_date(plaid_transaction)
-    budget = find_or_create_budget(plaid_account, plaid_transaction, transaction_date)
     month = find_or_create_month(plaid_account, transaction_date)
+    budget = find_or_create_budget(plaid_account, plaid_transaction, month)
 
     transaction_data = { plaid_transaction: plaid_transaction, transaction_date: transaction_date }
     update_transaction_attributes(transaction, plaid_account, budget, month, transaction_data)
@@ -110,9 +110,9 @@ class PlaidSyncTransactionsJob < ApplicationJob
     end
   end
 
-  def find_or_create_budget(plaid_account, plaid_transaction, _transaction_date)
+  def find_or_create_budget(plaid_account, plaid_transaction, month)
     budget_name = categorize_transaction(plaid_transaction)
-    plaid_account.user.budgets.find_or_create_by(name: budget_name) { |b| b.total = 0 }
+    month.budgets.find_or_create_by(name: budget_name, user: plaid_account.user) { |b| b.total = 0 }
   end
 
   def find_or_create_month(plaid_account, transaction_date)

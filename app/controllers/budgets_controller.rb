@@ -2,26 +2,28 @@
 
 class BudgetsController < ApplicationController
   before_action :authorize_request
-  before_action :set_budget, only: %i[update destroy update_custom_limit]
+  before_action :set_budget, only: %i[update destroy]
 
   def index
-    budgets = current_user.budgets.includes(:transactions, :custom_budget_limits).all
+    budgets = current_user.budgets.includes(:transactions).all
 
-    render json: budgets.as_json(include: %i[transactions custom_budget_limits]), status: :ok
+    render json: budgets.as_json(include: :transactions), status: :ok
   end
 
   def show
-    budget = current_user.budgets.includes(:transactions, :custom_budget_limits).find(params[:id])
+    budget = current_user.budgets.includes(:transactions).find(params[:id])
 
-    render json: budget.as_json(include: %i[transactions custom_budget_limits]), status: :ok
+    render json: budget.as_json(include: :transactions), status: :ok
   end
 
   def edit; end
 
   def create
-    budget = current_user.budgets.build(budget_params)
+    month = current_user.months.find(params[:month_id])
+
+    budget = month.budgets.build(budget_params.merge(user: current_user))
     if budget.save
-      render json: budget.as_json(include: :custom_budget_limits), status: :created
+      render json: budget, status: :created
     else
       render json: budget.errors, status: :unprocessable_entity
     end
@@ -29,21 +31,9 @@ class BudgetsController < ApplicationController
 
   def update
     if @budget.update(budget_params)
-      render json: @budget.as_json(include: :custom_budget_limits), status: :ok
+      render json: @budget, status: :ok
     else
       render json: @budget.errors, status: :unprocessable_entity
-    end
-  end
-
-  def update_custom_limit
-    month = current_user.months.find(params[:month_id])
-    custom_limit = @budget.custom_budget_limits.find_or_initialize_by(month: month)
-    custom_limit.limit = custom_limit_params
-
-    if custom_limit.save
-      render json: @budget.reload.as_json(include: :custom_budget_limits), status: :ok
-    else
-      render json: custom_limit.errors, status: :unprocessable_entity
     end
   end
 
@@ -63,9 +53,5 @@ class BudgetsController < ApplicationController
 
   def budget_params
     params.expect(budget: %i[name total])
-  end
-
-  def custom_limit_params
-    params.require(:limit)
   end
 end
