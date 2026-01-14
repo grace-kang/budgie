@@ -9,8 +9,23 @@ class Transaction < ApplicationRecord
   validates :amount, presence: true
   validates :date, presence: true
   validates :plaid_transaction_id, uniqueness: true, allow_nil: true
+  validate :date_matches_budget_month
 
   def month_name
     date.strftime('%B %Y')
+  end
+
+  private
+
+  def date_matches_budget_month
+    return if date.blank? || budget.blank? || budget.month.blank?
+
+    budget_month = budget.month
+    transaction_month = date.month
+    transaction_year = date.year
+
+    unless transaction_month == budget_month.month && transaction_year == budget_month.year
+      errors.add(:date, "must be in #{Date.new(budget_month.year, budget_month.month).strftime('%B %Y')}")
+    end
   end
 end
