@@ -91,7 +91,7 @@ class PlaidAccountTest < ActiveSupport::TestCase
     )
 
     month = @user.months.create(month: 1, year: 2024)
-    budget = @user.budgets.create!(name: 'Test', total: 1000)
+    budget = month.budgets.create!(name: 'Test', total: 1000, user: @user)
     transaction = budget.transactions.create!(
       description: 'Test',
       amount: 100,

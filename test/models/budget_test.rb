@@ -16,7 +16,7 @@ class BudgetTest < ActiveSupport::TestCase
   test 'has many transactions' do
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
     month = user.months.create(month: 1, year: 2024)
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
     transaction1 = budget.transactions.create(amount: 100, description: 'Groceries', date: Date.new(2024, 1, 5),
                                               month: month)
     transaction2 = budget.transactions.create(amount: 200, description: 'Rent', date: Date.new(2024, 1, 1),
@@ -29,63 +29,37 @@ class BudgetTest < ActiveSupport::TestCase
 
   test 'belongs to user' do
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
+    month = user.months.create(month: 1, year: 2024)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
 
     assert_equal user, budget.user
   end
 
-  test 'has many custom_budget_limits' do
+  test 'belongs to month' do
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
-    month1 = user.months.create(month: 1, year: 2024)
-    month2 = user.months.create(month: 2, year: 2024)
-    limit1 = budget.custom_budget_limits.create(month: month1, limit: 500)
-    limit2 = budget.custom_budget_limits.create(month: month2, limit: 600)
-
-    assert_equal 2, budget.custom_budget_limits.count
-    assert_includes budget.custom_budget_limits, limit1
-    assert_includes budget.custom_budget_limits, limit2
-  end
-
-  test 'has many months through custom_budget_limits' do
-    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
-    month1 = user.months.create(month: 1, year: 2024)
-    month2 = user.months.create(month: 2, year: 2024)
-    budget.custom_budget_limits.create(month: month1, limit: 500)
-    budget.custom_budget_limits.create(month: month2, limit: 600)
-
-    assert_equal 2, budget.months.count
-    assert_includes budget.months, month1
-    assert_includes budget.months, month2
-  end
-
-  test 'limit_for_month returns custom limit when set' do
-    user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
     month = user.months.create(month: 1, year: 2024)
-    budget.custom_budget_limits.create(month: month, limit: 500)
+    budget = month.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
 
-    assert_equal 500, budget.limit_for_month(month)
+    assert_equal month, budget.month
   end
 
-  test 'limit_for_month returns budget total when no custom limit is set' do
+  test 'should enforce uniqueness of name within user and month scope' do
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
     month = user.months.create(month: 1, year: 2024)
+    month.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
+    duplicate = month.budgets.new(name: 'Monthly Budget', total: 2000, user: user)
 
-    assert_equal 1000, budget.limit_for_month(month)
+    assert_not duplicate.save, 'Saved duplicate budget with same name in same month'
   end
 
-  test 'limit_for_month returns different limits for different months' do
+  test 'allows same budget name in different months' do
     user = User.create(email: 'test@example.com', provider: 'google', uid: '12345')
-    budget = user.budgets.create(name: 'Monthly Budget', total: 1000)
     month1 = user.months.create(month: 1, year: 2024)
     month2 = user.months.create(month: 2, year: 2024)
-    budget.custom_budget_limits.create(month: month1, limit: 500)
-    budget.custom_budget_limits.create(month: month2, limit: 600)
+    budget1 = month1.budgets.create(name: 'Monthly Budget', total: 1000, user: user)
+    budget2 = month2.budgets.create(name: 'Monthly Budget', total: 1500, user: user)
 
-    assert_equal 500, budget.limit_for_month(month1)
-    assert_equal 600, budget.limit_for_month(month2)
+    assert budget1.persisted?
+    assert budget2.persisted?
   end
 end
