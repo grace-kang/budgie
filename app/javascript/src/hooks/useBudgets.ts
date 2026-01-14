@@ -16,16 +16,20 @@ export function useBudgets() {
   });
 }
 
-export function useCreateBudget() {
+export function useCreateBudget(monthId?: number) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: { name: string; total: number }) =>
       apiFetch<Budget>('/budgets', {
         method: 'POST',
-        body: JSON.stringify({ budget: data }),
+        body: JSON.stringify({
+          budget: data,
+          month_id: monthId,
+        }),
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      queryClient.invalidateQueries({ queryKey: ['months'] });
     },
   });
 }
@@ -51,21 +55,6 @@ export function useUpdateBudget(budgetId: number) {
       apiFetch<Budget>(`/budgets/${budgetId}`, {
         method: 'PUT',
         body: JSON.stringify({ budget: data }),
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
-      queryClient.invalidateQueries({ queryKey: ['months'] });
-    },
-  });
-}
-
-export function useUpdateCustomBudgetLimit(budgetId: number, monthId: number) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (limit: number) =>
-      apiFetch<Budget>(`/budgets/${budgetId}/custom_limits/${monthId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ limit }),
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budgets'] });

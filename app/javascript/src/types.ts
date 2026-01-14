@@ -7,19 +7,12 @@ export type Transaction = {
   date: string;
 };
 
-export type CustomBudgetLimit = {
-  id: number;
-  budget_id: number;
-  month_id: number;
-  limit: number;
-};
-
 export type Budget = {
   id: number;
   name: string;
   total: number;
   transactions: Transaction[];
-  custom_budget_limits?: CustomBudgetLimit[];
+  month_id: number;
 };
 export type Month = {
   id: number;

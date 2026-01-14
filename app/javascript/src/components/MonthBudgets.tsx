@@ -10,20 +10,20 @@ export default function MonthBudgets({ month }: { month: Month }) {
   const [showForm, setShowForm] = useState(false);
 
   const { data: allBudgets = [] } = useBudgets();
-  const createBudget = useCreateBudget();
+  const createBudget = useCreateBudget(month.id);
+
+  // Filter budgets for this specific month
+  const monthBudgets = useMemo(() => {
+    return allBudgets.filter((b) => b.month_id === month.id);
+  }, [allBudgets, month.id]);
 
   const used = useMemo(() => {
     return month.transactions?.reduce((s, t) => s + Number(t.amount), 0) || 0;
   }, [month.transactions]);
 
   const limit = useMemo(() => {
-    return allBudgets.reduce((s, b) => {
-      // Get month-specific limit or fall back to budget total
-      const customLimit = b.custom_budget_limits?.find((cbl) => cbl.month_id === month.id);
-      const budgetLimit = customLimit ? customLimit.limit : b.total;
-      return s + Number(budgetLimit);
-    }, 0);
-  }, [allBudgets, month.id]);
+    return monthBudgets.reduce((s, b) => s + Number(b.total), 0);
+  }, [monthBudgets]);
 
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
@@ -41,7 +41,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
         </div>
       </div>
 
-      {allBudgets.map((budget) => (
+      {monthBudgets.map((budget) => (
         <Budget key={budget.id} month={month} budget={budget} />
       ))}
 

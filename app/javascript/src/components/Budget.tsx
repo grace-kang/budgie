@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useDeleteBudget, useUpdateBudget, useUpdateCustomBudgetLimit } from '../hooks/useBudgets';
+import { useDeleteBudget, useUpdateBudget } from '../hooks/useBudgets';
 import { Budget, Month } from '../types';
 import BudgetForm from './BudgetForm';
 import EditIcon from '/icons/edit.svg';
@@ -11,25 +11,18 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
 
   const deleteBudget = useDeleteBudget();
   const updateBudget = useUpdateBudget(budget.id);
-  const updateCustomLimit = useUpdateCustomBudgetLimit(budget.id, month.id);
-
-  // Get month-specific limit or fall back to budget total
-  const monthLimit = useMemo(() => {
-    const customLimit = budget.custom_budget_limits?.find((cbl) => cbl.month_id === month.id);
-    return customLimit ? customLimit.limit : budget.total;
-  }, [budget, month.id]);
 
   // Memoize initialBudget to prevent unnecessary re-renders
   const initialBudget = useMemo(
-    () => ({ name: budget.name, total: monthLimit }),
-    [budget.name, monthLimit],
+    () => ({ name: budget.name, total: budget.total }),
+    [budget.name, budget.total],
   );
 
   const sum =
     month.transactions
       ?.filter((t) => t.budget_id === budget.id)
       .reduce((s, t) => s + Number(t.amount), 0) || 0;
-  const percent = monthLimit ? (sum / monthLimit) * 100 : 0;
+  const percent = budget.total ? (sum / budget.total) * 100 : 0;
   const bgClass = percent > 100 ? 'budget-over' : percent > 80 ? 'budget-warn' : 'budget-ok';
 
   const onEditClick = (e: React.MouseEvent) => {
@@ -43,40 +36,17 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
 
   const handleBudgetUpdate = (params: { name: string; total: number }) => {
     const nameChanged = params.name !== budget.name;
-    const limitChanged = params.total !== monthLimit;
+    const totalChanged = params.total !== budget.total;
 
-    if (!nameChanged && !limitChanged) {
+    if (!nameChanged && !totalChanged) {
       // Nothing changed
       setEditing(false);
       return;
     }
 
-    if (nameChanged && limitChanged) {
-      // Update both name and limit
-      updateBudget.mutate(
-        { name: params.name, total: budget.total },
-        {
-          onSuccess: () => {
-            updateCustomLimit.mutate(params.total, {
-              onSuccess: () => setEditing(false),
-            });
-          },
-        },
-      );
-    } else if (nameChanged) {
-      // Only update name
-      updateBudget.mutate(
-        { name: params.name, total: budget.total },
-        {
-          onSuccess: () => setEditing(false),
-        },
-      );
-    } else if (limitChanged) {
-      // Only update limit
-      updateCustomLimit.mutate(params.total, {
-        onSuccess: () => setEditing(false),
-      });
-    }
+    updateBudget.mutate(params, {
+      onSuccess: () => setEditing(false),
+    });
   };
 
   return (
@@ -86,7 +56,7 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
 
         <div className="budget-total">
           <span>
-            ${round(sum)} / ${round(monthLimit)}
+            ${round(sum)} / ${round(budget.total)}
           </span>
         </div>
 
