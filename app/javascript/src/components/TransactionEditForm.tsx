@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import CloseIcon from '/icons/close.svg';
 import { Transaction, Budget } from '../types';
+import { useBudgetFilter } from '../hooks/useBudgetFilter';
+import { getFilteredBudgets } from '../helpers/budgets';
 
 type Props = {
   transaction: Transaction;
@@ -23,6 +25,9 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
   const [amount, setAmount] = useState<string>(String(transaction.amount));
   const [date, setDate] = useState<string>(transaction.date);
 
+  // Auto-select first budget if current selection is not in filtered list
+  useBudgetFilter(date, budgets, budgetId, setBudgetId);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description || !amount || !date || !budgetId) return;
@@ -36,8 +41,19 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
     onClose();
   };
 
+  const filteredBudgets = getFilteredBudgets(budgets, date);
+
   return (
     <form className="transaction-row" onSubmit={handleSubmit}>
+      <span className="transaction-cell">
+        <input
+          name="date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          required
+        />
+      </span>
       <span className="transaction-cell">
         <select
           name="budgetId"
@@ -45,11 +61,15 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
           onChange={(e) => setBudgetId(Number(e.target.value))}
           required
         >
-          {budgets.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
+          {filteredBudgets.length === 0 ? (
+            <option value="">No budgets for this month</option>
+          ) : (
+            filteredBudgets.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name}
+              </option>
+            ))
+          )}
         </select>
       </span>
       <span className="transaction-cell">
@@ -70,15 +90,6 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           step="0.01"
-          required
-        />
-      </span>
-      <span className="transaction-cell">
-        <input
-          name="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
           required
         />
       </span>

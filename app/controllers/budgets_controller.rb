@@ -5,15 +5,15 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[update destroy]
 
   def index
-    budgets = current_user.budgets.includes(:transactions).all
+    budgets = current_user.budgets.includes(:transactions, :month).all
 
-    render json: budgets.as_json(include: :transactions), status: :ok
+    render json: budgets.as_json(include: %i[transactions month]), status: :ok
   end
 
   def show
-    budget = current_user.budgets.includes(:transactions).find(params[:id])
+    budget = current_user.budgets.includes(:transactions, :month).find(params[:id])
 
-    render json: budget.as_json(include: :transactions), status: :ok
+    render json: budget.as_json(include: %i[transactions month]), status: :ok
   end
 
   def edit; end

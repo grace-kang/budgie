@@ -25,15 +25,15 @@ export function useCreateTransaction(budgetId: number) {
   });
 }
 
-export function useDeleteTransaction(budgetId: number) {
+export function useDeleteTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (transactionId: number) =>
-      apiFetch<void>(`/transactions/${transactionId}`, {
+    mutationFn: (data: { transactionId: number; budgetId: number }) =>
+      apiFetch<void>(`/budgets/${data.budgetId}/transactions/${data.transactionId}`, {
         method: 'DELETE',
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      queryClient.invalidateQueries({ queryKey: ['budgets'] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },

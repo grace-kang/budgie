@@ -6,6 +6,7 @@ import EditIcon from '/icons/edit.svg';
 
 import { Transaction, Budget } from '../types';
 import { round } from '../helpers/money';
+import { getFilteredBudgets } from '../helpers/budgets';
 import TransactionEditForm from './TransactionEditForm';
 
 type TransactionsProps = {
@@ -44,25 +45,34 @@ export default function Transactions({
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
+  const filteredBudgetsForForm = getFilteredBudgets(budgets, form.date);
+
   return (
     <div className="transaction-view">
       <div className="transactions">
         <div className="transactions-header transaction-row">
+          <span>Date</span>
           <span>Budget</span>
           <span>Description</span>
           <span>Amount</span>
-          <span>Date</span>
           <span></span>
         </div>
 
         <form className="transaction-row" onSubmit={onFormSubmit}>
           <span className="transaction-cell">
+            <input name="date" type="date" value={form.date} onChange={onFormChange} required />
+          </span>
+          <span className="transaction-cell">
             <select name="budgetId" value={form.budgetId} onChange={onFormChange} required>
-              {budgets.map((b) => (
-                <option key={b.id} value={b.id}>
-                  {b.name}
-                </option>
-              ))}
+              {filteredBudgetsForForm.length === 0 ? (
+                <option value="">No budgets for this month</option>
+              ) : (
+                filteredBudgetsForForm.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name}
+                  </option>
+                ))
+              )}
             </select>
           </span>
           <span className="transaction-cell">
@@ -86,9 +96,6 @@ export default function Transactions({
               required
             />
           </span>
-          <span className="transaction-cell">
-            <input name="date" type="date" value={form.date} onChange={onFormChange} required />
-          </span>
           <span>
             <button type="submit">
               <img src={AddIcon} className="icon-button" alt="Submit" />
@@ -106,6 +113,7 @@ export default function Transactions({
               <div
                 className={`transaction-row ${editingTransactionId === transaction.id ? 'hide' : ''}`}
               >
+                <span className="transaction-cell transaction-date">{transaction.date}</span>
                 <span className="transaction-cell transaction-budget">
                   {transaction.budgetName}
                 </span>
@@ -113,7 +121,6 @@ export default function Transactions({
                 <span className="transaction-cell transaction-amount">
                   ${round(transaction.amount)}
                 </span>
-                <span className="transaction-cell transaction-date">{transaction.date}</span>
                 <div className="transaction-actions">
                   {onUpdateTransaction && (
                     <button
