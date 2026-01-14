@@ -36,6 +36,41 @@ class TransactionTest < ActiveSupport::TestCase
     assert_equal month, transaction.month
   end
 
+  test 'should save when date matches budget month' do
+    budget, month = test_budget_and_month
+    transaction = budget.transactions.new(
+      description: 'Groceries',
+      amount: 100,
+      date: Date.new(2024, 1, 15),
+      month: month
+    )
+    assert transaction.save, "Should save when transaction date is in budget's month"
+  end
+
+  test 'should not save when date is in different month' do
+    budget, month = test_budget_and_month
+    transaction = budget.transactions.new(
+      description: 'Groceries',
+      amount: 100,
+      date: Date.new(2024, 2, 15), # February instead of January
+      month: month
+    )
+    assert_not transaction.save, 'Should not save when transaction date is in different month'
+    assert_includes transaction.errors[:date], 'must be in January 2024'
+  end
+
+  test 'should not save when date is in different year' do
+    budget, month = test_budget_and_month
+    transaction = budget.transactions.new(
+      description: 'Groceries',
+      amount: 100,
+      date: Date.new(2025, 1, 15), # 2025 instead of 2024
+      month: month
+    )
+    assert_not transaction.save, 'Should not save when transaction date is in different year'
+    assert_includes transaction.errors[:date], 'must be in January 2024'
+  end
+
   private
 
   def test_budget
