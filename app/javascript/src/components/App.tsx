@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SignIn from './SignIn';
 import Months from './Months';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -8,11 +8,13 @@ import PlaidAccounts from './PlaidAccounts';
 import ThemeSelector from './ThemeSelector';
 import Logo from './Logo';
 import { useTheme } from '../hooks/useTheme';
+import { useFeatureFlags } from '../hooks/useFeatureFlags';
 
 type ViewType = 'months' | 'transactions' | 'accounts';
 
 function MainView() {
   const [view, setView] = useState<ViewType>('months');
+  const { data: featureFlags } = useFeatureFlags();
   useTheme(); // Initialize theme on mount
 
   return (
@@ -38,12 +40,14 @@ function MainView() {
             >
               Transactions
             </button>
-            <button
-              onClick={() => setView('accounts')}
-              className={`view-toggle-button ${view === 'accounts' ? 'active' : ''}`}
-            >
-              Bank Accounts
-            </button>
+            {featureFlags?.plaid_enabled && (
+              <button
+                onClick={() => setView('accounts')}
+                className={`view-toggle-button ${view === 'accounts' ? 'active' : ''}`}
+              >
+                Bank Accounts
+              </button>
+            )}
           </div>
           <ThemeSelector />
         </div>
@@ -54,7 +58,7 @@ function MainView() {
         ) : view === 'transactions' ? (
           <TransactionView />
         ) : (
-          <PlaidAccounts />
+          featureFlags?.plaid_enabled && <PlaidAccounts />
         )}
       </main>
     </div>

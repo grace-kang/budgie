@@ -3,6 +3,7 @@
 # rubocop:disable Metrics/ClassLength
 class PlaidController < ApplicationController
   skip_before_action :authorize_request, only: :webhook
+  before_action :check_plaid_enabled
 
   def create_link_token
     plaid_service = PlaidService.new
@@ -73,6 +74,12 @@ class PlaidController < ApplicationController
   end
 
   private
+
+  def check_plaid_enabled
+    return if FeatureFlags.plaid_enabled?
+
+    render json: { error: 'Plaid integration is not enabled' }, status: :forbidden
+  end
 
   def handle_transactions_webhook(plaid_account, webhook_code)
     return unless should_sync_transactions?(webhook_code)
