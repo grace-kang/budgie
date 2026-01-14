@@ -1,11 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../apiClient';
 import { PlaidAccount } from '../types';
+import { useFeatureFlags } from './useFeatureFlags';
 
 export function usePlaidAccounts() {
+  const { data: featureFlags } = useFeatureFlags();
   return useQuery({
     queryKey: ['plaid-accounts'],
     queryFn: () => apiFetch<PlaidAccount[]>('/plaid/accounts'),
+    enabled: featureFlags?.plaid_enabled ?? false,
   });
 }
 

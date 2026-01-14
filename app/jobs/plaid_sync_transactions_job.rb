@@ -30,6 +30,8 @@ class PlaidSyncTransactionsJob < ApplicationJob
   }.freeze
 
   def perform(plaid_account_id)
+    return unless FeatureFlags.plaid_enabled?
+
     plaid_account = PlaidAccount.find_by(id: plaid_account_id)
     return unless plaid_account
 

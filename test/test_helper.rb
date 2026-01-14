@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ENV['RAILS_ENV'] ||= 'test'
+ENV['ENABLE_PLAID'] ||= 'true' # Enable Plaid feature flag for tests
 require_relative '../config/environment'
 require 'rails/test_help'
 

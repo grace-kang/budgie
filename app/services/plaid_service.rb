@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-require 'plaid'
+require 'plaid' if FeatureFlags.plaid_enabled?
 
 class PlaidService
   def initialize
+    raise 'Plaid integration is not enabled' unless FeatureFlags.plaid_enabled?
+
     configuration = Plaid::Configuration.new
     configuration.server_index = Plaid::Configuration::Environment[ENV.fetch('PLAID_ENV', 'sandbox')]
     configuration.api_key['PLAID-CLIENT-ID'] = ENV.fetch('PLAID_CLIENT_ID')

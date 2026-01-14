@@ -161,5 +161,18 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
     get '/plaid/accounts'
     assert_response :unauthorized
   end
+
+  test 'returns forbidden when feature flag is disabled' do
+    # Temporarily disable feature flag
+    original_value = ENV.fetch('ENABLE_PLAID', nil)
+    ENV['ENABLE_PLAID'] = 'false'
+
+    post '/plaid/link_token', headers: @headers
+    assert_response :forbidden
+    json = response.parsed_body
+    assert_equal 'Plaid integration is not enabled', json['error']
+  ensure
+    ENV['ENABLE_PLAID'] = original_value
+  end
 end
 # rubocop:enable Metrics/ClassLength

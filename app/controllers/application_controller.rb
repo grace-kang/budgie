@@ -3,8 +3,14 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
-  before_action :authorize_request
+  before_action :authorize_request, except: :feature_flags
   helper_method :current_user
+
+  def feature_flags
+    render json: {
+      plaid_enabled: FeatureFlags.plaid_enabled?
+    }
+  end
 
   private
 
