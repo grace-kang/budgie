@@ -84,7 +84,7 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
   def test_budget_and_month
     user = auth_user
     month = user.months.find_or_create_by(month: 1, year: 2024)
-    budget = user.budgets.find_or_create_by(name: 'Test Budget') { |b| b.total = 1000 }
+    budget = month.budgets.find_or_create_by(name: 'Test Budget', user: user) { |b| b.total = 1000 }
     [budget, month]
   end
 end

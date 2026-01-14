@@ -99,7 +99,7 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
 
   test 'handles removed transactions' do
     month = @user.months.create!(month: Time.zone.today.month, year: Time.zone.today.year)
-    budget = @user.budgets.create!(name: 'Other', total: 0)
+    budget = month.budgets.create!(name: 'Other', total: 0, user: @user)
     budget.transactions.create!(
       description: 'Old Transaction',
       amount: 100,
