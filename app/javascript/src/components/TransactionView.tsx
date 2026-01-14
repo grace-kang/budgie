@@ -8,6 +8,7 @@ import {
   useUpdateTransaction,
 } from '../hooks/useTransactions';
 import { useBudgets } from '../hooks/useBudgets';
+import { useBudgetFilter } from '../hooks/useBudgetFilter';
 import Transactions from './Transactions';
 
 const getTodayDate = () => {
@@ -33,13 +34,25 @@ export default function TransactionView() {
 
   const [createBudgetId, setCreateBudgetId] = useState<number>(budgets[0]?.id ?? 0);
   const createTransaction = useCreateTransaction(createBudgetId);
-  const getDeleteTransaction = (budgetId: number) => useDeleteTransaction(budgetId);
+  const deleteTransaction = useDeleteTransaction();
   const updateTransaction = useUpdateTransaction();
 
   const transactionsWithBudget = transactions.map((t) => ({
     ...t,
     budgetName: budgets.find((b) => b.id === t.budget_id)?.name ?? 'Unknown',
   }));
+
+  // Auto-adjust budgetId when date or budgets change and current budget is not valid
+  useBudgetFilter(form.date, budgets, form.budgetId, (updater) => {
+    setForm((f) => {
+      const newBudgetId = updater(f.budgetId);
+      if (newBudgetId !== f.budgetId) {
+        setCreateBudgetId(newBudgetId);
+        return { ...f, budgetId: newBudgetId };
+      }
+      return f;
+    });
+  });
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -73,7 +86,7 @@ export default function TransactionView() {
   };
 
   const handleDelete = (transaction: Transaction) => {
-    getDeleteTransaction(transaction.budget_id).mutate(transaction.id);
+    deleteTransaction.mutate({ transactionId: transaction.id, budgetId: transaction.budget_id });
   };
 
   const handleUpdateTransaction = (data: {

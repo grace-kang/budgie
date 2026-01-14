@@ -17,6 +17,7 @@ class Transaction < ApplicationRecord
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def date_matches_budget_month
     return if date.blank? || budget.blank? || budget.month.blank?
 
@@ -24,8 +25,9 @@ class Transaction < ApplicationRecord
     transaction_month = date.month
     transaction_year = date.year
 
-    unless transaction_month == budget_month.month && transaction_year == budget_month.year
-      errors.add(:date, "must be in #{Date.new(budget_month.year, budget_month.month).strftime('%B %Y')}")
-    end
+    return if transaction_month == budget_month.month && transaction_year == budget_month.year
+
+    errors.add(:date, "must be in #{Date.new(budget_month.year, budget_month.month).strftime('%B %Y')}")
   end
+  # rubocop:enable Metrics/AbcSize
 end

@@ -13,6 +13,11 @@ export type Budget = {
   total: number;
   transactions: Transaction[];
   month_id: number;
+  month: {
+    id: number;
+    month: number;
+    year: number;
+  };
 };
 export type Month = {
   id: number;
