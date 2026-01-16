@@ -11,7 +11,6 @@ PlaidTransaction = Struct.new(
 )
 RemovedTransaction = Struct.new(:transaction_id, keyword_init: true)
 
-# rubocop:disable Metrics/ClassLength
 class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
   setup do
     @user = User.create!(
@@ -27,7 +26,6 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     )
   end
 
-  # rubocop:disable Metrics/BlockLength
   test 'performs sync for valid plaid account' do
     # Mock Plaid transaction response
     mock_transaction = PlaidTransaction.new(
@@ -65,7 +63,6 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     assert_equal 'cursor-123', @plaid_account.cursor
     assert_not_nil @plaid_account.last_successful_update
   end
-  # rubocop:enable Metrics/BlockLength
 
   test 'skips pending transactions' do
     mock_transaction = PlaidTransaction.new(
@@ -134,7 +131,6 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     end
   end
 
-  # rubocop:disable Metrics/BlockLength
   test 'categorizes transactions correctly' do
     @user.months.create!(month: Time.zone.today.month, year: Time.zone.today.year)
 
@@ -171,6 +167,4 @@ class PlaidSyncTransactionsJobTest < ActiveJob::TestCase
     assert_not_nil transaction
     assert_equal 'Food & Dining', transaction.budget.name
   end
-  # rubocop:enable Metrics/BlockLength
 end
-# rubocop:enable Metrics/ClassLength

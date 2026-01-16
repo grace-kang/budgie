@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class PlaidSyncTransactionsJob < ApplicationJob
   queue_as :default
 
@@ -197,4 +196,3 @@ class PlaidSyncTransactionsJob < ApplicationJob
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

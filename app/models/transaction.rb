@@ -17,7 +17,6 @@ class Transaction < ApplicationRecord
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def date_matches_budget_month
     return if date.blank? || budget.blank? || budget.month.blank?
 
@@ -29,5 +28,4 @@ class Transaction < ApplicationRecord
 
     errors.add(:date, "must be in #{Date.new(budget_month.year, budget_month.month).strftime('%B %Y')}")
   end
-  # rubocop:enable Metrics/AbcSize
 end
