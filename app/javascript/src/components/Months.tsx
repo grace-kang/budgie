@@ -6,7 +6,9 @@ export default function Months() {
 
   if (!months?.length) return null;
 
-  const sortedMonths = months.sort((a, b) => b.year - a.year || b.month - a.month);
+  const sortedMonths = months
+    .filter((month) => month.transactions && month.transactions.length > 0)
+    .sort((a, b) => b.year - a.year || b.month - a.month);
 
   return (
     <div className="months">
