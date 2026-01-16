@@ -13,7 +13,7 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    transaction = build_transaction
+    transaction = transaction_service.build_transaction(transaction_params)
     if transaction.save
       render json: transaction, status: :created
     else
@@ -31,7 +31,7 @@ class TransactionsController < ApplicationController
 
     return render json: { error: 'Budget not found' }, status: :not_found unless valid_budget_update?(params_to_update)
 
-    prepare_month_for_update(params_to_update)
+    params_to_update = transaction_service.prepare_update_params(@transaction, params_to_update)
     update_transaction_with_response(params_to_update)
   rescue ArgumentError
     render json: { error: 'Invalid date format' }, status: :bad_request
@@ -49,18 +49,8 @@ class TransactionsController < ApplicationController
 
   private
 
-  def build_transaction
-    budget = find_budget
-    month = find_or_create_month_from_date
-    budget.transactions.new(transaction_params.merge(month: month))
-  end
-
-  def find_budget
-    current_user.budgets.find(params[:budget_id])
-  end
-
-  def find_or_create_month_from_date
-    find_or_create_month_from_date_string(transaction_params[:date])
+  def transaction_service
+    @transaction_service ||= TransactionService.new(current_user)
   end
 
   def invalid_budget?
@@ -69,7 +59,6 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     # rubocop:disable Rails/StrongParametersExpect
-    # Using permit explicitly to ensure nested transaction params are permitted for mass assignment
     params.require(:transaction).permit(:description, :amount, :date, :budget_id)
     # rubocop:enable Rails/StrongParametersExpect
   end
@@ -81,25 +70,11 @@ class TransactionsController < ApplicationController
     current_user.budgets.exists?(id: params_to_update[:budget_id])
   end
 
-  def prepare_month_for_update(params_to_update)
-    date_to_use = params_to_update[:date].presence || @transaction.date.to_s
-    month = find_or_create_month_from_date_string(date_to_use)
-    params_to_update[:month_id] = month.id
-  end
-
   def update_transaction_with_response(params_to_update)
     if @transaction.update(params_to_update)
       render json: @transaction, status: :ok
     else
       render json: @transaction.errors, status: :unprocessable_entity
     end
-  end
-
-  def find_or_create_month_from_date_string(date_str)
-    date = Date.parse(date_str)
-    month_number = date.month
-    year = date.year
-
-    current_user.months.find_or_create_by(month: month_number, year: year)
   end
 end
