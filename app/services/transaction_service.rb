@@ -24,7 +24,6 @@ class TransactionService
     )
   end
 
-  # rubocop:disable Metrics/AbcSize
   def prepare_update_params(transaction, params)
     date_to_use = params[:date].presence || transaction.date.to_s
     target_month = find_or_create_month_from_date(date_to_use)
@@ -37,7 +36,6 @@ class TransactionService
 
     params
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 

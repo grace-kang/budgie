@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class PlaidController < ApplicationController
   skip_before_action :authorize_request, only: :webhook
   before_action :check_plaid_enabled
@@ -164,4 +163,3 @@ class PlaidController < ApplicationController
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

@@ -6,7 +6,6 @@ require 'test_helper'
 Account = Struct.new(:institution_id, keyword_init: true)
 Item = Struct.new(:institution_id, keyword_init: true)
 
-# rubocop:disable Metrics/ClassLength
 class PlaidControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = auth_user
@@ -175,4 +174,3 @@ class PlaidControllerTest < ActionDispatch::IntegrationTest
     ENV['ENABLE_PLAID'] = original_value
   end
 end
-# rubocop:enable Metrics/ClassLength
