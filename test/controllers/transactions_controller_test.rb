@@ -34,6 +34,43 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
   end
 
+  test 'creates a transaction without a budget via top-level route' do
+    user = auth_user
+    month = user.months.find_or_create_by(month: 1, year: 2024)
+    assert_difference('Transaction.count', 1) do
+      post transactions_path, headers: auth_headers, params: {
+        transaction: {
+          description: 'Test Transaction Without Budget',
+          amount: 50,
+          date: Date.new(2024, 1, 15)
+        }
+      }
+    end
+    assert_response :created
+    transaction = Transaction.last
+    assert_nil transaction.budget_id
+    assert_equal month.id, transaction.month_id
+  end
+
+  test 'creates a transaction without a budget with explicit nil budget_id' do
+    user = auth_user
+    month = user.months.find_or_create_by(month: 1, year: 2024)
+    assert_difference('Transaction.count', 1) do
+      post transactions_path, headers: auth_headers, params: {
+        transaction: {
+          description: 'Test Transaction Without Budget',
+          amount: 50,
+          date: Date.new(2024, 1, 15),
+          budget_id: nil
+        }
+      }
+    end
+    assert_response :created
+    transaction = Transaction.last
+    assert_nil transaction.budget_id
+    assert_equal month.id, transaction.month_id
+  end
+
   test 'fails to create a transaction with invalid data' do
     budget, _month = test_budget_and_month
     assert_no_difference('Transaction.count') do
@@ -60,6 +97,37 @@ class TransactionControllerTest < ActionDispatch::IntegrationTest
     )
     assert_difference('Transaction.count', -1) do
       delete budget_transaction_path(budget, transaction), headers: auth_headers
+    end
+    assert_response :ok
+  end
+
+  test 'deletes a transaction via top-level route' do
+    budget, month = test_budget_and_month
+    transaction = Transaction.create(
+      description: 'Test Transaction',
+      amount: 100,
+      date: Date.new(2024, 1, 15),
+      budget_id: budget.id,
+      month_id: month.id
+    )
+    assert_difference('Transaction.count', -1) do
+      delete transaction_path(transaction), headers: auth_headers
+    end
+    assert_response :ok
+  end
+
+  test 'deletes a transaction without a budget via top-level route' do
+    user = auth_user
+    month = user.months.find_or_create_by(month: 1, year: 2024)
+    transaction = Transaction.create(
+      description: 'Test Transaction Without Budget',
+      amount: 50,
+      date: Date.new(2024, 1, 15),
+      budget_id: nil,
+      month_id: month.id
+    )
+    assert_difference('Transaction.count', -1) do
+      delete transaction_path(transaction), headers: auth_headers
     end
     assert_response :ok
   end

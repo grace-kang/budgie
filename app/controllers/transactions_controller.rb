@@ -39,7 +39,6 @@ class TransactionsController < ApplicationController
 
   def destroy
     @transaction = current_user.transactions.find(params[:id])
-    @budget = current_user.budgets.find(@transaction.budget_id)
     if @transaction.destroy
       render json: { message: 'Transaction deleted' }, status: :ok
     else
