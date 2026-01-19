@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_13_000001) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_14_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,7 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_000001) do
     t.string "description"
     t.decimal "amount", precision: 8, scale: 2
     t.date "date"
-    t.integer "budget_id", null: false
+    t.integer "budget_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "plaid_transaction_id"
