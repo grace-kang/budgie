@@ -12,7 +12,7 @@ Rails
       resources :transactions, only: %i[index create destroy]
     end
 
-    resources :transactions, only: %i[index update]
+    resources :transactions, only: %i[index create update destroy]
 
     # Plaid integration routes (feature flagged)
     if FeatureFlags.plaid_enabled?
