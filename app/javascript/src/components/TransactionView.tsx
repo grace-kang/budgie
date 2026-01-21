@@ -26,7 +26,7 @@ export default function TransactionView() {
     amount: string;
     date: string;
   }>({
-    budgetId: budgets[0]?.id ?? null,
+    budgetId: null,
     description: '',
     amount: '',
     date: getTodayDate(),
@@ -74,7 +74,7 @@ export default function TransactionView() {
     createTransaction.mutate(params, {
       onSuccess: () =>
         setForm({
-          budgetId: budgets[0]?.id ?? null,
+          budgetId: null,
           description: '',
           amount: '',
           date: getTodayDate(),
