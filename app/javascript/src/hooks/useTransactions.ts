@@ -8,16 +8,20 @@ export function useAllTransactions() {
     queryFn: () => apiFetch<Transaction[]>('/transactions'),
   });
 }
-export function useCreateTransaction(budgetId: number) {
+export function useCreateTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: TransactionParams) =>
-      apiFetch<Transaction>(`/budgets/${budgetId}/transactions`, {
+    mutationFn: (data: TransactionParams) => {
+      const endpoint = data.budget_id ? `/budgets/${data.budget_id}/transactions` : '/transactions';
+      return apiFetch<Transaction>(endpoint, {
         method: 'POST',
         body: JSON.stringify({ transaction: data }),
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
+      });
+    },
+    onSuccess: (_, variables) => {
+      if (variables.budget_id) {
+        queryClient.invalidateQueries({ queryKey: ['budget', variables.budget_id] });
+      }
       queryClient.invalidateQueries({ queryKey: ['budgets'] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
@@ -28,10 +32,14 @@ export function useCreateTransaction(budgetId: number) {
 export function useDeleteTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { transactionId: number; budgetId: number }) =>
-      apiFetch<void>(`/budgets/${data.budgetId}/transactions/${data.transactionId}`, {
+    mutationFn: (data: { transactionId: number; budgetId?: number | null }) => {
+      const endpoint = data.budgetId
+        ? `/budgets/${data.budgetId}/transactions/${data.transactionId}`
+        : `/transactions/${data.transactionId}`;
+      return apiFetch<void>(endpoint, {
         method: 'DELETE',
-      }),
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['budgets'] });
       queryClient.invalidateQueries({ queryKey: ['months'] });
@@ -40,12 +48,12 @@ export function useDeleteTransaction() {
   });
 }
 
-export function useUpdateTransaction(budgetId?: number) {
+export function useUpdateTransaction() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: {
       id: number;
-      budget_id: number;
+      budget_id: number | null;
       description: string;
       amount: number;
       date: string;
@@ -55,9 +63,6 @@ export function useUpdateTransaction(budgetId?: number) {
         body: JSON.stringify({ transaction: data }),
       }),
     onSuccess: (_, variables) => {
-      if (budgetId) {
-        queryClient.invalidateQueries({ queryKey: ['budget', budgetId] });
-      }
       if (variables.budget_id) {
         queryClient.invalidateQueries({ queryKey: ['budget', variables.budget_id] });
       }
