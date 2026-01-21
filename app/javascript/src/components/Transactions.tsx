@@ -13,7 +13,7 @@ type TransactionsProps = {
   transactions: (Transaction & { budgetName: string })[];
   budgets: Budget[];
   form: {
-    budgetId: number;
+    budgetId: number | null;
     description: string;
     amount: string;
     date: string;
@@ -23,11 +23,10 @@ type TransactionsProps = {
   onDelete: (transaction: Transaction) => void;
   onUpdateTransaction?: (data: {
     id: number;
-    budget_id: number;
+    budget_id: number | null;
     description: string;
     amount: number;
     date: string;
-    month_id: number;
   }) => void;
 };
 
@@ -63,16 +62,13 @@ export default function Transactions({
             <input name="date" type="date" value={form.date} onChange={onFormChange} required />
           </span>
           <span className="transaction-cell">
-            <select name="budgetId" value={form.budgetId} onChange={onFormChange} required>
-              {filteredBudgetsForForm.length === 0 ? (
-                <option value="">No budgets for this month</option>
-              ) : (
-                filteredBudgetsForForm.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.name}
-                  </option>
-                ))
-              )}
+            <select name="budgetId" value={form.budgetId ?? ''} onChange={onFormChange}>
+              <option value="">No budget</option>
+              {filteredBudgetsForForm.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name}
+                </option>
+              ))}
             </select>
           </span>
           <span className="transaction-cell">
