@@ -10,7 +10,7 @@ type Props = {
   budgets: Budget[];
   onSubmit: (data: {
     id: number;
-    budget_id: number;
+    budget_id: number | null;
     description: string;
     amount: number;
     date: string;
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function TransactionEditForm({ transaction, budgets, onSubmit, onClose }: Props) {
-  const [budgetId, setBudgetId] = useState<number>(transaction.budget_id);
+  const [budgetId, setBudgetId] = useState<number | null>(transaction.budget_id);
   const [description, setDescription] = useState<string>(transaction.description);
   const [amount, setAmount] = useState<string>(String(transaction.amount));
   const [date, setDate] = useState<string>(transaction.date);
@@ -30,7 +30,7 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!description || !amount || !date || !budgetId) return;
+    if (!description || !amount || !date) return;
     onSubmit({
       id: transaction.id,
       budget_id: budgetId,
@@ -57,19 +57,15 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
       <span className="transaction-cell">
         <select
           name="budgetId"
-          value={budgetId}
-          onChange={(e) => setBudgetId(Number(e.target.value))}
-          required
+          value={budgetId ?? ''}
+          onChange={(e) => setBudgetId(e.target.value === '' ? null : Number(e.target.value))}
         >
-          {filteredBudgets.length === 0 ? (
-            <option value="">No budgets for this month</option>
-          ) : (
-            filteredBudgets.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-              </option>
-            ))
-          )}
+          <option value="">No budget</option>
+          {filteredBudgets.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.name}
+            </option>
+          ))}
         </select>
       </span>
       <span className="transaction-cell">
