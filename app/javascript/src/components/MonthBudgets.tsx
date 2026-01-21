@@ -25,6 +25,14 @@ export default function MonthBudgets({ month }: { month: Month }) {
     return monthBudgets.reduce((s, b) => s + Number(b.total), 0);
   }, [monthBudgets]);
 
+  const noBudgetTransactions = useMemo(() => {
+    return month.transactions?.filter((t) => !t.budget_id) || [];
+  }, [month.transactions]);
+
+  const noBudgetTotal = useMemo(() => {
+    return noBudgetTransactions.reduce((s, t) => s + Number(t.amount), 0);
+  }, [noBudgetTransactions]);
+
   return (
     <div className="month" key={`${month.year}-${month.month}`}>
       <div className="month-header">
@@ -44,6 +52,15 @@ export default function MonthBudgets({ month }: { month: Month }) {
       {monthBudgets.map((budget) => (
         <Budget key={budget.id} month={month} budget={budget} />
       ))}
+
+      {noBudgetTransactions.length > 0 && (
+        <div className="budget budget-ok">
+          <span>No budget</span>
+          <div className="budget-total">
+            <span>${round(noBudgetTotal)}</span>
+          </div>
+        </div>
+      )}
 
       <div className={showForm ? 'hide' : 'create-budget-button show'}>
         <img
