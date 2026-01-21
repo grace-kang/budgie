@@ -3,7 +3,7 @@
 class User < ApplicationRecord
   has_many :months, dependent: :destroy
   has_many :budgets, dependent: :destroy
-  has_many :transactions, through: :budgets
+  has_many :transactions, through: :months, source: :transactions
   has_many :plaid_accounts, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
