@@ -1,6 +1,6 @@
 export type Transaction = {
   id: number;
-  budget_id: number;
+  budget_id: number | null;
   month_id: number;
   amount: number;
   description: string;
@@ -35,6 +35,7 @@ export type TransactionParams = {
   description: string;
   amount: number;
   date: string;
+  budget_id?: number | null;
 };
 
 export type PlaidAccount = {
