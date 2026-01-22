@@ -74,12 +74,13 @@
     flex-direction: column;
   }
 
-  /* Summary Card */
-  .bento-card-summary {
-    grid-column: 1 / -1;
+  /* Summary Cards */
+  .bento-card-summary,
+  .bento-card-stat {
+    /* Cards will auto-fit in the grid */
   }
 
-  .bento-card-stat {
+  .bento-card-stat-content {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -90,6 +91,12 @@
     font-weight: 700;
     color: var(--color-primary);
     font-variant-numeric: tabular-nums;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+
+  .bento-card-stat .bento-card-stat-value {
+    font-size: 1.25rem;
   }
 
   .bento-card-stat-label {
@@ -306,6 +313,7 @@
     }
 
     .bento-card-summary,
+    .bento-card-stat,
     .bento-card-form {
       grid-column: span 1;
     }
@@ -335,7 +343,6 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .bento-card-summary,
     .bento-card-form,
     .bento-card-transactions {
       grid-column: 1 / -1;
@@ -347,7 +354,6 @@
       grid-template-columns: repeat(3, 1fr);
     }
 
-    .bento-card-summary,
     .bento-card-form,
     .bento-card-transactions {
       grid-column: 1 / -1;
