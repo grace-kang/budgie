@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Plus, Calendar, Tag, FileText, DollarSign, Edit, Trash2 } from 'lucide-react';
 
 import { Transaction, Budget } from '../types';
 import { round } from '../helpers/money';
 import { getFilteredBudgets } from '../helpers/budgets';
 import TransactionEditForm from './TransactionEditForm';
+import TransactionStats from './TransactionStats';
 
 type TransactionsProps = {
   transactions: (Transaction & { budgetName: string })[];
@@ -43,10 +44,6 @@ export default function Transactions({
 
   const filteredBudgetsForForm = getFilteredBudgets(budgets, form.date);
 
-  const totalAmount = useMemo(() => {
-    return transactions.reduce((sum, t) => sum + Number(t.amount), 0);
-  }, [transactions]);
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -55,19 +52,7 @@ export default function Transactions({
   return (
     <div className="transaction-view">
       <div className="bento-grid">
-        {/* Summary Card */}
-        <div className="bento-card bento-card-summary">
-          <div className="bento-card-header">
-            <DollarSign className="bento-card-icon" strokeWidth={1.5} />
-            <h3 className="bento-card-title">Total Transactions</h3>
-          </div>
-          <div className="bento-card-content">
-            <div className="bento-card-stat">
-              <span className="bento-card-stat-value">${round(totalAmount)}</span>
-              <span className="bento-card-stat-label">{transactions.length} transactions</span>
-            </div>
-          </div>
-        </div>
+        <TransactionStats transactions={transactions} />
 
         {/* Add Transaction Form Card */}
         <div className="bento-card bento-card-form">
