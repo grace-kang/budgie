@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Calendar, Tag, FileText, DollarSign, X } from 'lucide-react';
 
-import CloseIcon from '/icons/close.svg';
 import { Transaction, Budget } from '../types';
 import { useBudgetFilter } from '../hooks/useBudgetFilter';
 import { getFilteredBudgets } from '../helpers/budgets';
@@ -44,59 +44,109 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
   const filteredBudgets = getFilteredBudgets(budgets, date);
 
   return (
-    <form className="transaction-row" onSubmit={handleSubmit}>
-      <span className="transaction-cell">
-        <input
-          name="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-      </span>
-      <span className="transaction-cell">
-        <select
-          name="budgetId"
-          value={budgetId ?? ''}
-          onChange={(e) => setBudgetId(e.target.value === '' ? null : Number(e.target.value))}
+    <div className="bento-card-content">
+      <div className="bento-card-header">
+        <FileText className="bento-card-icon" strokeWidth={1.5} />
+        <h3 className="bento-card-title">Edit Transaction</h3>
+        <button
+          type="button"
+          onClick={onClose}
+          className="bento-card-action-button"
+          aria-label="Close"
         >
-          <option value="">No budget</option>
-          {filteredBudgets.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
-        </select>
-      </span>
-      <span className="transaction-cell">
-        <input
-          name="description"
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-      </span>
-      <span className="transaction-cell">
-        <input
-          name="amount"
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          step="0.01"
-          required
-        />
-      </span>
-      <div className="transaction-actions">
-        <div className="hidden-submit">
-          <button type="submit"></button>
-        </div>
-        <button type="button" aria-label="Close" onClick={onClose}>
-          <img src={CloseIcon} className="icon-button" alt="Close" />
+          <X strokeWidth={1.5} size={16} />
         </button>
       </div>
-    </form>
+      <form onSubmit={handleSubmit} className="bento-card-content">
+        <div className="bento-form-grid">
+          <div className="bento-form-field">
+            <label htmlFor="edit-date" className="bento-form-label">
+              <Calendar className="bento-form-icon" strokeWidth={1.5} size={16} />
+              Date
+            </label>
+            <input
+              id="edit-date"
+              name="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="bento-form-input"
+              required
+            />
+          </div>
+          <div className="bento-form-field">
+            <label htmlFor="edit-budgetId" className="bento-form-label">
+              <Tag className="bento-form-icon" strokeWidth={1.5} size={16} />
+              Budget
+            </label>
+            <select
+              id="edit-budgetId"
+              name="budgetId"
+              value={budgetId ?? ''}
+              onChange={(e) => setBudgetId(e.target.value === '' ? null : Number(e.target.value))}
+              className="bento-form-input"
+            >
+              <option value="">No budget</option>
+              {filteredBudgets.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="bento-form-field">
+            <label htmlFor="edit-description" className="bento-form-label">
+              <FileText className="bento-form-icon" strokeWidth={1.5} size={16} />
+              Description
+            </label>
+            <input
+              id="edit-description"
+              name="description"
+              type="text"
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="bento-form-input"
+              required
+            />
+          </div>
+          <div className="bento-form-field">
+            <label htmlFor="edit-amount" className="bento-form-label">
+              <DollarSign className="bento-form-icon" strokeWidth={1.5} size={16} />
+              Amount
+            </label>
+            <input
+              id="edit-amount"
+              name="amount"
+              type="number"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              step="0.01"
+              className="bento-form-input"
+              required
+            />
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto' }}>
+          <button type="submit" className="bento-form-submit" style={{ flex: 1 }}>
+            Save Changes
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="bento-form-submit"
+            style={{
+              flex: 0,
+              background: 'transparent',
+              color: 'var(--color-text)',
+              border: '1px solid rgb(226 232 240)',
+            }}
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

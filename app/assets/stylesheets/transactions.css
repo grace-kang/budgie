@@ -1,84 +1,356 @@
 .transaction-view {
-  .transactions {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 0;
   }
 
-  .transaction-row {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 2.5fr 1fr auto;
-    gap: 1rem;
-    align-items: center;
-    padding: 0.2rem;
-    transition: background-color 0.2s;
+  .bento-card {
+    background: rgb(248 250 252); /* bg-slate-50 */
+    border: 1px solid rgb(226 232 240); /* subtle border */
+    border-radius: 1rem; /* rounded-2xl */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-    form {
-      background-color: var(--color-bg-muted);
-      border-bottom: 2px solid var(--color-border);
-      padding: 1rem;
-
-      &:hover {
-        background-color: var(--color-bg-muted);
-      }
-
-      .transaction-cell {
-        display: flex;
-        align-items: center;
-      }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
   }
 
-  .transactions-header {
+  .bento-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgb(226 232 240);
+  }
+
+  .bento-card-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .bento-card-title {
+    font-size: 1rem;
     font-weight: 600;
-    color: var(--color-text-muted);
-    padding: 1rem;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .transaction-cell {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     color: var(--color-text);
+    margin: 0;
+    flex: 1;
   }
 
-  .transaction-amount {
-    font-weight: 500;
+  .bento-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+
+  .bento-card-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgb(241 245 249);
+      color: var(--color-text);
+    }
+  }
+
+  .bento-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Summary Card */
+  .bento-card-summary {
+    grid-column: 1 / -1;
+  }
+
+  .bento-card-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .bento-card-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
     font-variant-numeric: tabular-nums;
   }
 
-  .transaction-date {
-    color: var(--color-text-muted);
+  .bento-card-stat-label {
     font-size: 0.875rem;
+    color: var(--color-text-muted);
   }
 
-  .transaction-budget {
+  /* Form Card */
+  .bento-card-form {
+    grid-column: 1 / -1;
+  }
+
+  .bento-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .bento-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .bento-form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .bento-form-icon {
+    color: var(--color-text-muted);
+  }
+
+  .bento-form-input {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 0.5rem;
+    background: white;
+    color: var(--color-text);
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  .bento-form-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: auto;
+
+    &:hover {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  /* Transactions List Card */
+  .bento-card-transactions {
+    grid-column: 1 / -1;
+  }
+
+  .bento-transactions-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--color-text-muted);
+  }
+
+  .bento-transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .bento-transactions-header {
+    display: grid;
+    grid-template-columns: 1.2fr 1.5fr 2.5fr 1fr auto;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    border-bottom: 1px solid rgb(226 232 240);
+  }
+
+  .bento-transaction-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1.5fr 2.5fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgb(241 245 249);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgb(241 245 249);
+      border-radius: 0.5rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .bento-transaction-col-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .bento-transaction-col-budget {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-primary);
   }
 
-  .transaction-actions {
+  .bento-transaction-col-description {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bento-transaction-col-amount {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .bento-transaction-col-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 0.5rem;
   }
 
-  .transaction-empty {
-    padding: 2rem;
-    text-align: center;
+  .bento-transaction-row-icon {
     color: var(--color-text-muted);
-    grid-column: 1 / -1;
+    flex-shrink: 0;
   }
 
-  .transaction-row.hide {
+  .bento-transaction-action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgb(226 232 240);
+      color: var(--color-text);
+    }
+  }
+
+  .bento-transaction-edit-row {
+    grid-column: 1 / -1;
+    padding: 1rem;
+    background: rgb(241 245 249);
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .bento-card-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--color-text-muted);
+  }
+
+  .bento-card.hide,
+  .bento-transaction-row.hide {
     display: none !important;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-card-summary,
+    .bento-card-form {
+      grid-column: span 1;
+    }
+
+    .bento-card-transactions {
+      grid-column: span 1;
+    }
+
+    .bento-form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-transactions-header,
+    .bento-transaction-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .bento-transaction-col-actions {
+      justify-content: flex-start;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bento-card-summary,
+    .bento-card-form,
+    .bento-card-transactions {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bento-card-summary,
+    .bento-card-form,
+    .bento-card-transactions {
+      grid-column: 1 / -1;
+    }
   }
 }
