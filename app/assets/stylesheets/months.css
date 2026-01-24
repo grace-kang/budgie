@@ -1,55 +1,189 @@
-.months {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 1rem;
-}
+.months-view {
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: min-content;
+    gap: 1.5rem;
+    padding: 0;
+    align-items: start;
+  }
 
-.create-month {
-  align-self: center;
-  background: var(--color-surface);
-}
+  .bento-card {
+    background: rgb(248 250 252); /* bg-slate-50 */
+    border: 1px solid rgb(226 232 240); /* subtle border */
+    border-radius: 1rem; /* rounded-2xl */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: fit-content;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-.month {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 24rem;
-
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1rem;
-}
-
-.month-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-  gap: 4rem;
-
-  &:hover {
-    .month-total {
-      display: none;
-    }
-
-    .month-actions {
-      display: flex;
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
   }
-}
 
-.month-title {
-  white-space: nowrap;
-}
+  .bento-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgb(226 232 240);
+  }
 
-.month-total {
-  display: flex;
-  white-space: nowrap;
-}
+  .bento-card-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
 
-.month-actions {
-  display: none;
+  .bento-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    flex: 1;
+    text-transform: capitalize;
+  }
+
+  .bento-card-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .bento-budgets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex: 0 1 auto;
+  }
+
+  .bento-add-budget-button {
+    margin-top: auto;
+  }
+
+  .bento-add-budget-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  .bento-budget-form {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgb(241 245 249);
+    border-radius: 0.5rem;
+  }
+
+  .bento-budget-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .bento-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .bento-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .bento-form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .bento-form-icon {
+    color: var(--color-text-muted);
+  }
+
+  .bento-form-input {
+    padding: 0.625rem 0.75rem;
+    border: 1px solid rgb(226 232 240);
+    border-radius: 0.5rem;
+    background: white;
+    color: var(--color-text);
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  .bento-form-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--color-primary-hover);
+    }
+  }
+
+  .hide {
+    display: none !important;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .bento-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 }
