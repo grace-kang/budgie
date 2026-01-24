@@ -72,7 +72,6 @@ export default function TransactionStats({ transactions }: TransactionStatsProps
           </div>
         </div>
       </div>
-
     </>
   );
 }

@@ -166,7 +166,11 @@ export default function Transactions({
                       }`}
                     >
                       <span className="bento-transaction-col-date">
-                        <Calendar className="bento-transaction-row-icon" strokeWidth={1.5} size={14} />
+                        <Calendar
+                          className="bento-transaction-row-icon"
+                          strokeWidth={1.5}
+                          size={14}
+                        />
                         {formatDate(transaction.date)}
                       </span>
                       <span className="bento-transaction-col-budget">
