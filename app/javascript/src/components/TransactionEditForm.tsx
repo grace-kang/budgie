@@ -128,20 +128,14 @@ export default function TransactionEditForm({ transaction, budgets, onSubmit, on
             />
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto' }}>
-          <button type="submit" className="bento-form-submit" style={{ flex: 1 }}>
+        <div className="bento-form-actions">
+          <button type="submit" className="bento-form-submit bento-form-submit-full">
             Save Changes
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="bento-form-submit"
-            style={{
-              flex: 0,
-              background: 'transparent',
-              color: 'var(--color-text)',
-              border: '1px solid rgb(226 232 240)',
-            }}
+            className="bento-form-submit bento-form-cancel-button"
           >
             Cancel
           </button>

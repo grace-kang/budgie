@@ -43,7 +43,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
       <div className="bento-card-header">
         <Calendar className="bento-card-icon" strokeWidth={1.5} />
         <h3 className="bento-card-title">{monthName}</h3>
-        <div className="bento-card-stat-value" style={{ fontSize: '1rem', marginLeft: 'auto' }}>
+        <div className="bento-card-stat-value bento-card-header-stat">
           ${round(used)} / ${round(limit)}
         </div>
       </div>
