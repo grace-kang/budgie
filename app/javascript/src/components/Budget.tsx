@@ -60,11 +60,21 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
         </div>
 
         <div className="budget-actions" onClick={(e) => e.stopPropagation()}>
-          <button type="button" onClick={onEditClick} className="budget-action-button" aria-label="Edit budget">
+          <button
+            type="button"
+            onClick={onEditClick}
+            className="budget-action-button"
+            aria-label="Edit budget"
+          >
             <Edit strokeWidth={1.5} size={16} />
           </button>
 
-          <button type="button" onClick={onDeleteClick} className="budget-action-button" aria-label="Delete budget">
+          <button
+            type="button"
+            onClick={onDeleteClick}
+            className="budget-action-button"
+            aria-label="Delete budget"
+          >
             <Trash2 strokeWidth={1.5} size={16} />
           </button>
         </div>
