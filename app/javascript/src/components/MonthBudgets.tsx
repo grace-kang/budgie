@@ -1,9 +1,9 @@
 import { useState, useMemo } from 'react';
+import { Calendar, Plus, Wallet } from 'lucide-react';
 import { useCreateBudget, useBudgets } from '../hooks/useBudgets';
 import { Month } from '../types';
 import Budget from './Budget';
 import BudgetForm from './BudgetForm';
-import AddIcon from '/icons/add.svg';
 import { round } from '../helpers/money';
 
 export default function MonthBudgets({ month }: { month: Month }) {
@@ -33,49 +33,55 @@ export default function MonthBudgets({ month }: { month: Month }) {
     return noBudgetTransactions.reduce((s, t) => s + Number(t.amount), 0);
   }, [noBudgetTransactions]);
 
+  const monthName = new Date(month.year, month.month - 1).toLocaleString(undefined, {
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
-    <div className="month" key={`${month.year}-${month.month}`}>
-      <div className="month-header">
-        <h3 className="month-title">
-          {new Date(month.year, month.month - 1)
-            .toLocaleString(undefined, {
-              month: 'long',
-              year: 'numeric',
-            })
-            .toUpperCase()}
-        </h3>
-        <div className="month-total">
+    <div className="bento-card bento-card-month" key={`${month.year}-${month.month}`}>
+      <div className="bento-card-header">
+        <Calendar className="bento-card-icon" strokeWidth={1.5} />
+        <h3 className="bento-card-title">{monthName}</h3>
+        <div className="bento-card-stat-value" style={{ fontSize: '1rem', marginLeft: 'auto' }}>
           ${round(used)} / ${round(limit)}
         </div>
       </div>
 
-      {monthBudgets.map((budget) => (
-        <Budget key={budget.id} month={month} budget={budget} />
-      ))}
+      <div className="bento-card-content">
+        <div className="bento-budgets-list">
+          {monthBudgets.map((budget) => (
+            <Budget key={budget.id} month={month} budget={budget} />
+          ))}
 
-      {noBudgetTransactions.length > 0 && (
-        <div className="budget budget-ok">
-          <span>No budget</span>
-          <div className="budget-total">
-            <span>${round(noBudgetTotal)}</span>
-          </div>
+          {noBudgetTransactions.length > 0 && (
+            <div className="budget budget-ok">
+              <span>No budget</span>
+              <div className="budget-total">
+                <span>${round(noBudgetTotal)}</span>
+              </div>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className={showForm ? 'hide' : 'create-budget-button show'}>
-        <img
-          src={AddIcon}
-          className="icon-button"
-          alt="Add Budget"
-          onClick={() => setShowForm(true)}
-        />
-      </div>
+        <div className={showForm ? 'hide' : 'bento-add-budget-button'}>
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="bento-add-budget-btn"
+            aria-label="Add Budget"
+          >
+            <Plus strokeWidth={1.5} size={18} />
+            Add Budget
+          </button>
+        </div>
 
-      <div className={showForm ? 'show' : 'hide'}>
-        <BudgetForm
-          onSubmit={(params) => createBudget.mutate(params)}
-          onClose={() => setShowForm(false)}
-        />
+        <div className={showForm ? 'bento-budget-form' : 'hide'}>
+          <BudgetForm
+            onSubmit={(params) => createBudget.mutate(params)}
+            onClose={() => setShowForm(false)}
+          />
+        </div>
       </div>
     </div>
   );

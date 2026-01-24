@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import CloseIcon from '/icons/close.svg';
+import { X, Tag, DollarSign } from 'lucide-react';
 
 interface Props {
   initialBudget?: {
@@ -37,34 +36,62 @@ export default function BudgetForm({ initialBudget, onSubmit, onClose }: Props) 
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form">
-        <div className="budget-name-input">
+    <form onSubmit={handleSubmit} className="bento-budget-form-content">
+      <div className="bento-form-grid">
+        <div className="bento-form-field">
+          <label htmlFor="budget-name" className="bento-form-label">
+            <Tag className="bento-form-icon" strokeWidth={1.5} size={16} />
+            Name
+          </label>
           <input
+            id="budget-name"
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder="Budget name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="bento-form-input"
+            required
           />
         </div>
 
-        <div className="budget-total-input">
+        <div className="bento-form-field">
+          <label htmlFor="budget-total" className="bento-form-label">
+            <DollarSign className="bento-form-icon" strokeWidth={1.5} size={16} />
+            Limit
+          </label>
           <input
+            id="budget-total"
             type="number"
             name="total"
-            placeholder="Limit"
+            placeholder="0.00"
             value={total === '' ? '' : String(total)}
             onChange={(e) => setTotal(e.target.value === '' ? '' : Number(e.target.value))}
+            className="bento-form-input"
+            step="0.01"
+            required
           />
         </div>
+      </div>
 
-        <div className="hidden-submit">
-          <button type="submit"></button>
-        </div>
-
-        <button type="button" aria-label="Close" onClick={onClose}>
-          <img src={CloseIcon} className="icon-button" alt="Close" />
+      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+        <button type="submit" className="bento-form-submit" style={{ flex: 1 }}>
+          {initialBudget ? 'Update Budget' : 'Create Budget'}
+        </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="bento-form-submit"
+          style={{
+            flex: 0,
+            background: 'transparent',
+            color: 'var(--color-text)',
+            border: '1px solid rgb(226 232 240)',
+            padding: '0.75rem',
+          }}
+          aria-label="Close"
+        >
+          <X strokeWidth={1.5} size={18} />
         </button>
       </div>
     </form>

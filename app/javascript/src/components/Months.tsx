@@ -11,10 +11,12 @@ export default function Months() {
     .sort((a, b) => b.year - a.year || b.month - a.month);
 
   return (
-    <div className="months">
-      {sortedMonths.map((month) => (
-        <MonthBudgets key={month.id} month={month} />
-      ))}
+    <div className="months-view">
+      <div className="bento-grid">
+        {sortedMonths.map((month) => (
+          <MonthBudgets key={month.id} month={month} />
+        ))}
+      </div>
     </div>
   );
 }

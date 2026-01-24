@@ -1,9 +1,8 @@
 import { useState, useMemo } from 'react';
+import { Edit, Trash2 } from 'lucide-react';
 import { useDeleteBudget, useUpdateBudget } from '../hooks/useBudgets';
 import { Budget, Month } from '../types';
 import BudgetForm from './BudgetForm';
-import EditIcon from '/icons/edit.svg';
-import TrashIcon from '/icons/trash.svg';
 import { round } from '../helpers/money';
 
 export default function Budgets({ month, budget }: { month: Month; budget: Budget }) {
@@ -61,17 +60,17 @@ export default function Budgets({ month, budget }: { month: Month; budget: Budge
         </div>
 
         <div className="budget-actions" onClick={(e) => e.stopPropagation()}>
-          <button type="button" onClick={onEditClick} aria-label="Edit budget">
-            <img src={EditIcon} className="icon-button" alt="Edit" />
+          <button type="button" onClick={onEditClick} className="budget-action-button" aria-label="Edit budget">
+            <Edit strokeWidth={1.5} size={16} />
           </button>
 
-          <button type="button" onClick={onDeleteClick} aria-label="Delete budget">
-            <img src={TrashIcon} className="icon-button" alt="Delete" />
+          <button type="button" onClick={onDeleteClick} className="budget-action-button" aria-label="Delete budget">
+            <Trash2 strokeWidth={1.5} size={16} />
           </button>
         </div>
       </div>
 
-      <div className={editing ? 'show' : 'hide'}>
+      <div className={editing ? 'bento-budget-form' : 'hide'}>
         <BudgetForm
           initialBudget={initialBudget}
           onSubmit={handleBudgetUpdate}
