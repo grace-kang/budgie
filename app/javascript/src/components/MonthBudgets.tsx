@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Calendar, Plus, Wallet } from 'lucide-react';
+import { Calendar, Plus } from 'lucide-react';
 import { useCreateBudget, useBudgets } from '../hooks/useBudgets';
 import { Month } from '../types';
 import Budget from './Budget';
