@@ -74,21 +74,14 @@ export default function BudgetForm({ initialBudget, onSubmit, onClose }: Props) 
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
-        <button type="submit" className="bento-form-submit" style={{ flex: 1 }}>
+      <div className="bento-form-actions">
+        <button type="submit" className="bento-form-submit bento-form-submit-full">
           {initialBudget ? 'Update Budget' : 'Create Budget'}
         </button>
         <button
           type="button"
           onClick={onClose}
-          className="bento-form-submit"
-          style={{
-            flex: 0,
-            background: 'transparent',
-            color: 'var(--color-text)',
-            border: '1px solid rgb(226 232 240)',
-            padding: '0.75rem',
-          }}
+          className="bento-form-submit bento-form-cancel-button"
           aria-label="Close"
         >
           <X strokeWidth={1.5} size={18} />
