@@ -11,6 +11,15 @@
 ARG RUBY_VERSION=3.2.2
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
+# Declare arguments that Docker should expect from the build environment
+ARG GOOGLE_CLIENT_ID
+ARG GOOGLE_CLIENT_SECRET
+ARG SECRET_KEY_BASE_DUMMY=1
+
+# Convert those ARGs into ENVs so Rails can see them
+ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+
 # Rails app lives here
 WORKDIR /rails
 
