@@ -21,7 +21,6 @@ RUN apt-get update -qq && \
 		libjemalloc2 \
 		libvips \
 		sqlite3 \
-		libmariadb3 \
 		&& \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
@@ -42,7 +41,6 @@ RUN apt-get update -qq && \
 		git \
 		libyaml-dev \
 		pkg-config \
-		default-libmysqlclient-dev \
 		&& \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install --no-install-recommends -y nodejs && \
