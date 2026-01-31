@@ -30,7 +30,15 @@ FROM base AS build
 
 # Install packages needed to build gems and Node.js for Vite
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libyaml-dev pkg-config default-libmysqlclient-dev && \
+    apt-get install --no-install-recommends -y \
+		build-essential \
+		curl \
+		git \
+		libyaml-dev \
+		pkg-config \
+		default-libmysqlclient-dev \
+		libmariadb3 \
+		&& \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install --no-install-recommends -y nodejs && \
     corepack enable && \
