@@ -1,16 +1,13 @@
-#!/bin/bash -e
-# Remove a potentially pre-existing server.pid for Rails.
+#!/bin/bash
+set -e
+
+# Remove stale PID
 rm -f /rails/tmp/pids/server.pid
 
-# Enable jemalloc for reduced memory usage and latency.
+# Enable jemalloc
 if [ -z "${LD_PRELOAD+x}" ]; then
-    LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
-    export LD_PRELOAD
-fi
+export LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
+	fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
-
-exec "${@}"
+# Just execute whatever command comes in
+	exec "$@"
