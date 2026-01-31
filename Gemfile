@@ -32,5 +32,5 @@ gem 'ruby-lsp', '~> 0.26.1', group: :development
 gem 'vite_rails', '~> 3.0'
 
 group :production do
-	gem "thruster"
+  gem 'thruster'
 end
