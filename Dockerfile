@@ -67,6 +67,7 @@ COPY --from=build /rails /rails
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    mkdir -p log tmp storage && \
     chown -R rails:rails db log storage tmp
 USER 1000:1000
 
