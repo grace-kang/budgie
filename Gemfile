@@ -5,10 +5,10 @@ source 'https://rubygems.org'
 ruby '3.2.2'
 
 gem 'bootsnap', require: false
+gem 'mysql2', '~> 0.5'
 gem 'propshaft'
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.0.3'
-gem 'mysql2', '~> 0.5'
 
 group :development, :test do
   gem 'brakeman', require: false
