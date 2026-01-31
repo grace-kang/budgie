@@ -30,3 +30,7 @@ gem 'pg'
 gem 'plaid', '~> 22.0'
 gem 'ruby-lsp', '~> 0.26.1', group: :development
 gem 'vite_rails', '~> 3.0'
+
+group :production do
+	gem "thruster"
+end
