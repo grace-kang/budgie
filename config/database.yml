@@ -17,5 +17,4 @@ test:
 production:
   <<: *default
   database: budgie_prod
-  username: <%= ENV["PGUSER"] %>
-  password: <%= ENV["PGPASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
