@@ -85,6 +85,7 @@ USER 1000:1000
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+# Bind to PORT at runtime (Railway, Heroku, etc. inject PORT). Puma reads it in config/puma.rb.
+# For Kamal/port-80 deployments, set PORT=80 and use: CMD ["./bin/thrust", "./bin/rails", "server"]
+EXPOSE 3000
+CMD ["bin/rails", "server"]
