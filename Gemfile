@@ -8,6 +8,7 @@ gem 'bootsnap', require: false
 gem 'propshaft'
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.0.3'
+gem 'mysql2', '~> 0.5'
 
 group :development, :test do
   gem 'brakeman', require: false
