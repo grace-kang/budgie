@@ -9,10 +9,12 @@ default: &default
 development:
   <<: *default
   database: budgie
+  url: <%= "postgresql://#{ENV['PGUSER'] || 'postgres'}:#{ENV['PGPASSWORD']}@#{ENV['PGHOST'] || 'localhost'}/budgie" %>
 
 test:
   <<: *default
   database: budgie_test
+  url: <%= "postgresql://#{ENV['PGUSER'] || 'postgres'}:#{ENV['PGPASSWORD']}@#{ENV['PGHOST'] || 'localhost'}/budgie_test" %>
 
 production:
   <<: *default
