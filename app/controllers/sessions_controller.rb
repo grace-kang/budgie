@@ -23,6 +23,24 @@ class SessionsController < ApplicationController
 
   def create_current_month_for(user)
     current_date = Time.zone.today
-    user.months.find_or_create_by(month: current_date.month, year: current_date.year)
+    month = user.months.find_or_create_by(month: current_date.month, year: current_date.year)
+    create_example_budgets_for(month) if month.budgets.empty?
+    month
+  end
+
+  EXAMPLE_BUDGETS = [
+    { name: 'Groceries', total: 500 },
+    { name: 'Housing', total: 1500 },
+    { name: 'Dining Out', total: 200 },
+    { name: 'Transportation', total: 300 },
+    { name: 'Entertainment', total: 100 }
+  ].freeze
+
+  def create_example_budgets_for(month)
+    EXAMPLE_BUDGETS.each do |attrs|
+      month.budgets.find_or_create_by(name: attrs[:name], user: month.user) do |budget|
+        budget.total = attrs[:total]
+      end
+    end
   end
 end
