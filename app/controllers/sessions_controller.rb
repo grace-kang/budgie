@@ -12,6 +12,14 @@ class SessionsController < ApplicationController
     redirect_to "#{ENV.fetch('FRONTEND_URL')}/auth/callback?token=#{token}"
   end
 
+  EXAMPLE_BUDGETS = [
+    { name: 'Groceries', total: 500 },
+    { name: 'Housing', total: 1500 },
+    { name: 'Dining Out', total: 200 },
+    { name: 'Transportation', total: 300 },
+    { name: 'Entertainment', total: 100 }
+  ].freeze
+
   private
 
   def find_or_create_user(user_info)
@@ -27,14 +35,6 @@ class SessionsController < ApplicationController
     create_example_budgets_for(month) if month.budgets.empty?
     month
   end
-
-  EXAMPLE_BUDGETS = [
-    { name: 'Groceries', total: 500 },
-    { name: 'Housing', total: 1500 },
-    { name: 'Dining Out', total: 200 },
-    { name: 'Transportation', total: 300 },
-    { name: 'Entertainment', total: 100 }
-  ].freeze
 
   def create_example_budgets_for(month)
     EXAMPLE_BUDGETS.each do |attrs|

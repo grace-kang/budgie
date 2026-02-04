@@ -5,7 +5,7 @@ class Month < ApplicationRecord
   has_many :transactions, dependent: :destroy
   has_many :budgets, dependent: :destroy
 
-  validates :month, presence: true
+  validates :month, presence: true, inclusion: { in: 1..12 }, uniqueness: { scope: %i[user_id year] }
   validates :year, presence: true
 
   after_create :copy_budgets_from_previous_month
