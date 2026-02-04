@@ -1,4 +1,55 @@
 .months-view {
+  .months-view-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .months-add-month-btn {
+    width: auto;
+    align-self: flex-start;
+  }
+
+  .months-add-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--color-bg-muted);
+    border-radius: 0.5rem;
+  }
+
+  .months-add-input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .months-add-form-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .months-add-cancel {
+    background: var(--color-bg-muted);
+    color: var(--color-text);
+    border: 1px solid var(--color-border, #ccc);
+  }
+
+  .months-add-cancel:hover {
+    background: var(--color-bg);
+  }
+
+  .months-empty {
+    grid-column: 1 / -1;
+    color: var(--color-text-muted, #666);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
   .bento-grid {
     grid-auto-rows: min-content;
     align-items: start;
