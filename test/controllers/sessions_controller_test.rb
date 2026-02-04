@@ -63,4 +63,19 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     month = user.months.find_by(month: today.month, year: today.year)
     assert month.present?, 'Current month should be created for new user'
   end
+
+  test 'creates example budgets for new user on first login' do
+    OmniAuth.config.test_mode = true
+    OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(@omniauth_hash)
+    get '/auth/google_oauth2/callback', env: { 'omniauth.auth' => @omniauth_hash }
+    user = User.find_by(email: 'test@example.com')
+    today = Time.zone.today
+    month = user.months.find_by(month: today.month, year: today.year)
+    assert month.present?, 'Current month should be created'
+    assert month.budgets.any?, 'Example budgets should be created for new user'
+    budget_names = month.budgets.pluck(:name)
+    assert_includes budget_names, 'Groceries'
+    assert_includes budget_names, 'Housing'
+    assert_includes budget_names, 'Dining Out'
+  end
 end
