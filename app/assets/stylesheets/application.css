@@ -248,6 +248,20 @@ input[type='submit']:hover {
   flex: 1;
   overflow-y: auto;
   padding: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* Keep nav row aligned with main content width; title stays full width */
+.app-header .app-header-content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form {
