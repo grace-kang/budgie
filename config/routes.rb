@@ -6,7 +6,7 @@ Rails
   .draw do
     root 'spa#index'
 
-    resources :months, only: [:index]
+    resources :months, only: %i[index create]
 
     resources :budgets, only: %i[index show edit create update destroy] do
       resources :transactions, only: %i[index create destroy]
