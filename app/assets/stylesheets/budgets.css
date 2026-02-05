@@ -7,10 +7,10 @@
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease;
 
   &:hover {
-    background: var(--color-bg-muted);
+    background: color-mix(in oklch, var(--color-bg-muted) 45%, transparent);
     .budget-actions {
       display: flex;
     }
@@ -73,14 +73,14 @@
   color: var(--color-text-muted);
   border-radius: 0.375rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 
   & svg {
     stroke: currentColor;
   }
 
   &:hover {
-    background: var(--color-bg-muted);
+    background: color-mix(in oklch, var(--color-bg-muted) 55%, transparent);
     color: var(--color-text);
   }
 }
