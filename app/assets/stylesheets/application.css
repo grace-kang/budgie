@@ -385,14 +385,12 @@ input[type='submit']:hover {
   cursor: pointer;
   transition:
     background-color 0.2s,
-    border-color 0.2s,
-    transform 0.1s;
+    border-color 0.2s;
 }
 
 .theme-selector-button:hover {
   background-color: var(--color-bg-muted);
   border-color: var(--color-primary);
-  transform: scale(1.05);
 }
 
 .theme-selector-button.active {
