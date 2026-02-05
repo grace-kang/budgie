@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Calendar, Tag, FileText, DollarSign, Edit, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Calendar, Tag, FileText, DollarSign, Edit, Trash2, MoreVertical } from 'lucide-react';
 
 import { Transaction, Budget } from '../types';
 import { round } from '../helpers/money';
@@ -38,6 +38,19 @@ export default function Transactions({
   onUpdateTransaction,
 }: TransactionsProps) {
   const [editingTransactionId, setEditingTransactionId] = useState<number | null>(null);
+  const [dropdownOpenRowId, setDropdownOpenRowId] = useState<number | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (dropdownOpenRowId === null) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current?.contains(e.target as Node)) return;
+      setDropdownOpenRowId(null);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [dropdownOpenRowId]);
+
   const sorted = [...transactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
@@ -46,7 +59,7 @@ export default function Transactions({
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   return (
@@ -184,24 +197,51 @@ export default function Transactions({
                         ${round(transaction.amount)}
                       </span>
                       <span className="bento-transaction-col-actions">
-                        {onUpdateTransaction && (
+                        <div
+                          className="bento-transaction-actions-wrap"
+                          ref={dropdownOpenRowId === transaction.id ? dropdownRef : null}
+                        >
                           <button
                             type="button"
-                            onClick={() => setEditingTransactionId(transaction.id)}
-                            className="bento-transaction-action-button"
-                            aria-label="Edit transaction"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDropdownOpenRowId((prev) => (prev === transaction.id ? null : transaction.id));
+                            }}
+                            className="bento-transaction-action-button bento-transaction-more-button"
+                            aria-label="Show actions"
+                            aria-expanded={dropdownOpenRowId === transaction.id}
                           >
-                            <Edit strokeWidth={1.5} size={16} />
+                            <MoreVertical strokeWidth={1.5} size={18} />
                           </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => onDelete(transaction)}
-                          className="bento-transaction-action-button"
-                          aria-label="Delete transaction"
-                        >
-                          <Trash2 strokeWidth={1.5} size={16} />
-                        </button>
+                          {dropdownOpenRowId === transaction.id && (
+                            <div className="bento-transaction-dropdown">
+                              {onUpdateTransaction && (
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setEditingTransactionId(transaction.id);
+                                    setDropdownOpenRowId(null);
+                                  }}
+                                  className="bento-transaction-dropdown-item"
+                                >
+                                  <Edit strokeWidth={1.5} size={16} />
+                                  Edit
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  onDelete(transaction);
+                                  setDropdownOpenRowId(null);
+                                }}
+                                className="bento-transaction-dropdown-item bento-transaction-dropdown-item-danger"
+                              >
+                                <Trash2 strokeWidth={1.5} size={16} />
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </span>
                     </div>
 

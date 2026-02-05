@@ -118,5 +118,49 @@
     display: none !important;
   }
 
-  /* Responsive adjustments - inherited from shared bento.css */
+  .months-add-month-btn,
+  .bento-add-budget-btn {
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    .months-view-toolbar {
+      margin-bottom: 1rem;
+    }
+
+    .months-add-form {
+      padding: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .months-add-input {
+      width: 100%;
+      min-height: 48px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .months-add-form-actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .months-add-form-actions .bento-add-budget-btn {
+      min-height: 48px;
+    }
+
+    .bento-card-month .bento-card-header {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .bento-card-month .bento-card-header-stat {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 0.25rem;
+      font-size: 0.9375rem;
+    }
+  }
 }

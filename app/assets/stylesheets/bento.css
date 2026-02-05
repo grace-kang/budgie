@@ -176,10 +176,45 @@
 @media (max-width: 768px) {
   .bento-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .bento-card {
+    padding: 1.25rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bento-card:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  @media (hover: hover) {
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
   }
 
   .bento-form-grid {
     grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  .bento-form-input,
+  .bento-form-label {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .bento-form-input {
+    padding: 0.75rem 0.875rem;
+    font-size: 16px; /* prevents zoom on focus in iOS */
+  }
+
+  .bento-form-submit {
+    min-height: 48px;
+    padding: 0.875rem 1.5rem;
   }
 }
 
