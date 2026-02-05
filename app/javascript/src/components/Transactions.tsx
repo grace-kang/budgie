@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Calendar, Tag, FileText, DollarSign, Edit, Trash2, MoreVertical } from 'lucide-react';
+import {
+  Plus,
+  Calendar,
+  Tag,
+  FileText,
+  DollarSign,
+  Edit,
+  Trash2,
+  MoreVertical,
+} from 'lucide-react';
 
 import { Transaction, Budget } from '../types';
 import { round } from '../helpers/money';
@@ -225,7 +234,9 @@ export default function Transactions({
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setDropdownOpenRowId((prev) => (prev === transaction.id ? null : transaction.id));
+                              setDropdownOpenRowId((prev) =>
+                                prev === transaction.id ? null : transaction.id,
+                              );
                             }}
                             className="bento-transaction-action-button bento-transaction-more-button"
                             aria-label="Show actions"

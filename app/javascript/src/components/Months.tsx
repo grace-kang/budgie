@@ -62,11 +62,7 @@ export default function Months() {
               autoFocus
             />
             <div className="months-add-form-actions">
-              <button
-                type="submit"
-                className="bento-primary-btn"
-                disabled={createMonth.isPending}
-              >
+              <button type="submit" className="bento-primary-btn" disabled={createMonth.isPending}>
                 {createMonth.isPending ? 'Adding…' : 'Add'}
               </button>
             </div>
