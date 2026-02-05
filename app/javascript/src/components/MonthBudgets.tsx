@@ -68,7 +68,7 @@ export default function MonthBudgets({ month }: { month: Month }) {
           <button
             type="button"
             onClick={() => setShowForm(true)}
-            className="bento-add-budget-btn"
+            className="bento-primary-btn"
             aria-label="Add Budget"
           >
             <Plus strokeWidth={1.5} size={18} />
