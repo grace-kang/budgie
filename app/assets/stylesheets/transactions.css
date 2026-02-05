@@ -86,8 +86,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: var(--color-bg-muted);
-      border-radius: 0.5rem;
+      background-color: color-mix(in oklch, var(--color-bg-muted) 40%, transparent);
     }
 
     &:last-child {
