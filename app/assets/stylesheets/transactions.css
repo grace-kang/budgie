@@ -88,8 +88,6 @@
     &:hover {
       background-color: var(--color-bg-muted);
       border-radius: 0.5rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
     }
 
     &:last-child {
