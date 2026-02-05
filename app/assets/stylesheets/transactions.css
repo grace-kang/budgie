@@ -1,4 +1,8 @@
 .transaction-view {
+  .transaction-view-toolbar {
+    grid-column: 1 / -1;
+  }
+
   .bento-grid {
     /* Inherits from shared bento.css */
   }
@@ -33,9 +37,78 @@
     color: var(--color-text-muted);
   }
 
-  /* Form Card */
+  /* Form Card – compact add form */
   .bento-card-form {
     grid-column: 1 / -1;
+    padding: 1rem 1.25rem;
+  }
+
+  .bento-card-form .bento-card-header {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .bento-card-form .bento-form-grid {
+    margin-bottom: 0.75rem;
+    gap: 0.5rem 1rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .bento-card-form .bento-form-field {
+    gap: 0.25rem;
+  }
+
+  .bento-card-form .bento-form-label {
+    font-size: 0.8125rem;
+  }
+
+  .bento-card-form .bento-form-input {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.875rem;
+  }
+
+  /* Edit form – compact */
+  .bento-transaction-edit-row {
+    grid-column: 1 / -1;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-muted);
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .bento-transaction-edit-row .bento-card-header {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .bento-transaction-edit-row .bento-form-grid {
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .bento-transaction-edit-row .bento-form-field {
+    gap: 0.25rem;
+  }
+
+  .bento-transaction-edit-row .bento-form-label {
+    font-size: 0.8125rem;
+  }
+
+  .bento-transaction-edit-row .bento-form-input {
+    padding: 0.5rem 0.625rem;
+    font-size: 0.875rem;
+  }
+
+  .bento-transaction-edit-row .bento-form-actions {
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .bento-transaction-edit-row .bento-form-submit,
+  .bento-transaction-edit-row .bento-form-cancel-button {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
   }
 
   .bento-form-grid {
@@ -215,14 +288,6 @@
     background: var(--color-error);
   }
 
-  .bento-transaction-edit-row {
-    grid-column: 1 / -1;
-    padding: 1rem;
-    background: var(--color-bg-muted);
-    border-radius: 0.5rem;
-    margin: 0.5rem 0;
-  }
-
   .bento-card-empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -237,6 +302,11 @@
 
   /* Responsive adjustments - compact single-line rows on mobile, no overlap */
   @media (max-width: 768px) {
+    .bento-card-form .bento-form-grid,
+    .bento-transaction-edit-row .bento-form-grid {
+      grid-template-columns: 1fr;
+    }
+
     .bento-card-summary,
     .bento-card-stat,
     .bento-card-form {

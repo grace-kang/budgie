@@ -20,6 +20,7 @@ export default function TransactionView() {
   const { data: transactions = [] } = useAllTransactions();
   const { data: budgets = [] } = useBudgets();
 
+  const [showAddForm, setShowAddForm] = useState(false);
   const [form, setForm] = useState<{
     budgetId: number | null;
     description: string;
@@ -72,13 +73,15 @@ export default function TransactionView() {
       budget_id: form.budgetId ?? null,
     };
     createTransaction.mutate(params, {
-      onSuccess: () =>
+      onSuccess: () => {
         setForm({
           budgetId: null,
           description: '',
           amount: '',
           date: getTodayDate(),
-        }),
+        });
+        setShowAddForm(false);
+      },
     });
   };
 
@@ -104,6 +107,9 @@ export default function TransactionView() {
       transactions={transactionsWithBudget}
       budgets={budgets}
       form={form}
+      showAddForm={showAddForm}
+      onOpenAddForm={() => setShowAddForm(true)}
+      onCloseAddForm={() => setShowAddForm(false)}
       onFormChange={handleFormChange}
       onFormSubmit={handleFormSubmit}
       onDelete={handleDelete}

@@ -43,11 +43,11 @@ export default function Months() {
         <button
           type="button"
           onClick={() => (showForm ? setShowForm(false) : openForm())}
-          className="bento-add-budget-btn months-add-month-btn"
-          aria-label="Add month"
+          className="bento-primary-btn"
+          aria-label={showForm ? 'Cancel' : 'Add month'}
         >
           <CalendarPlus strokeWidth={1.5} size={18} />
-          Add month
+          {showForm ? 'Cancel' : 'Add month'}
         </button>
         {showForm && (
           <form onSubmit={handleAddMonth} className="months-add-form">
@@ -64,17 +64,10 @@ export default function Months() {
             <div className="months-add-form-actions">
               <button
                 type="submit"
-                className="bento-add-budget-btn"
+                className="bento-primary-btn"
                 disabled={createMonth.isPending}
               >
                 {createMonth.isPending ? 'Adding…' : 'Add'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="bento-add-budget-btn months-add-cancel"
-              >
-                Cancel
               </button>
             </div>
           </form>
