@@ -39,6 +39,29 @@
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .budget {
+    min-height: 3rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .budget-actions {
+    display: flex;
+  }
+
+  .budget:hover .budget-total {
+    display: block;
+  }
+
+  .budget-action-button {
+    min-width: 44px;
+    min-height: 44px;
+    width: 2.5rem;
+    height: 2.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 .budget-action-button {
   display: flex;
   align-items: center;
