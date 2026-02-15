@@ -300,6 +300,17 @@
     display: none !important;
   }
 
+  .bento-transaction-row-add .bento-form-input-inline {
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .bento-transaction-row-add .bento-transaction-col-amount .bento-form-input-inline {
+    text-align: right;
+  }
+
   /* Responsive adjustments - compact single-line rows on mobile, no overlap */
   @media (max-width: 768px) {
     .bento-card-form .bento-form-grid,

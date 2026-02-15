@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
 import { Transaction, Budget } from '../types';
-import { getFilteredBudgets } from '../helpers/budgets';
 import TransactionStats from './TransactionStats';
-import TransactionsToolbar from './TransactionsToolbar';
-import TransactionAddForm from './TransactionAddForm';
 import TransactionsList from './TransactionsList';
 
 type TransactionsProps = {
@@ -16,9 +13,6 @@ type TransactionsProps = {
     amount: string;
     date: string;
   };
-  showAddForm: boolean;
-  onOpenAddForm: () => void;
-  onCloseAddForm: () => void;
   onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   onFormSubmit: (e: React.FormEvent) => void;
   onDelete: (transaction: Transaction) => void;
@@ -35,40 +29,24 @@ export default function Transactions({
   transactions,
   budgets,
   form,
-  showAddForm,
-  onOpenAddForm,
-  onCloseAddForm,
   onFormChange,
   onFormSubmit,
   onDelete,
   onUpdateTransaction,
 }: TransactionsProps) {
   const [editingTransactionId, setEditingTransactionId] = useState<number | null>(null);
-  const filteredBudgetsForForm = getFilteredBudgets(budgets, form.date);
 
   return (
     <div className="transaction-view">
       <div className="bento-grid">
         <TransactionStats transactions={transactions} />
 
-        <TransactionsToolbar
-          showAddForm={showAddForm}
-          onOpenAddForm={onOpenAddForm}
-          onCloseAddForm={onCloseAddForm}
-        />
-
-        {showAddForm && (
-          <TransactionAddForm
-            form={form}
-            filteredBudgets={filteredBudgetsForForm}
-            onFormChange={onFormChange}
-            onFormSubmit={onFormSubmit}
-          />
-        )}
-
         <TransactionsList
           transactions={transactions}
           budgets={budgets}
+          addForm={form}
+          onFormChange={onFormChange}
+          onFormSubmit={onFormSubmit}
           editingTransactionId={editingTransactionId}
           onSetEditingId={setEditingTransactionId}
           onDelete={onDelete}

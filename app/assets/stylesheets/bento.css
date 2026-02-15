@@ -148,6 +148,13 @@
   width: 100%;
 }
 
+.bento-primary-btn-icon {
+  width: auto;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0.5rem;
+}
+
 .bento-form-actions {
   display: flex;
   gap: 0.75rem;
