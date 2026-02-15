@@ -5,6 +5,7 @@ export type Transaction = {
   amount: number;
   description: string;
   date: string;
+  created_at?: string;
 };
 
 export type Budget = {
