@@ -2,14 +2,26 @@ import React from 'react';
 import { FileText } from 'lucide-react';
 
 import { Transaction, Budget } from '../types';
+import { getFilteredBudgets } from '../helpers/budgets';
 import TransactionRow from './TransactionRow';
 import TransactionEditForm from './TransactionEditForm';
+import TransactionAddForm from './TransactionAddForm';
 
 type TransactionWithBudgetName = Transaction & { budgetName: string };
+
+type AddFormState = {
+  budgetId: number | null;
+  description: string;
+  amount: string;
+  date: string;
+};
 
 type TransactionsListProps = {
   transactions: TransactionWithBudgetName[];
   budgets: Budget[];
+  addForm: AddFormState;
+  onFormChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onFormSubmit: (e: React.FormEvent) => void;
   editingTransactionId: number | null;
   onSetEditingId: (id: number | null) => void;
   onDelete: (transaction: Transaction) => void;
@@ -32,6 +44,9 @@ function formatDate(dateString: string) {
 export default function TransactionsList({
   transactions,
   budgets,
+  addForm,
+  onFormChange,
+  onFormSubmit,
   editingTransactionId,
   onSetEditingId,
   onDelete,
@@ -40,6 +55,7 @@ export default function TransactionsList({
   const sorted = [...transactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
+  const filteredBudgetsForForm = getFilteredBudgets(budgets, addForm.date);
 
   return (
     <div className="bento-card bento-card-transactions">
@@ -48,20 +64,26 @@ export default function TransactionsList({
         <h3 className="bento-card-title">Transactions</h3>
       </div>
       <div className="bento-card-content">
-        {sorted.length === 0 ? (
-          <div className="bento-transactions-empty">
-            <p>No transactions yet. Add one above to get started!</p>
+        <div className="bento-transactions-list">
+          <div className="bento-transactions-header">
+            <span className="bento-transaction-col-date">Date</span>
+            <span className="bento-transaction-col-budget">Budget</span>
+            <span className="bento-transaction-col-description">Description</span>
+            <span className="bento-transaction-col-amount">Amount</span>
+            <span className="bento-transaction-col-actions"></span>
           </div>
-        ) : (
-          <div className="bento-transactions-list">
-            <div className="bento-transactions-header">
-              <span className="bento-transaction-col-date">Date</span>
-              <span className="bento-transaction-col-budget">Budget</span>
-              <span className="bento-transaction-col-description">Description</span>
-              <span className="bento-transaction-col-amount">Amount</span>
-              <span className="bento-transaction-col-actions"></span>
+          <TransactionAddForm
+            form={addForm}
+            filteredBudgets={filteredBudgetsForForm}
+            onFormChange={onFormChange}
+            onFormSubmit={onFormSubmit}
+          />
+          {sorted.length === 0 ? (
+            <div className="bento-transactions-empty">
+              <p>No transactions yet.</p>
             </div>
-            {sorted.map((transaction) => (
+          ) : (
+            sorted.map((transaction) => (
               <React.Fragment key={transaction.id}>
                 <TransactionRow
                   transaction={transaction}
@@ -85,9 +107,9 @@ export default function TransactionsList({
                   </div>
                 )}
               </React.Fragment>
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
