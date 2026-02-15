@@ -94,11 +94,7 @@ export default function TransactionsList({
                   transaction={transaction}
                   formatDate={formatDate}
                   isEditing={editingTransactionId === transaction.id}
-                  onEdit={
-                    onUpdateTransaction
-                      ? () => onSetEditingId(transaction.id)
-                      : undefined
-                  }
+                  onEdit={onUpdateTransaction ? () => onSetEditingId(transaction.id) : undefined}
                   onDelete={onDelete}
                 />
                 {editingTransactionId === transaction.id && onUpdateTransaction && (
