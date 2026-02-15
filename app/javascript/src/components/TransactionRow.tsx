@@ -45,32 +45,19 @@ export default function TransactionRow({
   };
 
   return (
-    <div
-      className={`bento-transaction-row ${isEditing ? 'hide' : ''}`}
-    >
+    <div className={`bento-transaction-row ${isEditing ? 'hide' : ''}`}>
       <span className="bento-transaction-col-date">
-        <Calendar
-          className="bento-transaction-row-icon"
-          strokeWidth={1.5}
-          size={14}
-        />
+        <Calendar className="bento-transaction-row-icon" strokeWidth={1.5} size={14} />
         {formatDate(transaction.date)}
       </span>
       <span className="bento-transaction-col-budget">
         <Tag className="bento-transaction-row-icon" strokeWidth={1.5} size={14} />
         {transaction.budgetName}
       </span>
-      <span className="bento-transaction-col-description">
-        {transaction.description}
-      </span>
-      <span className="bento-transaction-col-amount">
-        ${round(transaction.amount)}
-      </span>
+      <span className="bento-transaction-col-description">{transaction.description}</span>
+      <span className="bento-transaction-col-amount">${round(transaction.amount)}</span>
       <span className="bento-transaction-col-actions">
-        <div
-          className="bento-transaction-actions-wrap"
-          ref={dropdownRef}
-        >
+        <div className="bento-transaction-actions-wrap" ref={dropdownRef}>
           <button
             type="button"
             onClick={(e) => {
